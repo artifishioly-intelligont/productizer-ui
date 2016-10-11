@@ -53,7 +53,7 @@
         map.setMapTypeId('OS');
 
         var drawingManager = new google.maps.drawing.DrawingManager({
-          drawingMode: google.maps.drawing.OverlayType.MARKER,
+          //drawingMode: google.maps.drawing.OverlayType.MARKER,
           drawingControl: true,
           drawingControlOptions: {
             position: google.maps.ControlPosition.TOP_CENTER,
@@ -61,10 +61,14 @@
           }
         });
         drawingManager.setMap(map);
+        google.maps.event.addListener(drawingManager, 'rectanglecomplete', function (rectangle) {
+            //var coordinates = (rectangle.getBounds().getArray());
 
-
+            var nw = rectangle.getBounds().getNorthEast();
+            var se = rectangle.getBounds().getSouthWest();
+            console.log("(" + nw + ", " + se + ")");
+        });
     }
-
   }
 
   // Normalizes the coords that tiles repeat across the x axis (horizontally)
