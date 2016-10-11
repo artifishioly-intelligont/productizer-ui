@@ -23,7 +23,7 @@
   function initMap() {
     if(document.getElementById('map')) {
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 0, lng: 0},
+          center: {lat: 10, lng: -100},
           zoom: 3,
           streetViewControl: false,
           mapTypeControlOptions: {
@@ -50,7 +50,21 @@
         });
 
         map.mapTypes.set('OS', osMapType);
-        map.setMapTypeId('OS');    }
+        map.setMapTypeId('OS');
+
+        var drawingManager = new google.maps.drawing.DrawingManager({
+          drawingMode: google.maps.drawing.OverlayType.MARKER,
+          drawingControl: true,
+          drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: ['rectangle']
+          }
+        });
+        drawingManager.setMap(map);
+
+
+    }
+
   }
 
   // Normalizes the coords that tiles repeat across the x axis (horizontally)
@@ -76,6 +90,6 @@
     return {x: x, y: y};
   }
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUAtkOq17fvrO06CtpNZ8UjJFFWAsFhKY&callback=initMap">
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUAtkOq17fvrO06CtpNZ8UjJFFWAsFhKY&callback=initMap&libraries=drawing">
 </script>
 @endsection
