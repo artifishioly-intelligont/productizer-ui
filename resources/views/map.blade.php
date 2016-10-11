@@ -131,7 +131,7 @@
     var tileRange = 8;
 
     // don't repeat across y-axis (vertically)
-    if (y < 0 || y >= tileRange) {
+    if (y < 0) { // y >= tileRange) {
       return null;
     }
 
