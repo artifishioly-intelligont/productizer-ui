@@ -22,35 +22,37 @@
     <script>
 
       function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 0, lng: 0},
-          zoom: 3,
-          streetViewControl: false,
-          mapTypeControlOptions: {
-            mapTypeIds: ['os']
-          }
-        });
-
-        var moonMapType = new google.maps.ImageMapType({
-          getTileUrl: function(coord, zoom) {
-              var normalizedCoord = getNormalizedCoord(coord, zoom);
-              if (!normalizedCoord) {
-                return null;
+        if(document.getElementById('map')) {
+            var map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: 0, lng: 0},
+              zoom: 3,
+              streetViewControl: false,
+              mapTypeControlOptions: {
+                mapTypeIds: ['os']
               }
-              var bound = Math.pow(2, zoom);
-              return '{{ url('/') }}' +
-                  '/img/map_' + zoom + '_' + normalizedCoord.x + '_' +
-                  (bound - normalizedCoord.y - 1) + '.png';
-          },
-          tileSize: new google.maps.Size(256, 256),
-          maxZoom: 6,
-          minZoom: 3,
-          radius:1,
-          name: 'OS'
-        });
+            });
 
-        map.mapTypes.set('OS', moonMapType);
-        map.setMapTypeId('OS');
+            var moonMapType = new google.maps.ImageMapType({
+              getTileUrl: function(coord, zoom) {
+                  var normalizedCoord = getNormalizedCoord(coord, zoom);
+                  if (!normalizedCoord) {
+                    return null;
+                  }
+                  var bound = Math.pow(2, zoom);
+                  return '{{ url('/') }}' +
+                      '/img/map_' + zoom + '_' + normalizedCoord.x + '_' +
+                      (bound - normalizedCoord.y - 1) + '.png';
+              },
+              tileSize: new google.maps.Size(256, 256),
+              maxZoom: 6,
+              minZoom: 3,
+              radius:1,
+              name: 'OS'
+            });
+
+            map.mapTypes.set('OS', moonMapType);
+            map.setMapTypeId('OS');
+        }
       }
 
       // Normalizes the coords that tiles repeat across the x axis (horizontally)

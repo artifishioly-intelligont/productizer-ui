@@ -15,3 +15,5 @@
         @include('includes.navbar')
     </div>
 </div>
+<div class="head-spacer">
+</div>

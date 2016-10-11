@@ -21,6 +21,7 @@ p {
     width:100%;
     padding:0px;
     margin-bottom:15px;
+    position:fixed;
     .logo {
         font-family:Montserrat, sans-serif;
         font-size:40px;
@@ -62,6 +63,9 @@ p {
             color: $light-font;
             font-weight: $btn-font-weight;
             border-radius: $btn-border-radius-base;
+
+            -webkit-transition: background-color 0.2s; /* Safari */
+            transition: background-color 0.2s;
             &:hover {
                 background-color:$secondary-color;
             }
@@ -72,6 +76,10 @@ p {
             padding-left:10px;
         }
     }
+}
+
+.head-spacer {
+    height:75px;
 }
 
 .footer {
