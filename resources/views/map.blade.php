@@ -25,8 +25,14 @@
     var TILE_SIZE = 256;
     if(document.getElementById('map')) {
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat:70, lng: -120},
-          zoom: 3,
+          center: {lat:80, lng: -150},
+          zoom: 4,
+
+          styles: [
+            {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+            {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+            {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+          ],
           zoomControl: false,
           scaleControl: false,
           scrollwheel: false,
@@ -57,9 +63,9 @@
                   (normalizedCoord.y - 1) + '.jpg';
           },
           tileSize: new google.maps.Size(TILE_SIZE, TILE_SIZE),
-          maxZoom: 3,
-          minZoom: 3,
-          radius: 2,
+          maxZoom: 4,
+          minZoom: 4,
+          radius: 1,
           name: 'OS',
 
         });
@@ -71,8 +77,17 @@
           //drawingMode: google.maps.drawing.OverlayType.MARKER,
           drawingControl: true,
           drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_CENTER,
+            position: google.maps.ControlPosition.TOP_LEFT,
             drawingModes: ['rectangle']
+          },
+
+          rectangleOptions: {
+            fillColor: '#ffff00',
+            fillOpacity: 0.2,
+            strokeWeight: 1,
+            clickable: false,
+            editable: true,
+            zIndex: 1
           }
         });
         drawingManager.setMap(map);
@@ -102,6 +117,7 @@
             Math.floor(worldCoordinate2.y * scale / TILE_SIZE));
 
             console.log(pixelCoordinate + " - " + pixelCoordinate2);
+            console.log(tileCoordinate + " - " + tileCoordinate2);
         });
     }
 
@@ -134,11 +150,11 @@
     if (y < 0) { // y >= tileRange) {
       return null;
     }
-
+    var cols = {{ $map->columns }};
     // DONT repeat across x-axis
-    if (x < 0) {//3 || x >= tileRange) {
+    if (x < 0 || x >= cols) {//3 || x >= tileRange) {
         return null;
-        //x = (x % tileRange + tileRange) % tileRange;
+        x = (x % cols + cols) % cols;
     }
 
     return {x: x, y: y};
