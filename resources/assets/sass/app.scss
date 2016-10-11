@@ -82,6 +82,18 @@ p {
     height:75px;
 }
 
+.slider {
+    .slide-2 {
+        display:none;
+    }
+    hr {
+        border-top-color: #d5d5d5;
+    }
+}
+.inline-input {
+    display:inline-block;
+    width:auto;
+}
 .footer {
     margin-top:15px;
     padding: 10px;

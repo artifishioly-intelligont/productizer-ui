@@ -2,14 +2,35 @@
 
 @section('body')
 <div class="container">
-    <div class="jumbotron">
-      <h1 class="display-3">Welcome!</h1>
-      <p class="lead">The Productizer allows you to select a feature from an Ordinance Survey image that you upload, and will automatically, using complex machine learnin algorithms, find the rest of those features within the image.</p>
-      <hr class="m-y-2">
-      <p>To get started, simply upload an Ordinance Survey image, and we'll guide you through the rest.</p>
-      <p class="lead">
-        <a class="btn btn-primary btn-lg" href="#" role="button">Upload Image</a>
-      </p>
+    <div class="jumbotron slider">
+        <div class="@if (count($errors) == 0) slide-1 @else slide-2 @endif">
+            <h1 class="display-3">Welcome!</h1>
+            <p class="lead">The Productizer allows you to select a feature from an Ordinance Survey image that you upload, and will automatically, using complex machine learnin algorithms, find the rest of those features within the image.</p>
+            <hr class="m-y-2">
+            <p>To get started, simply upload an Ordinance Survey image, and we'll guide you through the rest.</p>
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" id="upload-image" role="button">Upload Image</a>
+            </p>
+        </div>
+        <div class="@if (count($errors) > 0) slide-1 @else slide-2 @endif">
+        {!! \Form::open(['files' => true]) !!}
+            <h1 class="display-3">Upload</h1>
+            <hr class="m-y-2">
+
+            <p>Select your image file below.</p>
+            <input type="text" disabled id="upload-file-info" class="form-control inline-input" value="No file selected."/>
+            <label class="btn btn-default btn-file">
+                Browse <input type="file" style="display: none;" onchange="$('#upload-file-info').val($(this).val());" name="image">
+            </label>
+            @if (count($errors) > 0)
+            <br />
+            <span class="label label-danger">You must select an image to upload. Images must be smaller than 2000x2000px.</span>
+            @endif
+            <p class="lead" style="margin-top:15px;">
+                <input type="submit" class="btn btn-primary btn-lg" role="button" value="Upload"/>
+            </p>
+        {!! \Form::close() !!}
+        </div>
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-6">
