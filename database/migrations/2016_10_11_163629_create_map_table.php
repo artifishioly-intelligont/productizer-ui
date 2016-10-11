@@ -16,6 +16,8 @@ class CreateMapTable extends Migration
         Schema::create('maps', function (Blueprint $table) {
             $table->increments('id');
             $table->string('file')->nullable();
+            $table->integer('rows')->nullable();
+            $table->intefer('columns')->nullable();
             $table->timestamps();
         });
     }

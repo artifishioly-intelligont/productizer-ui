@@ -21,10 +21,16 @@
 <script>
 
   function initMap() {
+
+    var TILE_SIZE = 256;
     if(document.getElementById('map')) {
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 10, lng: -100},
+          center: {lat:70, lng: -120},
           zoom: 3,
+          zoomControl: false,
+          scaleControl: false,
+          scrollwheel: false,
+          disableDoubleClickZoom: true,
           streetViewControl: false,
           mapTypeControlOptions: {
             mapTypeIds: ['os']
@@ -37,16 +43,25 @@
               if (!normalizedCoord) {
                 return null;
               }
-              var bound = Math.pow(2, zoom);
+              //var bound = Math.pow(2, zoom);
+              var cols = {{ $map->columns }} - 1;
+              var rows = {{ $map->rows }} - 1;
+              if(normalizedCoord.x > cols || normalizedCoord.x < 0) {
+                return null;
+              }
+              if(normalizedCoord.y - 1 > rows || normalizedCoord.y - 1 < 0) {
+                return null;
+              }
               return '{{ url('/') }}' +
                   '/maps/{{ $map->id }}/actual/actual_files/{{ $map->levels - 1}}/' + normalizedCoord.x + '_' +
                   (normalizedCoord.y - 1) + '.jpg';
           },
-          tileSize: new google.maps.Size(256, 256),
-          maxZoom: 6,
+          tileSize: new google.maps.Size(TILE_SIZE, TILE_SIZE),
+          maxZoom: 3,
           minZoom: 3,
-          radius:1,
-          name: 'OS'
+          radius: 2,
+          name: 'OS',
+
         });
 
         map.mapTypes.set('OS', osMapType);
@@ -64,11 +79,45 @@
         google.maps.event.addListener(drawingManager, 'rectanglecomplete', function (rectangle) {
             //var coordinates = (rectangle.getBounds().getArray());
 
-            var nw = rectangle.getBounds().getNorthEast();
-            var se = rectangle.getBounds().getSouthWest();
-            console.log("(" + nw + ", " + se + ")");
+        var scale = 1 << map.getZoom();
+
+        var worldCoordinate = project(rectangle.getBounds().getNorthEast());
+
+        var pixelCoordinate = new google.maps.Point(
+            Math.floor(worldCoordinate.x * scale),
+            Math.floor(worldCoordinate.y * scale));
+
+        var tileCoordinate = new google.maps.Point(
+            Math.floor(worldCoordinate.x * scale / TILE_SIZE),
+            Math.floor(worldCoordinate.y * scale / TILE_SIZE));
+
+        var worldCoordinate2 = project(rectangle.getBounds().getSouthWest());
+
+        var pixelCoordinate2 = new google.maps.Point(
+            Math.floor(worldCoordinate2.x * scale),
+            Math.floor(worldCoordinate2.y * scale));
+
+        var tileCoordinate2 = new google.maps.Point(
+            Math.floor(worldCoordinate2.x * scale / TILE_SIZE),
+            Math.floor(worldCoordinate2.y * scale / TILE_SIZE));
+
+            console.log(pixelCoordinate + " - " + pixelCoordinate2);
         });
     }
+
+      // The mapping between latitude, longitude and pixels is defined by the web
+      // mercator projection.
+      function project(latLng) {
+        var siny = Math.sin(latLng.lat() * Math.PI / 180);
+
+        // Truncating to 0.9999 effectively limits latitude to 89.189. This is
+        // about a third of a tile past the edge of the world tile.
+        siny = Math.min(Math.max(siny, -0.9999), 0.9999);
+
+        return new google.maps.Point(
+            TILE_SIZE * (0.5 + latLng.lng() / 360),
+            TILE_SIZE * (0.5 - Math.log((1 + siny) / (1 - siny)) / (4 * Math.PI)));
+      }
   }
 
   // Normalizes the coords that tiles repeat across the x axis (horizontally)
@@ -79,16 +128,17 @@
 
     // tile range in one direction range is dependent on zoom level
     // 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
-    var tileRange = 1 << zoom;
+    var tileRange = 8;
 
     // don't repeat across y-axis (vertically)
     if (y < 0 || y >= tileRange) {
       return null;
     }
 
-    // repeat across x-axis
-    if (x < 0 || x >= tileRange) {
-      x = (x % tileRange + tileRange) % tileRange;
+    // DONT repeat across x-axis
+    if (x < 0) {//3 || x >= tileRange) {
+        return null;
+      //x = (x % tileRange + tileRange) % tileRange;
     }
 
     return {x: x, y: y};

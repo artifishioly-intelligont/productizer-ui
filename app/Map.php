@@ -8,6 +8,6 @@ class Map extends Model
 {
     //
     protected $fillable = [
-        'file', 'levels'
+        'file', 'levels', 'rows', 'columns',
     ];
 }
