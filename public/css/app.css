@@ -5770,6 +5770,12 @@ button.close {
 .navbar-toggle .icon-bar {
   background-color: #fff; }
 
+h3 {
+  font-weight: 300; }
+
+p {
+  color: #9da3a7; }
+
 .header {
   min-height: 60px;
   background-color: #3498db;
@@ -5815,6 +5821,15 @@ button.close {
   @media only screen and (max-width: 767px) {
     .header .navbar-header {
       padding-left: 10px; } }
+
+.footer {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  color: #B0B0B0; }
+  .footer div.copy {
+    width: 100%;
+    text-align: center; }
 
 #map {
   width: 100%;
