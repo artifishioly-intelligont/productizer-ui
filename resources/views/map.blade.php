@@ -34,11 +34,6 @@
             {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
             {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
           ],
-          zoomControl: true,
-          scaleControl: false,
-
-          scrollwheel: false,
-          disableDoubleClickZoom: true,
           streetViewControl: false,
           mapTypeControlOptions: {
             mapTypeIds: ['os']
