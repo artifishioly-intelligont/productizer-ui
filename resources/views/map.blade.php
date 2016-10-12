@@ -3,12 +3,12 @@
 @section('body')
 <div class="container">
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-7">
+        <div class="col-xs-12 col-sm-12 col-md-8">
             <h3>Map</h3>
             <hr>
             <div id="map"></div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-5">
+        <div class="col-xs-12 col-sm-12 col-md-4">
             <h3>Controls</h3>
             <hr>
             <p>To do</p>
@@ -35,6 +35,7 @@
           ],
           zoomControl: false,
           scaleControl: false,
+
           scrollwheel: false,
           disableDoubleClickZoom: true,
           streetViewControl: false,
@@ -119,6 +120,36 @@
             console.log(pixelCoordinate + " - " + pixelCoordinate2);
             console.log(tileCoordinate + " - " + tileCoordinate2);
         });
+
+        google.maps.event.addListener(map, 'bounds_changed', function() {
+            // Bounds for map calculated
+            var strictBounds = new google.maps.LatLngBounds(
+                map.getBounds().getSouthWest(),
+                map.getBounds().getNorthEast()
+            );
+            // Listen for the dragend event
+            google.maps.event.addListener(map, 'dragend', function() {
+                if (strictBounds.contains(map.getCenter())) return;
+
+             // We're out of bounds - Move the map back within the bounds
+
+            var c = map.getCenter(),
+                x = c.lng(),
+                y = c.lat(),
+                maxX = strictBounds.getNorthEast().lng(),
+                maxY = strictBounds.getNorthEast().lat(),
+                minX = strictBounds.getSouthWest().lng(),
+                minY = strictBounds.getSouthWest().lat();
+
+            if (x < minX) x = minX;
+            if (x > maxX) x = maxX;
+            if (y < minY) y = minY;
+            if (y > maxY) y = maxY;
+
+            //map.setCenter(new google.maps.LatLng(y, x));
+        });
+    });
+
     }
 
       // The mapping between latitude, longitude and pixels is defined by the web

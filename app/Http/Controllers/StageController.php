@@ -32,14 +32,34 @@ class StageController extends Controller
         $path = base_path().'/public/maps/'.$map->id;
         File::makeDirectory($path);
         // resize image
-        $height = Image::make($request->file('image')->getRealPath())->height();
+        // minimise edge stretching (temp fix) by checking if more excess on height or width
+        $image = Image::make($request->file('image')->getRealPath());
+        $height = $image->height();
         $heightAdded = $height + (256 - ($height % 256));
+
+        $width = $image->width();
+        $widthAdded = $width + (256 - ($width % 256));
+
+        if($heightAdded > $widthAdded) {
+            $image->resize(null, $heightAdded, function ($constraint) {
+                    $constraint->aspectRatio();
+                })
+                ->encode('jpg', 100)
+                ->save($path.'/actual.jpg');
+        } else {
+            $image->resize(null, $widthAdded, function ($constraint) {
+                    $constraint->aspectRatio();
+                })
+                ->encode('jpg', 100)
+                ->save($path.'/actual.jpg');
+        }
+        //Save thumbnail too
         Image::make($request->file('image')->getRealPath())
-            ->resize($heightAdded, null, function ($constraint) {
+            ->resize(null, 100, function ($constraint) {
                 $constraint->aspectRatio();
             })
             ->encode('jpg', 100)
-            ->save($path.'/actual.jpg');
+            ->save($path.'/thumb.jpg');
 
         //$this->makeTiles($path.'/actual.jpg');
 
