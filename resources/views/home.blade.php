@@ -24,7 +24,7 @@
             </label>
             @if (count($errors) > 0)
             <br />
-            <span class="label label-danger">You must select an image to upload. Images must be smaller than 2000x2000px.</span>
+            <span class="label label-danger">You must select an image to upload. Images must be smaller than 4000x4000px.</span>
             @endif
             <p class="lead" style="margin-top:15px;">
                 <input type="submit" class="btn btn-primary btn-lg" role="button" value="Upload"/>

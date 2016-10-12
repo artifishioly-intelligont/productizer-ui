@@ -12,6 +12,7 @@
             <h3>Controls</h3>
             <hr>
             <p>To do</p>
+            <img src="{{ asset($map->thumb) }}"/>
         </div>
     </div>
 </div>
