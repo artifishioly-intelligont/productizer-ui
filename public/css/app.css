@@ -5840,6 +5840,12 @@ p {
   display: inline-block;
   width: auto; }
 
+.row-clickable {
+  cursor: pointer; }
+
+.cell-nopadding {
+  padding: 0px !important; }
+
 .footer {
   margin-top: 15px;
   padding: 10px;

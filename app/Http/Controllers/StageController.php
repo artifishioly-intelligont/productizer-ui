@@ -83,4 +83,8 @@ class StageController extends Controller
     public function showStage2($id) {
         return view('map')->withMap(Map::findOrFail($id));
     }
+
+    public function mapHistory() {
+        return view('history')->withMaps(Map::paginate(20));
+    }
 }

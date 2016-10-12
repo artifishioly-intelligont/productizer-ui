@@ -14,4 +14,5 @@
 Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
 Route::post('/', ['as' => 'stage1_post', 'uses' => 'StageController@postStage1']);
 
+Route::get('/history', ['as' => 'history', 'uses' => 'StageController@mapHistory']);
 Route::get('/map/{id}', ['as' => 'stage1', 'uses' => 'StageController@showStage2']);
