@@ -26,15 +26,15 @@
     var TILE_SIZE = 256;
     if(document.getElementById('map')) {
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat:80, lng: -150},
-          zoom: 4,
+          center: {lat:-89.6, lng: -0},
+          zoom: 0,
 
           styles: [
             {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
             {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
             {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
           ],
-          zoomControl: false,
+          zoomControl: true,
           scaleControl: false,
 
           scrollwheel: false,
@@ -61,12 +61,12 @@
                 return null;
               }
               return '{{ url('/') }}' +
-                  '/maps/{{ $map->id }}/actual/actual_files/{{ $map->levels - 1}}/' + normalizedCoord.x + '_' +
+                  '/maps/{{ $map->id }}/actual/actual_files/' + ({{ ($map->levels - 1) }} - 2 + (zoom - 2)) + '/' + normalizedCoord.x + '_' +
                   (normalizedCoord.y - 1) + '.jpg';
           },
           tileSize: new google.maps.Size(TILE_SIZE, TILE_SIZE),
           maxZoom: 4,
-          minZoom: 4,
+          minZoom: 0,
           radius: 1,
           name: 'OS',
 
