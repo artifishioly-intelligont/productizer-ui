@@ -60,8 +60,10 @@
               if(normalizedCoord.y - 1 > rows || normalizedCoord.y - 1 < 0) {
                 return null;
               }
+              var folder = ({{ ($map->levels - 1) }} - 2 + (zoom - 2));
+              folder = (folder < 0) ? 0 : folder;
               return '{{ url('/') }}' +
-                  '/maps/{{ $map->id }}/actual/actual_files/' + ({{ ($map->levels - 1) }} - 2 + (zoom - 2)) + '/' + normalizedCoord.x + '_' +
+                  '/maps/{{ $map->id }}/actual/actual_files/' + folder + '/' + normalizedCoord.x + '_' +
                   (normalizedCoord.y - 1) + '.jpg';
           },
           tileSize: new google.maps.Size(TILE_SIZE, TILE_SIZE),
