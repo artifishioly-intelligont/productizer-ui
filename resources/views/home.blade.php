@@ -42,10 +42,10 @@
             <h3>About</h3>
             <hr>
             <div class="row">
-                <div class="col-xs-12 col-sm-8 col-md-6">
+                <div class="col-xs-12 col-sm-8 col-md-7">
                     <p>The Productizer is a University of Southampton Electronics &amp; Computer Science Group Design Project in collaboration with Ordnance Survey. Designed and developed by Ed Crampin, Prem Limbu, Stefan Collier & Tom Potter.</p>
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-6">
+                <div class="col-xs-12 col-sm-4 col-md-5">
                     <div class="row">
                         <div class="col-xs-6 col-sm-12">
                             <img class="full-width" src="{{ asset('img/uoslogobw.png') }}"/>

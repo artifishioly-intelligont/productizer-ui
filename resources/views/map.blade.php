@@ -9,10 +9,6 @@
             <div id="map"></div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4">
-            <h3>Controls</h3>
-            <hr>
-            <p>To do</p>
-            <img src="{{ asset($map->thumb) }}"/>
             <h3>Selected Areas</h3>
             <hr>
             <div id="map-selected"></div>
