@@ -14,7 +14,7 @@
                         <div class="history-col">
                             <img src="{{ url($map->thumb) }}"/>
                             <div class="details">
-                                <small>{{ date('d/m/Y H:i', strtotime($map->created_at)) }}</small>
+                                <small>{{ $map->created_at->diffForHumans() }}</small>
                             </div>
                         </div>
                     </a>
