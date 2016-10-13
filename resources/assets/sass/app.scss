@@ -29,7 +29,10 @@ p {
         letter-spacing: -2px;
         a {
             color:$light-font;
-
+            transition: $box-shadow-transition;
+            &:hover {
+                text-shadow: $box-shadow-one;
+            }
             &:hover, &:visited, &:focus {
                 text-decoration: none;
                 color: $light-font;
