@@ -101,6 +101,33 @@ p {
 .cell-nopadding {
     padding:0px !important;
 }
+.history-col {
+    text-align:center;
+    background-color:$light-grey;
+    border-radius:6px;
+    margin:5px;
+    transition: $box-shadow-transition;
+    box-shadow: $box-shadow-two;
+    img {
+        width:100%;
+        border-radius:5px 5px 0px 0px;
+        opacity:1.0;
+    }
+    .details {
+        border-radius:0px 0px 5px 5px;
+        background-color:$primary-color;
+        color:$light-font;
+        width:100%;
+        padding:4px 0px;
+    }
+    &:hover {
+        box-shadow: $box-shadow-two;
+        cursor:pointer;
+    }
+    &:active {
+        box-shadow: $box-shadow-one;
+    }
+}
 .footer {
     margin-top:15px;
     padding: 10px;

@@ -85,6 +85,6 @@ class StageController extends Controller
     }
 
     public function mapHistory() {
-        return view('history')->withMaps(Map::paginate(20));
+        return view('history')->withMaps(Map::orderBy('created_at', 'desc')->paginate(20));
     }
 }

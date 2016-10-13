@@ -13,6 +13,9 @@
             <hr>
             <p>To do</p>
             <img src="{{ asset($map->thumb) }}"/>
+            <h3>Selected Areas</h3>
+            <hr>
+            <div id="map-selected"></div>
         </div>
     </div>
 </div>
@@ -115,8 +118,8 @@
             Math.floor(worldCoordinate2.x * scale / TILE_SIZE),
             Math.floor(worldCoordinate2.y * scale / TILE_SIZE));
 
-            console.log(pixelCoordinate + " - " + pixelCoordinate2);
-            console.log(tileCoordinate + " - " + tileCoordinate2);
+            $('#map-selected').append(pixelCoordinate + " to " + pixelCoordinate2 + "<br />");
+
         });
 
         google.maps.event.addListener(map, 'bounds_changed', function() {
@@ -173,7 +176,7 @@
 
     // tile range in one direction range is dependent on zoom level
     // 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
-    var tileRange = 8;
+    var tileRange = 1 << zoom;
 
     // don't repeat across y-axis (vertically)
     if (y < 0) { // y >= tileRange) {
