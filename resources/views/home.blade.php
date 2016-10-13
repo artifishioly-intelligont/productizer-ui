@@ -39,9 +39,24 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6">
-            <h3>Section Two</h3>
+            <h3>About</h3>
             <hr>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-md-6">
+                    <p>The Productizer is a University of Southampton Electronics &amp; Computer Science Group Design Project in collaboration with Ordnance Survey. Designed and developed by Ed Crampin, Prem Limbu, Stefan Collier & Tom Potter.</p>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-6">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-12">
+                            <img class="full-width" src="{{ asset('img/uoslogobw.png') }}"/>
+                            <div class="hidden-xs" style="margin-bottom:20px;"></div>
+                        </div>
+                        <div class="col-xs-6 col-sm-12">
+                            <img class="full-width" src="{{ asset('img/oslogobw.png') }}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
