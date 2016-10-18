@@ -114,7 +114,13 @@
             Math.floor(worldCoordinate2.x * scale / TILE_SIZE),
             Math.floor(worldCoordinate2.y * scale / TILE_SIZE));
 
-            $('#map-selected').append(pixelCoordinate + " to " + pixelCoordinate2 + "<br />");
+            console.log(tileCoordinate);
+            var tileimg = '{{ url('/') }}' +
+                  '/maps/{{ $map->id }}/actual/actual_files/12/' + tileCoordinate.x + '_' +
+                  (tileCoordinate.y - 1) + '.jpg';
+
+            $('#map-selected').append('<img src="'+tileimg+'"/>');
+            $('#map-selected').append(tileCoordinate + " to " + tileCoordinate2 + "<br />");
 
         });
 
