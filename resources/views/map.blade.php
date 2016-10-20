@@ -24,7 +24,6 @@
 
     var TILE_SIZE = 256;
 	
-	console.log("TEST");
 	
     if(document.getElementById('map')) {
         var map = new google.maps.Map(document.getElementById('map'), {
