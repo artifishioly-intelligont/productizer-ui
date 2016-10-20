@@ -42,7 +42,7 @@
         });
 		
 		console.log("***********");
-		console.log("<?php echo serialize($map)?>");
+		//console.log("<?php echo serialize($map)?>");
 		console.log("***********");
 
         var osMapType = new google.maps.ImageMapType({
@@ -52,15 +52,15 @@
                 return null;
               }
               //var bound = Math.pow(2, zoom);
-              var cols = {{ $map->columns }} - 1;
-              var rows = {{ $map->rows }} - 1;
+              var cols = 7 - 1;
+              var rows = 4 - 1;
               if(normalizedCoord.x > cols || normalizedCoord.x < 0) {
                 return null;
               }
               if(normalizedCoord.y - 1 > rows || normalizedCoord.y - 1 < 0) {
                 return null;
               }
-              var folder = ({{ ($map->levels - 1) }} - 2 + (zoom - 2));
+              var folder = (6 - 2 + (zoom - 2));
               folder = (folder < 0) ? 0 : folder;
               return '{{ url('/') }}' +
                   '/maps/{{ $map->id }}/actual/actual_files/' + folder + '/' + normalizedCoord.x + '_' +
@@ -190,7 +190,7 @@
     if (y < 0) { // y >= tileRange) {
       return null;
     }
-    var cols = {{ $map->columns }};
+    var cols = 7;
     // DONT repeat across x-axis
     if (x < 0 || x >= cols) {//3 || x >= tileRange) {
         return null;
