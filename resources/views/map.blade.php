@@ -23,6 +23,9 @@
   function initMap() {
 
     var TILE_SIZE = 256;
+	
+	console.log("TEST");
+	
     if(document.getElementById('map')) {
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat:-89.6, lng: -0},
@@ -38,6 +41,10 @@
             mapTypeIds: ['os']
           }
         });
+		
+		console.log("***********");
+		console.log("<?php echo serialize($map)?>");
+		console.log("***********");
 
         var osMapType = new google.maps.ImageMapType({
           getTileUrl: function(coord, zoom) {
