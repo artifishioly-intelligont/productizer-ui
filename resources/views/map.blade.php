@@ -8,6 +8,50 @@
             <hr>
             <div id="map"></div>
         </div>
+		<textarea id="result" rows="4" cols="50">
+			<?php 
+			function CallAPI($method, $url, $data = false)
+			{
+				$curl = curl_init();
+				
+				// Curl requires a header defining at least the data length
+				$headers = array( 
+					"Content-length: ".strlen($data), 
+				);
+
+				switch ($method)
+				{
+					case "POST":
+						curl_setopt($curl, CURLOPT_POST, 1);
+						if ($data)
+							curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+						break;
+					case "PUT":
+						curl_setopt($curl, CURLOPT_PUT, 1);
+						break;
+					default:
+						if ($data)
+							$url = sprintf("%s?%s", $url, http_build_query($data));
+				}
+
+				// Define curl options
+				curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+				curl_setopt($curl, CURLOPT_URL, $url);
+				// option (1) to return result on success, or (0) just return True 
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+				$result = curl_exec($curl);
+				var_dump("******");
+				var_dump($result);
+				var_dump("******");
+				die();
+
+				curl_close($curl);
+
+				return $result;
+			}
+			CallAPI("GET", "http://localhost:5000/learn", false); ?>
+		</textarea>
         <div class="col-xs-12 col-sm-12 col-md-4">
             <h3>Selected Areas</h3>
             <hr>
