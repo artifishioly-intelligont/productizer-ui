@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('body')
+
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-8">
@@ -8,54 +9,39 @@
             <hr>
             <div id="map"></div>
         </div>
-		<textarea id="result" rows="4" cols="50">
-			<?php 
-			function CallAPI($method, $url, $data = false)
-			{
-				$curl = curl_init();
-				
-				// Curl requires a header defining at least the data length
-				$headers = array( 
-					"Content-length: ".strlen($data), 
-				);
-
-				switch ($method)
-				{
-					case "POST":
-						curl_setopt($curl, CURLOPT_POST, 1);
-						if ($data)
-							curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-						break;
-					case "PUT":
-						curl_setopt($curl, CURLOPT_PUT, 1);
-						break;
-					default:
-						if ($data)
-							$url = sprintf("%s?%s", $url, http_build_query($data));
-				}
-
-				// Define curl options
-				curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-				curl_setopt($curl, CURLOPT_URL, $url);
-				// option (1) to return result on success, or (0) just return True 
-				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-				$result = curl_exec($curl);
-				var_dump("******");
-				var_dump($result);
-				var_dump("******");
-				die();
-
-				curl_close($curl);
-
-				return $result;
-			}
-			CallAPI("GET", "http://localhost:5000/learn", false); ?>
-		</textarea>
+		<div class="col-xs-12 col-sm-12 col-md-4">
+			<div id="toggleMode">
+				<h4 style="display:inline-block;color:magenta" id="learnMode">Learn Mode</h4>
+				<label style="display:inline-block" class="switch">
+				  <input type="checkbox" id="toggle" onclick="toggleMode()">
+				  <div class="slider round"></div>
+				</label>
+				<h4 style="display:inline-block;color:blue" id="guessMode">Guess Mode</h4>
+			</div>
+			<hr>
+			<label for="themes">1)Select a theme:</label>
+			<select name="themes" id="themes" onchange="updateSelectedTheme()">
+			  <option value="pond">Pond</option>
+			  <option value="tree">Tree</option>
+			  <option value="road">Road</option>
+			  <option value="roundabout">Roundabout</option>
+			  <option value="building">Building</option>
+			</select>
+		</div>
         <div class="col-xs-12 col-sm-12 col-md-4">
-            <h3>Selected Areas</h3>
+			<label for="map-selected">2) On the map to the left, draw boxes around 5 features of your selected theme.</label>
             <hr>
             <div id="map-selected"></div>
+			<hr>
+			<form method="POST">
+				<input type="hidden" id="selectedTheme" value="default"/>
+				<input type="hidden" id="url1" value="default">
+				<input type="hidden" id="url2" value="default">
+				<input type="hidden" id="url3" value="default">
+				<input type="hidden" id="url4" value="default">
+				<input type="hidden" id="url5" value="default">
+				<input type="submit" value="Learn">
+			</form>
         </div>
     </div>
 </div>
@@ -64,10 +50,35 @@
 @section('scripts')
 <script>
 
+	function updateSelectedTheme() {
+		var themesDropdown = document.getElementById("themes");
+		var selectedTheme = themesDropdown.options[themesDropdown.selectedIndex].value
+		document.getElementById("selectedTheme").value=selectedTheme;
+	}
+	updateSelectedTheme();
+	
+	function toggleMode() {
+		var toggle = document.getElementById("toggle");
+		if(toggle.checked){
+			document.getElementById("learnMode").style.color = "grey";
+			document.getElementById("learnMode").style.fontWeight = "normal";
+			
+			document.getElementById("guessMode").style.color = "blue";
+			document.getElementById("guessMode").style.fontWeight = "bold";
+		}
+		else{
+			document.getElementById("guessMode").style.color = "grey";
+			document.getElementById("guessMode").style.fontWeight = "normal";
+			
+			document.getElementById("learnMode").style.color = "blue";
+			document.getElementById("learnMode").style.fontWeight = "bold";
+		}
+	}
+	toggleMode();
+
   function initMap() {
 
     var TILE_SIZE = 256;
-	
 	
     if(document.getElementById('map')) {
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -139,8 +150,13 @@
           }
         });
         drawingManager.setMap(map);
+		
+		var counter = 0;
+		
         google.maps.event.addListener(drawingManager, 'rectanglecomplete', function (rectangle) {
             //var coordinates = (rectangle.getBounds().getArray());
+		
+		counter++;
 
         var scale = 1 << map.getZoom();
 
@@ -169,9 +185,10 @@
                   '/maps/{{ $map->id }}/actual/actual_files/12/' + tileCoordinate.x + '_' +
                   (tileCoordinate.y - 1) + '.jpg';
 
-            $('#map-selected').append('<img src="'+tileimg+'"/>');
-            $('#map-selected').append(tileCoordinate + " to " + tileCoordinate2 + "<br />");
-
+			$('#map-selected').append('<label for="learn+'+counter+'">'+counter+'</learn>');
+            $('#map-selected').append('<img id="learn'+counter+'" src="'+tileimg+'" height="75" width="75"/>'  + "<br /><p></p>");
+			document.getElementById("url"+counter).value = tileimg;
+            //$('#map-selected').append(tileCoordinate + " to " + tileCoordinate2 + "<br />");
         });
 
         google.maps.event.addListener(map, 'bounds_changed', function() {
