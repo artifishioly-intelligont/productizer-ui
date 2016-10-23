@@ -9,7 +9,7 @@
             <hr>
             <div id="map"></div>
         </div>
-		<div class="col-xs-12 col-sm-12 col-md-4">
+		<div class="col-xs-12 col-sm-12 col-md-4">		
 			<div id="toggleMode">
 				<h4 style="display:inline-block;color:magenta" id="learnMode">Learn Mode</h4>
 				<label style="display:inline-block" class="switch">
@@ -33,26 +33,51 @@
             <hr>
             <div id="map-selected"></div>
 			<hr>
-			<form method="POST">
-				<input type="hidden" id="selectedTheme" value="default"/>
-				<input type="hidden" id="url1" value="default">
-				<input type="hidden" id="url2" value="default">
-				<input type="hidden" id="url3" value="default">
-				<input type="hidden" id="url4" value="default">
-				<input type="hidden" id="url5" value="default">
-				<input type="submit" value="Learn">
-			</form>
+
+			<input type="hidden" id="selectedTheme" value="default"/>
+			<input type="hidden" id="url1" value="default">
+			<input type="hidden" id="url2" value="default">
+			<input type="hidden" id="url3" value="default">
+			<input type="hidden" id="url4" value="default">
+			<input type="hidden" id="url5" value="default">
+
+			<button onclick="sendLearnData()">LEARN</button>
         </div>
+		
     </div>
 </div>
+
 @endsection
 
 @section('scripts')
 <script>
 
+	function reqListener (evt) {
+		alert(this.responseText);
+	}
+
+	function sendLearnData(){
+		var data = {};
+		
+		var themesDropdown = document.getElementById("themes");
+		data["theme"] = themesDropdown.options[themesDropdown.selectedIndex].value;
+		
+		for(var i = 1; i < 6; i++){
+			//double-encoded so it can be passed to server in URL
+			data["url"+i.toString()] = encodeURIComponent(encodeURIComponent(document.getElementById("url"+i.toString()).value));
+		}
+		
+		var JSONdata = JSON.stringify(data);
+		
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.addEventListener("load", reqListener);
+		xmlHttp.open( "GET", "http://localhost:5000/learn/"+JSONdata);
+		xmlHttp.send();
+	}
+
 	function updateSelectedTheme() {
 		var themesDropdown = document.getElementById("themes");
-		var selectedTheme = themesDropdown.options[themesDropdown.selectedIndex].value
+		var selectedTheme = themesDropdown.options[themesDropdown.selectedIndex].value;
 		document.getElementById("selectedTheme").value=selectedTheme;
 	}
 	updateSelectedTheme();
@@ -187,7 +212,8 @@
 
 			$('#map-selected').append('<label for="learn+'+counter+'">'+counter+'</learn>');
             $('#map-selected').append('<img id="learn'+counter+'" src="'+tileimg+'" height="75" width="75"/>'  + "<br /><p></p>");
-			document.getElementById("url"+counter).value = tileimg;
+			document.getElementById("url"+counter).value = '/maps/{{ $map->id }}/actual/actual_files/12/' + tileCoordinate.x + '_' +
+                  (tileCoordinate.y - 1) + '.jpg';
             //$('#map-selected').append(tileCoordinate + " to " + tileCoordinate2 + "<br />");
         });
 
