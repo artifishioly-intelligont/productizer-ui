@@ -9,16 +9,16 @@
             <hr>
             <div id="map"></div>
         </div>
-		<div class="col-xs-12 col-sm-12 col-md-4">		
-			<div id="toggleMode">
-				<h4 style="display:inline-block;color:magenta" id="learnMode">Learn Mode</h4>
-				<label style="display:inline-block" class="switch">
-				  <input type="checkbox" id="toggle" onclick="toggleMode()">
-				  <div class="slider round"></div>
-				</label>
-				<h4 style="display:inline-block;color:blue" id="guessMode">Guess Mode</h4>
-			</div>
-			<hr>
+		<div id="toggleMode">
+			<h4 style="display:inline-block" id="learnMode">Learn Mode</h4>
+			<label style="display:inline-block" class="switch">
+			  <input type="checkbox" id="toggle" onclick="toggleMode()">
+			  <div class="slider round"></div>
+			</label>
+			<h4 style="display:inline-block" id="guessMode">Guess Mode</h4>
+		</div>
+		<hr>
+		<div id="learnInterface" class="col-xs-12 col-sm-12 col-md-4">		
 			<label for="themes">1)Select a theme:</label>
 			<select name="themes" id="themes" onchange="updateSelectedTheme()">
 			  <option value="pond">Pond</option>
@@ -27,11 +27,9 @@
 			  <option value="roundabout">Roundabout</option>
 			  <option value="building">Building</option>
 			</select>
-		</div>
-        <div class="col-xs-12 col-sm-12 col-md-4">
-			<label for="map-selected">2) On the map to the left, draw boxes around 5 features of your selected theme.</label>
+			<label for="map-selected-learn">2) On the map to the left, draw boxes around 5 features of your selected theme.</label>
             <hr>
-            <div id="map-selected"></div>
+            <div id="map-selected-learn"></div>
 			<hr>
 
 			<input type="hidden" id="selectedTheme" value="default"/>
@@ -43,6 +41,16 @@
 
 			<button onclick="sendLearnData()">LEARN</button>
         </div>
+		<div id="guessInterface" class="col-xs-12 col-sm-12 col-md-4">
+			<label for="map-selected-guess">On the map to the left, draw a box around a feature, and we will predict it's theme!</label>
+            <hr>
+            <div id="map-selected-guess"></div>
+			<hr>
+
+			<input type="hidden" id="guessUrl" value="default">
+
+			<button onclick="sendGuessData()">GUESS</button>
+		</div>
 		
     </div>
 </div>
@@ -52,7 +60,11 @@
 @section('scripts')
 <script>
 
-	function reqListener (evt) {
+	var learnModeEnabled = true;
+	var learnUrls = [];
+	var guessUrl = "";
+
+	function learnReqListener (evt) {
 		alert(this.responseText);
 	}
 
@@ -62,16 +74,28 @@
 		var themesDropdown = document.getElementById("themes");
 		data["theme"] = themesDropdown.options[themesDropdown.selectedIndex].value;
 		
-		for(var i = 1; i < 6; i++){
-			//double-encoded so it can be passed to server in URL
-			data["url"+i.toString()] = encodeURIComponent(encodeURIComponent(document.getElementById("url"+i.toString()).value));
-		}
+		data["urls"] = learnUrls;
 		
 		var JSONdata = JSON.stringify(data);
 		
 		var xmlHttp = new XMLHttpRequest();
-		xmlHttp.addEventListener("load", reqListener);
+		xmlHttp.addEventListener("load", learnReqListener);
 		xmlHttp.open( "GET", "http://localhost:5000/learn/"+JSONdata);
+		xmlHttp.send();
+	}
+	
+	
+	function guessReqListener (evt) {
+		alert(this.responseText);
+	}
+
+	function sendGuessData(){
+	
+		var JSONdata = JSON.stringify(guessUrl);
+		
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.addEventListener("load", guessReqListener);
+		xmlHttp.open( "GET", "http://localhost:5000/guess/"+JSONdata);
 		xmlHttp.send();
 	}
 
@@ -83,8 +107,17 @@
 	updateSelectedTheme();
 	
 	function toggleMode() {
+		
+		var learnInterface = document.getElementById("learnInterface");
+		var guessInterface = document.getElementById("guessInterface");     
+	 
 		var toggle = document.getElementById("toggle");
 		if(toggle.checked){
+			learnModeEnabled = false;
+			
+			learnInterface.style.display = 'none';
+			guessInterface.style.display = 'block';
+			
 			document.getElementById("learnMode").style.color = "grey";
 			document.getElementById("learnMode").style.fontWeight = "normal";
 			
@@ -92,6 +125,11 @@
 			document.getElementById("guessMode").style.fontWeight = "bold";
 		}
 		else{
+			learnModeEnabled = true;
+			
+			guessInterface.style.display = 'none';
+			learnInterface.style.display = 'block';
+			
 			document.getElementById("guessMode").style.color = "grey";
 			document.getElementById("guessMode").style.fontWeight = "normal";
 			
@@ -121,9 +159,9 @@
           }
         });
 		
-		console.log("***********");
+		//console.log("***********");
 		//console.log("<?php echo serialize($map)?>");
-		console.log("***********");
+		//console.log("***********");
 
         var osMapType = new google.maps.ImageMapType({
           getTileUrl: function(coord, zoom) {
@@ -210,11 +248,15 @@
                   '/maps/{{ $map->id }}/actual/actual_files/12/' + tileCoordinate.x + '_' +
                   (tileCoordinate.y - 1) + '.jpg';
 
-			$('#map-selected').append('<label for="learn+'+counter+'">'+counter+'</learn>');
-            $('#map-selected').append('<img id="learn'+counter+'" src="'+tileimg+'" height="75" width="75"/>'  + "<br /><p></p>");
-			document.getElementById("url"+counter).value = '/maps/{{ $map->id }}/actual/actual_files/12/' + tileCoordinate.x + '_' +
-                  (tileCoordinate.y - 1) + '.jpg';
-            //$('#map-selected').append(tileCoordinate + " to " + tileCoordinate2 + "<br />");
+			if(learnModeEnabled){
+				$('#map-selected-learn').append('<label for="learn+'+counter+'">'+counter+'</learn>');
+				$('#map-selected-learn').append('<img id="learn'+counter+'" src="'+tileimg+'" height="75" width="75"/>'  + "<br /><p></p>");
+				learnUrls.push(tileCoordinate.x + '_' + (tileCoordinate.y - 1) + '.jpg');
+			}
+			else{
+				$('#map-selected-guess').append('<img id="guessImg" src="'+tileimg+'" height="75" width="75"/>'  + "<br /><p></p>");
+				guessUrl = tileCoordinate.x + '_' + (tileCoordinate.y - 1) + '.jpg';
+			}
         });
 
         google.maps.event.addListener(map, 'bounds_changed', function() {
