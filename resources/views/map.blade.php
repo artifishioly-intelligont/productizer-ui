@@ -33,11 +33,13 @@
     $('#learnMode').change(function() {
       learnMode = !learnMode;
       if(learnMode) {
-        $('#map-selected-guess').slideUp();
-        $('#map-selected-learn').slideDown();
+        $('#map-selected-guess').fadeOut(function() {
+          $('#map-selected-learn').fadeIn();
+        });
       } else {
-        $('#map-selected-learn').slideUp();
-        $('#map-selected-guess').slideDown();
+        $('#map-selected-learn').fadeOut(function() {
+          $('#map-selected-guess').fadeIn();
+        });
       }
     })
   })
