@@ -9,16 +9,29 @@
             <div id="map"></div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4">
-            <h3>Selected Areas</h3>
-            <hr>
-            <div class="row">
-              <div class="col-xs-8 col-xs-offset-2">
-                <input type="checkbox" checked data-toggle="toggle" data-on="Learn Mode" data-off="Guess Mode" data-onstyle="primary" data-offstyle="info" data-width="100%" id="learnMode">
-              </div>
+          <h3>Controls</h3>
+          <hr>
+          <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+              <input type="checkbox" checked data-toggle="toggle" data-on="Learn Mode" data-off="Guess Mode" data-onstyle="primary" data-offstyle="info" data-width="100%" id="learnMode">
             </div>
-            <hr>
-            <div id="map-selected-learn"></div>
-            <div id="map-selected-guess"></div>
+          </div>
+          <hr>
+          <div id="controls-learn">
+            <form>
+              <div class="form-group">
+                  <label for="learn-feature">Select a feature to learn</label>
+                  <select class="form-control" id="learn-feature" name="learn-feature">
+                    <option>Hedge</option>
+                    <option>Tree</option>
+                    <option>Road</option>
+                    <option>Building</option>
+                  </select>
+                </div>
+            </form>
+          <hr>
+          <div id="map-selected-learn"></div>
+          <div id="map-selected-guess"></div>
         </div>
     </div>
 </div>
