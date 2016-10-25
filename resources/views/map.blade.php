@@ -29,9 +29,20 @@
                   </select>
                 </div>
             </form>
+          </div>
+          <div id="controls-guess" style="display:none;">
+            <p>Select up to x tiles and The Productizer will predict the feature you have selected.</p>
+          </div>
           <hr>
           <div id="map-selected-learn"></div>
-          <div id="map-selected-guess"></div>
+          <div id="map-selected-guess" style="display:none;"></div>
+
+          <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+              <button type="button" class="btn btn-primary full-width" id="btn-learn">Learn</button>
+              <button type="button" class="btn btn-info full-width" id="btn-guess" style="display:none;">Guess</button>
+            </div>
+          </div>
         </div>
     </div>
 </div>
@@ -49,9 +60,21 @@
         $('#map-selected-guess').fadeOut(function() {
           $('#map-selected-learn').fadeIn();
         });
+        $('#controls-guess').fadeOut(function() {
+          $('#controls-learn').fadeIn();
+        });
+        $('#btn-guess').fadeOut(function() {
+          $('#btn-learn').fadeIn();
+        });
       } else {
         $('#map-selected-learn').fadeOut(function() {
           $('#map-selected-guess').fadeIn();
+        });
+        $('#controls-learn').fadeOut(function() {
+          $('#controls-guess').fadeIn();
+        });
+        $('#btn-learn').fadeOut(function() {
+          $('#btn-guess').fadeIn();
         });
       }
     })
