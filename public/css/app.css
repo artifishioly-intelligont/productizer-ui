@@ -5877,6 +5877,13 @@ p {
 .full-width {
   width: 100%; }
 
+.tile-img {
+  width: 100%;
+  height: auto; }
+
+.tile-col {
+  margin-bottom: 10px; }
+
 .footer {
   margin-top: 15px;
   padding: 10px;

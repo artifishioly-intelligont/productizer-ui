@@ -11,7 +11,14 @@
         <div class="col-xs-12 col-sm-12 col-md-4">
             <h3>Selected Areas</h3>
             <hr>
-            <div id="map-selected"></div>
+            <div class="row">
+              <div class="col-xs-8 col-xs-offset-2">
+                <input type="checkbox" checked data-toggle="toggle" data-on="Learn Mode" data-off="Guess Mode" data-onstyle="primary" data-offstyle="info" data-width="100%" id="learnMode">
+              </div>
+            </div>
+            <hr>
+            <div id="map-selected-learn"></div>
+            <div id="map-selected-guess"></div>
         </div>
     </div>
 </div>
@@ -20,13 +27,30 @@
 @section('scripts')
 <script>
 
+  var learnMode = true;
+
+  $(function() {
+    $('#learnMode').change(function() {
+      learnMode = !learnMode;
+      if(learnMode) {
+        $('#map-selected-guess').slideUp();
+        $('#map-selected-learn').slideDown();
+      } else {
+        $('#map-selected-learn').slideUp();
+        $('#map-selected-guess').slideDown();
+      }
+    })
+  })
+
   function initMap() {
 
     var TILE_SIZE = 256;
     if(document.getElementById('map')) {
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat:-89.6, lng: -0},
-          zoom: 0,
+          //center: {lat:-89.6, lng: -0},
+          //zoom: 0,
+          center: {lat:-0, lng: -0},
+          zoom: 4,
 
           styles: [
             {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
@@ -118,9 +142,9 @@
             var tileimg = '{{ url('/') }}' +
                   '/maps/{{ $map->id }}/actual/actual_files/12/' + tileCoordinate.x + '_' +
                   (tileCoordinate.y - 1) + '.jpg';
-
-            $('#map-selected').append('<img src="'+tileimg+'"/>');
-            $('#map-selected').append(tileCoordinate + " to " + tileCoordinate2 + "<br />");
+            var mode = learnMode ? "learn" : "guess";
+            $('#map-selected-' + mode).append('<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
+            //$('#map-selected-' + mode).append(tileCoordinate + " to " + tileCoordinate2 + "<br />");
 
         });
 
