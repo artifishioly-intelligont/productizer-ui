@@ -29,9 +29,10 @@
                   </select>
                 </div>
             </form>
+            <p>Then select 5 or more features on the map to teach The Productizer the feature.</p>
           </div>
           <div id="controls-guess" style="display:none;">
-            <p>Select up to x tiles and The Productizer will predict the feature you have selected.</p>
+            <p>On the map to the left, draw a box around a feature, and we will predict it's theme!</p>
           </div>
           <hr>
           <div id="map-selected-learn"></div>
@@ -78,7 +79,7 @@
         });
       }
     })
-  })
+  });
 
   function initMap() {
 
@@ -87,7 +88,7 @@
         var map = new google.maps.Map(document.getElementById('map'), {
           //center: {lat:-89.6, lng: -0},
           //zoom: 0,
-          center: {lat:-0, lng: -0},
+          center: {lat:80.000, lng: -150},
           zoom: 4,
 
           styles: [
@@ -138,98 +139,85 @@
           drawingControl: true,
           drawingControlOptions: {
             position: google.maps.ControlPosition.TOP_LEFT,
-            drawingModes: ['rectangle']
+            drawingModes: []
           },
 
           rectangleOptions: {
-            fillColor: '#ffff00',
             fillOpacity: 0.2,
             strokeWeight: 1,
             clickable: false,
-            editable: true,
             zIndex: 1
           }
         });
         drawingManager.setMap(map);
-        google.maps.event.addListener(drawingManager, 'rectanglecomplete', function (rectangle) {
-            //var coordinates = (rectangle.getBounds().getArray());
+        
+        // HOVER TILE WIP
+        google.maps.event.addListener(map,'mousemove', function(mev){
+            var TILE_SIZE = 256;
+            var proj = map.getProjection();
+            var numTiles = 1 << map.getZoom();
+            var worldCoordinate = proj.fromLatLngToPoint(mev.latLng);
 
-        var scale = 1 << map.getZoom();
+            var pixelCoordinate = new google.maps.Point(
+                    worldCoordinate.x * numTiles,
+                    worldCoordinate.y * numTiles);
+              var tileCoordinate = new google.maps.Point(
+                  Math.floor(pixelCoordinate.x / TILE_SIZE),
+                  Math.floor(pixelCoordinate.y / TILE_SIZE));
 
-        var worldCoordinate = project(rectangle.getBounds().getNorthEast());
 
-        var pixelCoordinate = new google.maps.Point(
-            Math.floor(worldCoordinate.x * scale),
-            Math.floor(worldCoordinate.y * scale));
+              function point2LatLng(point) {
+                var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
+                var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
+                var scale = Math.pow(2, map.getZoom());
+                var worldPoint = new google.maps.Point(point.x / scale + bottomLeft.x, point.y / scale + topRight.y);
+                return map.getProjection().fromPointToLatLng(worldPoint);
+              }
+              var topLeftTileLatLng = point2LatLng(new google.maps.Point(
+                  tileCoordinate.x * TILE_SIZE,
+                  tileCoordinate.y * TILE_SIZE));
+              var bottomRightTileLatLng = point2LatLng(new google.maps.Point(
+                  tileCoordinate.x * (TILE_SIZE + 1),
+                  tileCoordinate.y * (TILE_SIZE + 1)));
+              var rectangle = new google.maps.Rectangle({
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                map: map,
+                bounds: {
+                  north: mev.latLng.lng(),
+                  south: mev.latLng.lng(),
+                  east: mev.latLng.lat(),
+                  west: mev.latLng.lat()
+                }
+              });
+            //console.log('TileX:' +tileCoordinate.x+' - TileY:'+tileCoordinate.y);
 
-        var tileCoordinate = new google.maps.Point(
-            Math.floor(worldCoordinate.x * scale / TILE_SIZE),
-            Math.floor(worldCoordinate.y * scale / TILE_SIZE));
+        });
 
-        var worldCoordinate2 = project(rectangle.getBounds().getSouthWest());
+        google.maps.event.addListener(map,'click', function(mev){
+            var TILE_SIZE = 256;
+            var proj = map.getProjection();
+            var numTiles = 1 << map.getZoom();
+            var worldCoordinate = proj.fromLatLngToPoint(mev.latLng);
 
-        var pixelCoordinate2 = new google.maps.Point(
-            Math.floor(worldCoordinate2.x * scale),
-            Math.floor(worldCoordinate2.y * scale));
+            var pixelCoordinate = new google.maps.Point(
+                    worldCoordinate.x * numTiles,
+                    worldCoordinate.y * numTiles);
+              var tileCoordinate = new google.maps.Point(
+                  Math.floor(pixelCoordinate.x / TILE_SIZE),
+                  Math.floor(pixelCoordinate.y / TILE_SIZE));
 
-        var tileCoordinate2 = new google.maps.Point(
-            Math.floor(worldCoordinate2.x * scale / TILE_SIZE),
-            Math.floor(worldCoordinate2.y * scale / TILE_SIZE));
-
-            console.log(tileCoordinate);
             var tileimg = '{{ url('/') }}' +
                   '/maps/{{ $map->id }}/actual/actual_files/12/' + tileCoordinate.x + '_' +
                   (tileCoordinate.y - 1) + '.jpg';
             var mode = learnMode ? "learn" : "guess";
             $('#map-selected-' + mode).append('<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
-            //$('#map-selected-' + mode).append(tileCoordinate + " to " + tileCoordinate2 + "<br />");
 
         });
-
-        google.maps.event.addListener(map, 'bounds_changed', function() {
-            // Bounds for map calculated
-            var strictBounds = new google.maps.LatLngBounds(
-                map.getBounds().getSouthWest(),
-                map.getBounds().getNorthEast()
-            );
-            // Listen for the dragend event
-            google.maps.event.addListener(map, 'dragend', function() {
-                if (strictBounds.contains(map.getCenter())) return;
-
-             // We're out of bounds - Move the map back within the bounds
-
-            var c = map.getCenter(),
-                x = c.lng(),
-                y = c.lat(),
-                maxX = strictBounds.getNorthEast().lng(),
-                maxY = strictBounds.getNorthEast().lat(),
-                minX = strictBounds.getSouthWest().lng(),
-                minY = strictBounds.getSouthWest().lat();
-
-            if (x < minX) x = minX;
-            if (x > maxX) x = maxX;
-            if (y < minY) y = minY;
-            if (y > maxY) y = maxY;
-
-            //map.setCenter(new google.maps.LatLng(y, x));
-        });
-    });
-
     }
-
-      // The mapping between latitude, longitude and pixels is defined by the web
-      // mercator projection.
-      function project(latLng) {
-        var siny = Math.sin(latLng.lat() * Math.PI / 180);
-
-        // Truncating to 0.9999 effectively limits latitude to 89.189. This is
-        // about a third of a tile past the edge of the world tile.
-        siny = Math.min(Math.max(siny, -0.9999), 0.9999);
-
-        return new google.maps.Point(
-            TILE_SIZE * (0.5 + latLng.lng() / 360),
-            TILE_SIZE * (0.5 - Math.log((1 + siny) / (1 - siny)) / (4 * Math.PI)));
-      }
   }
 
   // Normalizes the coords that tiles repeat across the x axis (horizontally)
