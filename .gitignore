@@ -4,6 +4,7 @@
 /public/maps/.DS_Store
 /vendor
 /.idea
+.env
 Homestead.json
 Homestead.yaml
 .DS_Store

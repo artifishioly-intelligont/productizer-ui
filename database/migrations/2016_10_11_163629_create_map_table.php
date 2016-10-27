@@ -17,7 +17,8 @@ class CreateMapTable extends Migration
             $table->increments('id');
             $table->string('file')->nullable();
             $table->integer('rows')->nullable();
-            $table->intefer('columns')->nullable();
+            $table->integer('columns')->nullable();
+	    $table->integer('levels')->nullable();			
             $table->timestamps();
         });
     }

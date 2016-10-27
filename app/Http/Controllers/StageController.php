@@ -24,7 +24,7 @@ class StageController extends Controller
         $MAXDIMENSIONS = 4000;
         ini_set('max_execution_time', 300);
         $this->validate($request, [
-            'image' => 'required|mimes:jpeg,jpg,png,tif,tiff|dimensions:max_width='.$MAXDIMENSIONS.',max_height='.$MAXDIMENSIONS,//,ratio=1/1 SQUARE,
+            'image' => 'required|mimes:jpeg,jpg,png,tif,tiff'//|dimensions:max_width='.$MAXDIMENSIONS.',max_height='.$MAXDIMENSIONS,//,ratio=1/1 SQUARE,
         ]);
 
         $map = new Map;
