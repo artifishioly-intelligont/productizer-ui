@@ -33,11 +33,6 @@
 			<hr>
 
 			<input type="hidden" id="selectedTheme" value="default"/>
-			<input type="hidden" id="url1" value="default">
-			<input type="hidden" id="url2" value="default">
-			<input type="hidden" id="url3" value="default">
-			<input type="hidden" id="url4" value="default">
-			<input type="hidden" id="url5" value="default">
 
 			<button onclick="sendLearnData()">LEARN</button>
         </div>
@@ -61,7 +56,7 @@
 <script>
 
 	var learnModeEnabled = true;
-	var learnUrls = [];
+	var learnImgs = [];
 	var guessUrl = "";
 
 	function learnReqListener (evt) {
@@ -69,19 +64,23 @@
 	}
 
 	function sendLearnData(){
-		var data = {};
+		//var data = {};
 		
 		var themesDropdown = document.getElementById("themes");
-		data["theme"] = themesDropdown.options[themesDropdown.selectedIndex].value;
+		/*data["theme"] = themesDropdown.options[themesDropdown.selectedIndex].value;
 		
-		data["urls"] = learnUrls;
+		data["urls"] = learnImgs;
 		
-		var JSONdata = JSON.stringify(data);
+		var JSONdata = JSON.stringify(data);*/
+		
+		var data = new FormData();
+		data.append("theme", themesDropdown.options[themesDropdown.selectedIndex].value);
+		data.append("urls", learnImgs);
 		
 		var xmlHttp = new XMLHttpRequest();
 		xmlHttp.addEventListener("load", learnReqListener);
-		xmlHttp.open( "GET", "http://localhost:5000/learn/"+JSONdata);
-		xmlHttp.send();
+		xmlHttp.open( "POST", "http://localhost:5000/learn");
+		xmlHttp.send(data);
 	}
 	
 	
@@ -251,7 +250,9 @@
 			if(learnModeEnabled){
 				$('#map-selected-learn').append('<label for="learn+'+counter+'">'+counter+'</learn>');
 				$('#map-selected-learn').append('<img id="learn'+counter+'" src="'+tileimg+'" height="75" width="75"/>'  + "<br /><p></p>");
-				learnUrls.push(tileCoordinate.x + '_' + (tileCoordinate.y - 1) + '.jpg');
+				var img_name = "windmill.jpg"; //TODO - must be unique, and must be uploaded first
+				//learnImgs.push(tileCoordinate.x + '_' + (tileCoordinate.y - 1) + '.jpg');
+				learnImgs.push(img_name);
 			}
 			else{
 				$('#map-selected-guess').append('<img id="guessImg" src="'+tileimg+'" height="75" width="75"/>'  + "<br /><p></p>");
