@@ -81,7 +81,14 @@ class StageController extends Controller
     }
 
     public function showStage2($id) {
-        return view('map')->withMap(Map::findOrFail($id));
+        ini_set("allow_url_fopen", 1);
+        $json = file_get_contents(env('SATURN_URL').'/features');
+        $obj = json_decode($json);
+        $features = ['-'];
+        if($obj->success == true) {
+            $features = $obj->features;
+        }
+        return view('map')->withMap(Map::findOrFail($id))->withFeatures($features);
     }
 
     public function mapHistory() {
