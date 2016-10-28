@@ -22,10 +22,9 @@
               <div class="form-group">
                   <label for="learn-feature">Select a feature to learn</label>
                   <select class="form-control" id="learn-feature" name="learn-feature">
-                    <option>Hedge</option>
-                    <option>Tree</option>
-                    <option>Road</option>
-                    <option>Building</option>
+                    @foreach($features as $feature)
+                      <option>{{ $feature }}</option>
+                    @endforeach
                   </select>
                 </div>
             </form>
@@ -150,7 +149,7 @@
           }
         });
         drawingManager.setMap(map);
-        
+
         // HOVER TILE WIP
         google.maps.event.addListener(map,'mousemove', function(mev){
             var TILE_SIZE = 256;
