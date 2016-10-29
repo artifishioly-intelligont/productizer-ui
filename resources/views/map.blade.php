@@ -18,16 +18,30 @@
           </div>
           <hr>
           <div id="controls-learn">
-            <form>
               <div class="form-group">
                   <label for="learn-feature">Select a feature to learn</label>
-                  <select class="form-control" id="learn-feature" name="learn-feature">
-                    @foreach($features as $feature)
-                      <option>{{ $feature }}</option>
-                    @endforeach
-                  </select>
+                    <div class="full-width">
+                      <div style="width:68%;display:inline-block;">
+                        <select class="form-control" id="learn-feature" name="learn-feature">
+                          @foreach($features as $feature)
+                            <option>{{ $feature }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <div style="width:30%;display:inline-block;">
+                        <button class="btn btn-primary full-width" id="add-feature-btn">Add New</button>
+                      </div>
+                    </div>
                 </div>
-            </form>
+                <div class="well" id="add-feature" style="display:none;">
+                      <p>Add Feature</p>
+                      <div style="width:78%;display:inline-block;">
+                        <input type="text" class="form-control" id="add-feature-input">
+                      </div>
+                      <div style="width:20%;display:inline-block;">
+                        <button class="btn btn-primary full-width" id="add-feature-submit">Add</button>
+                      </div>
+                </div>
             <p>Then select 5 or more features on the map to teach The Productizer the feature.</p>
           </div>
           <div id="controls-guess" style="display:none;">
@@ -54,6 +68,33 @@
   var learnMode = true;
 
   $(function() {
+
+    $('#add-feature-btn').click(function() {
+      $('#add-feature').fadeToggle();
+    });
+
+    $('#add-feature-submit').click(function() {
+      var feature = $('#add-feature-input').val();
+      var furl = '{{ env('SATURN_URL') }}features/' + feature;
+      // Check alphabetical only
+      if(feature.toLowerCase().match(/[a-z]/i)) {
+          $.ajax({
+              url: furl,
+              type: "GET",
+              dataType : "json",
+          })/*.done(function( json ) {
+              alert(json);
+          });*/
+          $('#learn-feature').append($('<option/>', { 
+              value: feature,
+              text : feature 
+          }));
+          $('#add-feature').fadeOut();
+      } else {
+        alert('You must enter an alphabetical feature.');
+      }
+    });
+
     $('#learnMode').change(function() {
       learnMode = !learnMode;
       if(learnMode) {
