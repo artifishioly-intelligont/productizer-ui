@@ -88,7 +88,8 @@
           $('#learn-feature').append($('<option/>', { 
               value: feature,
               text : feature 
-          }));
+          })).val(feature);
+
           $('#add-feature').fadeOut();
       } else {
         alert('You must enter an alphabetical feature.');
