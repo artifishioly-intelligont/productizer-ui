@@ -5,9 +5,9 @@
     <div class="jumbotron slider">
         <div class="@if (count($errors) == 0) slide-1 @else slide-2 @endif">
             <h1 class="display-3">Welcome!</h1>
-            <p class="lead">The Productizer allows you to select a feature from an Ordinance Survey image that you upload, and will automatically, using complex machine learnin algorithms, find the rest of those features within the image.</p>
+            <p class="lead">The Productizer allows you to select a feature from an Ordnance Survey image that you upload, and will automatically, using complex machine learnin algorithms, find the rest of those features within the image.</p>
             <hr class="m-y-2">
-            <p>To get started, simply upload an Ordinance Survey image, and we'll guide you through the rest.</p>
+            <p>To get started, simply upload an Ordnance Survey image, and we'll guide you through the rest.</p>
             <p class="lead">
                 <a class="btn btn-primary btn-lg" id="upload-image" role="button">Upload Image</a>
             </p>
