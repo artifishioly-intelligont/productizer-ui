@@ -33,6 +33,7 @@
 			<hr>
 
 			<input type="hidden" id="selectedTheme" value="default"/>
+			<input type="file" name="learn_img" id="learn_img" accept="image/*" multiple="multiple"/>
 
 			<button onclick="sendLearnData()">LEARN</button>
         </div>
@@ -42,7 +43,8 @@
             <div id="map-selected-guess"></div>
 			<hr>
 
-			<input type="hidden" id="guessUrl" value="default">
+			<input type="hidden" id="guessUrl" value="default"/>
+			<input type="file" name="guess_img" id="guess_img" accept="image/*" multiple="multiple"/>			
 
 			<button onclick="sendGuessData()">GUESS</button>
 		</div>
@@ -64,18 +66,15 @@
 	}
 
 	function sendLearnData(){
-		//var data = {};
 		
 		var themesDropdown = document.getElementById("themes");
-		/*data["theme"] = themesDropdown.options[themesDropdown.selectedIndex].value;
-		
-		data["urls"] = learnImgs;
-		
-		var JSONdata = JSON.stringify(data);*/
+		var files = document.getElementById("learn_img").files;		
 		
 		var data = new FormData();
-		data.append("theme", themesDropdown.options[themesDropdown.selectedIndex].value);
-		data.append("urls", learnImgs);
+		data.append("feature", themesDropdown.options[themesDropdown.selectedIndex].value);
+		for(var i = 0; i < files.length; i++){
+			data.append("learn_img_" + i.toString(), files[i]);
+		}
 		
 		var xmlHttp = new XMLHttpRequest();
 		xmlHttp.addEventListener("load", learnReqListener);
@@ -90,12 +89,17 @@
 
 	function sendGuessData(){
 	
-		var JSONdata = JSON.stringify(guessUrl);
+		var files = document.getElementById("guess_img").files;		
+		
+		var data = new FormData();
+		for(var i = 0; i < files.length; i++){
+			data.append("guess_img_" + i.toString(), files[i]);
+		}
 		
 		var xmlHttp = new XMLHttpRequest();
-		xmlHttp.addEventListener("load", guessReqListener);
-		xmlHttp.open( "GET", "http://localhost:5000/guess/"+JSONdata);
-		xmlHttp.send();
+		xmlHttp.addEventListener("load", learnReqListener);
+		xmlHttp.open( "POST", "http://localhost:5000/guess");
+		xmlHttp.send(data);
 	}
 
 	function updateSelectedTheme() {
