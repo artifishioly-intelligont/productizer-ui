@@ -101,8 +101,8 @@ class StageController extends Controller
         $mode = $request->get('mode');
             if($mode == 'learn') {
                 $files = $request->get('learn-files');
-                $files = explode(';', $files);
-                array_pop($files);
+                //$files = explode(';', $files);
+                //array_pop($files);
 
                 $client = new Client(); //GuzzleHttp\Client
                 $result = $client->post(env('SATURN_URL').'learn', [
@@ -113,14 +113,14 @@ class StageController extends Controller
                             'contents' => $request->get('selected-feature'),
                         ],
                         [
-                            'name' => 'urls[0]',
-                            'contents' => fopen($files[0], 'r'),
+                            'name' => 'urls',
+                            'contents' => $files,
                         ]
                     ]
                 ]);
 
 
-                dd($result->getBody());
+                dd($result->getBody()->getContents());
 
             } else if ($mode == 'guess') {
 
