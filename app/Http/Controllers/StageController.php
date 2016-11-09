@@ -11,6 +11,9 @@ use \Image;
 use \Input;
 use App\Jobs\MakeTiles;
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
+
 use Jeremytubbs\Deepzoom\DeepzoomFactory;
 
 class StageController extends Controller
@@ -89,6 +92,33 @@ class StageController extends Controller
             $features = $obj->features;
         }
         return view('map')->withMap(Map::findOrFail($id))->withFeatures($features);
+    }
+
+    public function postStage2($id, Request $request) {
+        if(!($request->has('mode') && ($request->has('learn-files') || $request->has('guess-files')))) {
+            return redirect()->back();
+        }
+        $mode = $request->get('mode');
+            if($mode == 'learn') {
+                $files = $request->get('learn-files');
+                $files = explode(';', $files);
+                array_pop($files);
+
+                $client = new Client(); //GuzzleHttp\Client
+                $result = $client->post(env('SATURN_URL').'learn', [
+                    'form_params' => [
+                        'theme' => $request->get('selected-feature'),
+                        'urls' => ''
+                    ]
+                ]);
+
+
+                dd($result->getBody());
+
+            } else if ($mode == 'guess') {
+
+            }
+        return redirect()->back();
     }
 
     public function mapHistory() {

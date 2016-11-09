@@ -53,8 +53,18 @@
 
           <div class="row">
             <div class="col-xs-8 col-xs-offset-2">
-              <button type="button" class="btn btn-primary full-width" id="btn-learn">Learn</button>
-              <button type="button" class="btn btn-info full-width" id="btn-guess" style="display:none;">Guess</button>
+            {!! Form::open(['id' => 'btn-learn']) !!}
+              <input type="hidden" name="mode" value="learn"/>
+              <input type="hidden" name="selected-feature" class="selected-feature" value="{{ $features[0] }}"/>
+              <input type="hidden" id="learn-files" name="learn-files" value=""/>
+              <button type="submit" class="btn btn-primary full-width">Learn</button>
+            {!! Form::close() !!}
+            {!! Form::open(['id' => 'btn-guess']) !!}
+              <input type="hidden" name="mode" value="guess"/>
+              <input type="hidden" name="selected-feature" class="selected-feature" value="{{ $features[0] }}"/>
+              <input type="hidden" id="guess-files" name="guess-files" value=""/>
+              <button type="submit" class="btn btn-info full-width" style="display:none;">Guess</button>
+            {!! Form::close() !!}
             </div>
           </div>
         </div>
@@ -96,6 +106,10 @@
       }
     });
 
+    $('#learn-feature').change(function() {
+      $('.selected-feature').val($(this).val());
+    });
+
     $('#learnMode').change(function() {
       learnMode = !learnMode;
       if(learnMode) {
@@ -121,12 +135,15 @@
       }
     })
   });
-
+  var map;
+  var markers = [];
+  var currentTileX = 0;
+  var currentTileY = 0;
   function initMap() {
 
     var TILE_SIZE = 256;
     if(document.getElementById('map')) {
-        var map = new google.maps.Map(document.getElementById('map'), {
+        map = new google.maps.Map(document.getElementById('map'), {
           //center: {lat:-89.6, lng: -0},
           //zoom: 0,
           center: {lat:80.000, lng: -150},
@@ -200,41 +217,58 @@
             var worldCoordinate = proj.fromLatLngToPoint(mev.latLng);
 
             var pixelCoordinate = new google.maps.Point(
-                    worldCoordinate.x * numTiles,
-                    worldCoordinate.y * numTiles);
-              var tileCoordinate = new google.maps.Point(
+                  worldCoordinate.x * numTiles,
+                  worldCoordinate.y * numTiles);
+
+            var tileCoordinate = new google.maps.Point(
                   Math.floor(pixelCoordinate.x / TILE_SIZE),
                   Math.floor(pixelCoordinate.y / TILE_SIZE));
 
 
-              function point2LatLng(point) {
-                var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
-                var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
-                var scale = Math.pow(2, map.getZoom());
-                var worldPoint = new google.maps.Point(point.x / scale + bottomLeft.x, point.y / scale + topRight.y);
-                return map.getProjection().fromPointToLatLng(worldPoint);
+            function tile2long(x,z) { return (x/Math.pow(2,z)*360-180); }
+
+            function tile2lat(y,z) {
+                var n=Math.PI-2*Math.PI*y/Math.pow(2,z);
+                return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))));
+            }
+
+
+            for (var i = 0; i < markers.length; i++) {
+              markers[i].setMap(null);
+            }
+            markers = [];
+            var myLatLng = {lat: tile2lat(tileCoordinate.y, map.getZoom()), lng: tile2long(tileCoordinate.x, map.getZoom())};
+
+            var marker = new google.maps.Marker({
+              position: myLatLng,
+              map: map
+            });
+            var myLatLng2 = {lat: tile2lat(tileCoordinate.y + 1, map.getZoom()), lng: tile2long(tileCoordinate.x + 1, map.getZoom())};
+
+            var marker2 = new google.maps.Marker({
+              position: myLatLng2,
+              map: map
+            });
+            markers.push(marker);
+            markers.push(marker2);
+
+            var rectangle = new google.maps.Rectangle({
+              strokeColor: '#000000',
+              strokeOpacity: 0.8,
+              strokeWeight: 1,
+              fillColor: '#555555',
+              fillOpacity: 0.35,
+              map: map,
+              bounds: {
+                north: marker.getPosition().lng(),
+                south: marker2.getPosition().lng(),
+                west: marker.getPosition().lat(),
+                east: marker2.getPosition().lat(),
               }
-              var topLeftTileLatLng = point2LatLng(new google.maps.Point(
-                  tileCoordinate.x * TILE_SIZE,
-                  tileCoordinate.y * TILE_SIZE));
-              var bottomRightTileLatLng = point2LatLng(new google.maps.Point(
-                  tileCoordinate.x * (TILE_SIZE + 1),
-                  tileCoordinate.y * (TILE_SIZE + 1)));
-              var rectangle = new google.maps.Rectangle({
-                strokeColor: '#FF0000',
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: 0.35,
-                map: map,
-                bounds: {
-                  north: mev.latLng.lng(),
-                  south: mev.latLng.lng(),
-                  east: mev.latLng.lat(),
-                  west: mev.latLng.lat()
-                }
-              });
-            //console.log('TileX:' +tileCoordinate.x+' - TileY:'+tileCoordinate.y);
+            });
+
+            console.log('TileX:' +tileCoordinate.x+' - TileY:'+tileCoordinate.y);
+            console.log();
 
         });
 
@@ -247,15 +281,19 @@
             var pixelCoordinate = new google.maps.Point(
                     worldCoordinate.x * numTiles,
                     worldCoordinate.y * numTiles);
-              var tileCoordinate = new google.maps.Point(
-                  Math.floor(pixelCoordinate.x / TILE_SIZE),
-                  Math.floor(pixelCoordinate.y / TILE_SIZE));
+            var tileCoordinate = new google.maps.Point(
+                Math.floor(pixelCoordinate.x / TILE_SIZE),
+                Math.floor(pixelCoordinate.y / TILE_SIZE));
 
-            var tileimg = '{{ url('/') }}' +
-                  '/maps/{{ $map->id }}/actual/actual_files/12/' + tileCoordinate.x + '_' +
-                  (tileCoordinate.y - 1) + '.jpg';
+            var tileCoordinateY = (tileCoordinate.y - 1) % {{ $map->rows }};
+            tileCoordinateY = tileCoordinateY < 0 ? 0 : tileCoordinateY;
+
+            var rawurl = '/maps/{{ $map->id }}/actual/actual_files/12/' + tileCoordinate.x + '_' +
+                  tileCoordinateY + '.jpg';
+            var tileimg = '{{ url('/') }}' + rawurl;
             var mode = learnMode ? "learn" : "guess";
             $('#map-selected-' + mode).append('<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
+            $('#' + mode + '-files').val($('#' + mode + '-files').val() + rawurl + ";");
 
         });
     }
@@ -271,8 +309,9 @@
     // 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
     var tileRange = 1 << zoom;
 
+    var rows = {{ $map->rows }};
     // don't repeat across y-axis (vertically)
-    if (y < 0) { // y >= tileRange) {
+    if (y < 0 || y >= rows) { // y >= tileRange) {
       return null;
     }
     var cols = {{ $map->columns }};
