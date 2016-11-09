@@ -112,8 +112,9 @@ class StageController extends Controller
                     ]
                 ]);
 
+                // TODO: make it go to guess mode with info
+                return redirect()->back();
 
-                dd($result->getBody()->getContents());
 
             } else if ($mode == 'guess') {
 
