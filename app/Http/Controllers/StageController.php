@@ -114,7 +114,7 @@ class StageController extends Controller
                         ],
                         [
                             'name' => 'urls[0]',
-                            'contents' => $files[0],
+                            'contents' => fopen($files[0], 'r'),
                         ]
                     ]
                 ]);
