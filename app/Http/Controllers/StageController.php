@@ -107,15 +107,9 @@ class StageController extends Controller
                 $client = new Client(); //GuzzleHttp\Client
                 $result = $client->post(env('SATURN_URL').'learn', [
                     'headers'   => ['Content-Length' => 0],
-                    'multipart' => [
-                        [
-                            'name' => 'theme',
-                            'contents' => $request->get('selected-feature'),
-                        ],
-                        [
-                            'name' => 'urls',
-                            'contents' => $files,
-                        ]
+                    'form_params' => [
+                        'theme' => $request->get('selected-feature'),
+                        'name' => $files,
                     ]
                 ]);
 
