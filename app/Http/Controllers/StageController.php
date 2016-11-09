@@ -108,7 +108,7 @@ class StageController extends Controller
                 $result = $client->post(env('SATURN_URL').'learn', [
                     'form_params' => [
                         'theme' => $request->get('selected-feature'),
-                        'name' => $files,
+                        'urls' => $files,
                     ]
                 ]);
 
