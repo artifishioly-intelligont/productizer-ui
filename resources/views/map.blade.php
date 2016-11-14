@@ -65,12 +65,19 @@
               <input type="hidden" id="guess-files" name="guess-files" value=""/>
               <button type="submit" class="btn btn-info full-width">Guess</button>
             {!! Form::close() !!}
-
-              @if(session()->has('class'))
-                <p>{{ session('class') }}</p>
-              @endif
             </div>
           </div>
+          @if(session()->has('class'))
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="alert alert-info">
+                We predict this is a {{ session('class') }}.
+              </div>
+            </div>
+          </div>
+          @endif
+
+
         </div>
     </div>
 </div>
@@ -86,7 +93,10 @@
     @if(session()->has('guess'))
       $('#btn-learn').hide();
       $('#btn-guess').show();
+      $('#controls-learn').hide();
+      $('#controls-guess').show();
     @endif
+
     $('#add-feature-btn').click(function() {
       $('#add-feature').fadeToggle();
     });
