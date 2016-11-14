@@ -113,7 +113,7 @@ class StageController extends Controller
                 ]);
 
                 // TODO: make it go to guess mode with info
-                return redirect()->back();
+                return redirect()->back()->with('guess', true);
 
 
             } else if ($mode == 'guess') {
@@ -129,10 +129,9 @@ class StageController extends Controller
                 ]);
 
                 $json_out = json_decode($result->getBody());
-                dd($json_out->class);
 
                 // TODO: make it go to guess mode with info
-                return redirect()->back();
+                return redirect()->back()->with('guess', true)->with('class', $json_out->class);
 
             }
         return redirect()->back();

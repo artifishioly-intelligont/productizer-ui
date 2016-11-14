@@ -13,7 +13,7 @@
           <hr>
           <div class="row">
             <div class="col-xs-8 col-xs-offset-2">
-              <input type="checkbox" checked data-toggle="toggle" data-on="Learn Mode" data-off="Guess Mode" data-onstyle="primary" data-offstyle="info" data-width="100%" id="learnMode">
+              <input type="checkbox" @if(!session()->has('guess')) checked @endif data-toggle="toggle" data-on="Learn Mode" data-off="Guess Mode" data-onstyle="primary" data-offstyle="info" data-width="100%" id="learnMode">
             </div>
           </div>
           <hr>
@@ -65,6 +65,10 @@
               <input type="hidden" id="guess-files" name="guess-files" value=""/>
               <button type="submit" class="btn btn-info full-width">Guess</button>
             {!! Form::close() !!}
+
+              @if(session()->has('class'))
+                <p>{{ session('class') }}</p>
+              @endif
             </div>
           </div>
         </div>
@@ -76,33 +80,13 @@
 <script>
 
   var learnMode = true;
-  
-  $('#learnMode').is(":checked") {
-      learnMode = !learnMode;
-      if(learnMode) {
-        $('#map-selected-guess').fadeOut(function() {
-          $('#map-selected-learn').fadeIn();
-        });
-        $('#controls-guess').fadeOut(function() {
-          $('#controls-learn').fadeIn();
-        });
-        $('#btn-guess').fadeOut(function() {
-          $('#btn-learn').fadeIn();
-        });
-      } else {
-        $('#map-selected-learn').fadeOut(function() {
-          $('#map-selected-guess').fadeIn();
-        });
-        $('#controls-learn').fadeOut(function() {
-          $('#controls-guess').fadeIn();
-        });
-        $('#btn-learn').fadeOut(function() {
-          $('#btn-guess').fadeIn();
-        });
-      }
-  }
+
   $(function() {
 
+    @if(session()->has('guess'))
+      $('#btn-learn').hide();
+      $('#btn-guess').show();
+    @endif
     $('#add-feature-btn').click(function() {
       $('#add-feature').fadeToggle();
     });
