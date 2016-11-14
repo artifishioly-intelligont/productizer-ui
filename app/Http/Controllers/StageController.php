@@ -118,7 +118,7 @@ class StageController extends Controller
 
             } else if ($mode == 'guess') {
                 $files = $request->get('guess-files');
-                //$files = explode(';', $files);
+                $filesarr = explode(';', $files);
                 //array_pop($files);
 
                 $client = new Client(); //GuzzleHttp\Client
@@ -131,7 +131,7 @@ class StageController extends Controller
                 $json_out = json_decode($result->getBody());
 
                 // TODO: make it go to guess mode with info
-                return redirect()->back()->with('guess', true)->with('class', $json_out->class);
+                return redirect()->back()->with('guess', true)->with('class', $json_out->class)->with('image', $filesarr[0]);
 
             }
         return redirect()->back();
