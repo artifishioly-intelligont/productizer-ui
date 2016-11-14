@@ -96,6 +96,8 @@
       $('#btn-guess').show();
       $('#controls-learn').hide();
       $('#controls-guess').show();
+      $('#map-selected-learn').hide();
+      $('#map-selected-guess').show();
       learnMode = false;
     @endif
 
