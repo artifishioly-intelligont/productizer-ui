@@ -59,7 +59,7 @@
               <input type="hidden" id="learn-files" name="learn-files" value=""/>
               <button type="submit" class="btn btn-primary full-width">Learn</button>
             {!! Form::close() !!}
-            {!! Form::open(['id' => 'btn-guess']) !!}
+            {!! Form::open(['id' => 'btn-guess', 'style' => 'display:none;']) !!}
               <input type="hidden" name="mode" value="guess"/>
               <input type="hidden" name="selected-feature" class="selected-feature" value="{{ $features[0] }}"/>
               <input type="hidden" id="guess-files" name="guess-files" value=""/>
