@@ -68,10 +68,11 @@
             </div>
           </div>
           @if(session()->has('class'))
+          <br />
           <div class="row">
             <div class="col-xs-12">
               <div class="alert alert-info">
-                We predict this is a {{ session('class') }}.
+                We predict this is a <strong>{{ session('class') }}</strong>.
               </div>
             </div>
           </div>
@@ -95,6 +96,7 @@
       $('#btn-guess').show();
       $('#controls-learn').hide();
       $('#controls-guess').show();
+      learnMode = false;
     @endif
 
     $('#add-feature-btn').click(function() {
