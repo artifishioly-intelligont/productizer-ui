@@ -63,7 +63,7 @@
               <input type="hidden" name="mode" value="guess"/>
               <input type="hidden" name="selected-feature" class="selected-feature" value="{{ $features[0] }}"/>
               <input type="hidden" id="guess-files" name="guess-files" value=""/>
-              <button type="submit" class="btn btn-info full-width" style="display:none;">Guess</button>
+              <button type="submit" class="btn btn-info full-width">Guess</button>
             {!! Form::close() !!}
             </div>
           </div>
