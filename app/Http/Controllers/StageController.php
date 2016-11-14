@@ -117,6 +117,21 @@ class StageController extends Controller
 
 
             } else if ($mode == 'guess') {
+                $files = $request->get('guess-files');
+                //$files = explode(';', $files);
+                //array_pop($files);
+
+                $client = new Client(); //GuzzleHttp\Client
+                $result = $client->post(env('SATURN_URL').'guess', [
+                    'form_params' => [
+                        'urls' => $files,
+                    ]
+                ]);
+
+                dd($result);
+
+                // TODO: make it go to guess mode with info
+                return redirect()->back();
 
             }
         return redirect()->back();
