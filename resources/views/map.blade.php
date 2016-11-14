@@ -252,7 +252,7 @@
             markers.push(marker);
             markers.push(marker2);
 
-            var rectangle = new google.maps.Rectangle({
+            /*var rectangle = new google.maps.Rectangle({
               strokeColor: '#000000',
               strokeOpacity: 0.8,
               strokeWeight: 1,
@@ -268,7 +268,7 @@
             });
 
             console.log('TileX:' +tileCoordinate.x+' - TileY:'+tileCoordinate.y);
-            console.log();
+            console.log();*/
 
         });
 
