@@ -76,8 +76,31 @@
 <script>
 
   var learnMode = true;
-
-  $('#learnMode').attr("checked", "checked");
+  
+  $('#learnMode').is(":checked") {
+      learnMode = !learnMode;
+      if(learnMode) {
+        $('#map-selected-guess').fadeOut(function() {
+          $('#map-selected-learn').fadeIn();
+        });
+        $('#controls-guess').fadeOut(function() {
+          $('#controls-learn').fadeIn();
+        });
+        $('#btn-guess').fadeOut(function() {
+          $('#btn-learn').fadeIn();
+        });
+      } else {
+        $('#map-selected-learn').fadeOut(function() {
+          $('#map-selected-guess').fadeIn();
+        });
+        $('#controls-learn').fadeOut(function() {
+          $('#controls-guess').fadeIn();
+        });
+        $('#btn-learn').fadeOut(function() {
+          $('#btn-guess').fadeIn();
+        });
+      }
+  }
   $(function() {
 
     $('#add-feature-btn').click(function() {
