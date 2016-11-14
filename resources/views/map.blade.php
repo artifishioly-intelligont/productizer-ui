@@ -77,6 +77,7 @@
 
   var learnMode = true;
 
+  $('#learnMode').attr("checked", "checked");
   $(function() {
 
     $('#add-feature-btn').click(function() {
