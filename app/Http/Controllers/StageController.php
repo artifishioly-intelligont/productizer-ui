@@ -118,7 +118,6 @@ class StageController extends Controller
 
             } else if ($mode == 'guess') {
                 $files = $request->get('guess-files');
-                dd($files);
                 //$files = explode(';', $files);
                 //array_pop($files);
 
