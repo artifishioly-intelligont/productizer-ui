@@ -160,6 +160,7 @@
   });
   var map;
   var markers = [];
+  var lines = [];
   var currentTileX = 0;
   var currentTileY = 0;
   function initMap() {
@@ -259,21 +260,36 @@
             for (var i = 0; i < markers.length; i++) {
               markers[i].setMap(null);
             }
+            for (var i = 0; i < lines.length; i++) {
+              lines[i].setMap(null);
+            }
+
             markers = [];
+            lines = [];
+
             var myLatLng = {lat: tile2lat(tileCoordinate.y, map.getZoom()), lng: tile2long(tileCoordinate.x, map.getZoom())};
 
-            var marker = new google.maps.Marker({
-              position: myLatLng,
-              map: map
-            });
             var myLatLng2 = {lat: tile2lat(tileCoordinate.y + 1, map.getZoom()), lng: tile2long(tileCoordinate.x + 1, map.getZoom())};
 
-            var marker2 = new google.maps.Marker({
-              position: myLatLng2,
-              map: map
+            var myLatLng3 = {lat: tile2lat(tileCoordinate.y + 1, map.getZoom()),  lng: tile2long(tileCoordinate.x, map.getZoom())};
+
+            var myLatLng4 = {lat: tile2lat(tileCoordinate.y, map.getZoom()),   lng: tile2long(tileCoordinate.x + 1, map.getZoom())};
+
+            var line = new google.maps.Polyline({
+                path: [
+                    myLatLng,
+                    myLatLng3,
+                    myLatLng2,
+                    myLatLng4,
+                    myLatLng,
+                ],
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 1,
+                map: map
             });
-            markers.push(marker);
-            markers.push(marker2);
+
+            lines.push(line);
 
             /*var rectangle = new google.maps.Rectangle({
               strokeColor: '#000000',
