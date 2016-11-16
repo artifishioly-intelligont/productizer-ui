@@ -311,7 +311,7 @@
             var tileCoordinateY = (tileCoordinate.y - 1) % {{ $map->rows }};
             tileCoordinateY = tileCoordinateY < 0 ? 0 : tileCoordinateY;
 
-            var rawurl = '/maps/{{ $map->id }}/actual/actual_files/{{ $map->levels - 1}}/' + tileCoordinate.x + '_' +
+            var rawurl = '/maps/{{ $map->id }}/actual/actual_files/' + ({{ $map->levels - 1}} - (4 - map.getZoom())) + '/' + tileCoordinate.x + '_' +
                   tileCoordinateY + '.jpg';
             var tileimg = '{{ url('/') }}' + rawurl;
             var mode = learnMode ? "learn" : "guess";
