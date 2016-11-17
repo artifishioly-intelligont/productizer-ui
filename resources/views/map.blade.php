@@ -91,24 +91,6 @@
           </div>
         </div>
       </div>
-      {{--
-      <div class="row">
-        <div class="col-xs-12" style="margin-top:20px;">
-          <div class="row">
-            @foreach($tiles as $tile)
-              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="margin-bottom:10px;">
-                <img src="../{!! $tile->image_url !!}"/><span id="tile{{ $tile->id }}">@if($tile->classification != null) {{ $tile->classification }} @endif</span>
-              </div>
-            @endforeach
-          </div>
-        </div>
-        <div class="col-xs-12">
-          <div id="alerts">
-
-          </div>
-        </div>
-    </div>
-        --}}
 </div>
 @endsection
 
@@ -126,8 +108,6 @@ $(function() {
         channel : "map{{ $map->id }}",
         message : function (message, envelope, channelOrGroup, time, channel) {
             var json = JSON.parse(message);
-            //$('#alerts').append('<div><img src="../' + json.image_url + '"/><span>' + json.classification + '</span></div>');
-            //$('#tile' + json.id).html(json.classification);
             currentTiles++;
             var percent = Math.round(currentTiles / maxTiles * 100);
             $('#processing-progress').css('width', percent+'%').attr('aria-valuenow', percent); 
