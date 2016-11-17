@@ -129,7 +129,7 @@ $(function() {
             //$('#alerts').append('<div><img src="../' + json.image_url + '"/><span>' + json.classification + '</span></div>');
             //$('#tile' + json.id).html(json.classification);
             currentTiles++;
-            var percent = round(currentTiles / maxTiles * 100);
+            var percent = Math.round(currentTiles / maxTiles * 100);
             $('#processing-progress').css('width', percent+'%').attr('aria-valuenow', percent); 
             $('#processing-percent').html(percent);   
             console.log(
