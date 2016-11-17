@@ -7,6 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Tile;
+use Log;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
@@ -43,7 +44,7 @@ class ProcessTile implements ShouldQueue
         ]);
 
         $json_out = json_decode($result->getBody());
-
+        Log::info($json_out);
         $this->tile->classification = $json_out->class;
         $this->tile->save();
     }
