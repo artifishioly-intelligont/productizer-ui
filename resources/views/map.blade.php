@@ -46,7 +46,7 @@
             <p>Then select 5 or more features on the map to teach The Productizer the feature.</p>
           </div>
           <div id="controls-guess" style="display:none;">
-            <p>On the map to the left, draw a box around a feature, and we will predict it's theme!</p>
+            <p>On the map to the left, select a tile, and we will predict it's theme!</p>
           </div>
           <hr>
           <div id="map-selected-learn"></div>
@@ -249,23 +249,6 @@ $(function() {
         map.mapTypes.set('OS', osMapType);
         map.setMapTypeId('OS');
 
-        var drawingManager = new google.maps.drawing.DrawingManager({
-          //drawingMode: google.maps.drawing.OverlayType.MARKER,
-          drawingControl: true,
-          drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_LEFT,
-            drawingModes: []
-          },
-
-          rectangleOptions: {
-            fillOpacity: 0.2,
-            strokeWeight: 1,
-            clickable: false,
-            zIndex: 1
-          }
-        });
-        drawingManager.setMap(map);
-
         // HOVER TILE WIP
         google.maps.event.addListener(map,'mousemove', function(mev){
             var TILE_SIZE = 256;
@@ -316,9 +299,9 @@ $(function() {
                     myLatLng4,
                     myLatLng,
                 ],
-                strokeColor: "#FF0000",
-                strokeOpacity: 1.0,
-                strokeWeight: 1,
+                strokeColor: "#DD0000",
+                strokeOpacity: .8,
+                strokeWeight: 3,
                 map: map
             });
 
