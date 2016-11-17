@@ -70,8 +70,9 @@ class Deepzoom
 
         $folder = $foldername.'/'.$filename.'_files';
         $this->path->createDir($folder);
-
-        foreach(range($numLevels - 1, 0) as $level) {
+        $lowestLevel = $numLevels - 5;
+        if($lowestLevel < 0) $lowestLevel = 0;
+        foreach(range($numLevels - 1, $lowestLevel) as $level) {
             $level_folder = $folder.'/'.$level;
             $this->path->createDir($level_folder);
             // calculate scale for level
