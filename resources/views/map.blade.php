@@ -291,24 +291,6 @@
 
             lines.push(line);
 
-            /*var rectangle = new google.maps.Rectangle({
-              strokeColor: '#000000',
-              strokeOpacity: 0.8,
-              strokeWeight: 1,
-              fillColor: '#555555',
-              fillOpacity: 0.35,
-              map: map,
-              bounds: {
-                north: marker.getPosition().lng(),
-                south: marker2.getPosition().lng(),
-                west: marker.getPosition().lat(),
-                east: marker2.getPosition().lat(),
-              }
-            });
-
-            console.log('TileX:' +tileCoordinate.x+' - TileY:'+tileCoordinate.y);
-            console.log();*/
-
         });
 
         google.maps.event.addListener(map,'click', function(mev){
