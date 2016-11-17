@@ -38,7 +38,7 @@ class ProcessTile implements ShouldQueue
         $client = new Client(); //GuzzleHttp\Client
         $result = $client->post(env('SATURN_URL').'guess', [
             'form_params' => [
-                'urls' => url('/').$this->tile->image_url.';',
+                'urls' => url('/').'/'.$this->tile->image_url.';',
             ]
         ]);
 
