@@ -44,7 +44,7 @@ class ProcessTile implements ShouldQueue
         ]);
 
         $json_out = json_decode($result->getBody());
-        Log::info($json_out);
+        Log::info($json_out->class);
         $this->tile->classification = $json_out->class;
         $this->tile->save();
     }
