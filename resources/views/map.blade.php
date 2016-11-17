@@ -34,6 +34,7 @@
                     </div>
                 </div>
                 <div class="well" id="add-feature" style="display:none;">
+                      <div class="pull-right" style="margin-top:-6px;margin-right:5px;"><button type="button" class="close" onclick="$('#add-feature').fadeOut();" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
                       <p>Add Feature</p>
                       <div style="width:78%;display:inline-block;">
                         <input type="text" class="form-control" id="add-feature-input">
