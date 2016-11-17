@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Tile;
 use Log;
-use Pubnub\Pubnub;
+use \Pubnub\Pubnub;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
