@@ -102,7 +102,7 @@ $(function() {
         channel : "map{{ $map->id }}",
         message : function (message, envelope, channelOrGroup, time, channel) {
             var json = JSON.parse(message);
-            alert(json.id);
+            $('#alerts').append('<div><img src="' + json.image_url + '"/><p>' + json.classification + '</p></div>');
             console.log(
                 "Message Received." + "\n" +
                 "Channel or Group : " + JSON.stringify(channelOrGroup) + "\n" +
