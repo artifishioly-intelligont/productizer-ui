@@ -131,15 +131,7 @@ $(function() {
             currentTiles++;
             var percent = Math.round(currentTiles / maxTiles * 100);
             $('#processing-progress').css('width', percent+'%').attr('aria-valuenow', percent); 
-            $('#processing-percent').html(percent);   
-            console.log(
-                "Message Received." + "\n" +
-                "Channel or Group : " + JSON.stringify(channelOrGroup) + "\n" +
-                "Channel : " + JSON.stringify(channel) + "\n" +
-                "Message : " + JSON.stringify(message) + "\n" +
-                "Time : " + time + "\n" +
-                "Raw Envelope : " + JSON.stringify(envelope)
-            )
+            $('#processing-percent').html(percent);
         }
     })
 });
