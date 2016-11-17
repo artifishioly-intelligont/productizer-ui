@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Tile;
 use Log;
-use \Pubnub\Pubnub;
+use Pubnub\Pubnub;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
@@ -52,6 +52,6 @@ class ProcessTile implements ShouldQueue
         $pubnub = new Pubnub(env('PUBNUB_PUB'), env('PUBNUB_SUB'));
 
         // Send notification down channel that we have completed this tile
-        $publish_result = $pubnub->publish('map'.$this->tile->map_id ,$this->tile->toJson());
+        $publish_result = $pubnub->publish('map'.$this->tile->map_id ,"test");
     }
 }
