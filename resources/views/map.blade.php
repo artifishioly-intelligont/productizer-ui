@@ -70,7 +70,7 @@
           @if(session()->has('class'))
           <br />
           <div class="row">
-            <div class="col-xs-12" style="text-align:center;">
+            <div class="col-xs-8 col-xs-offset-2" style="text-align:center;">
               @if(session()->has('image')) <img src="{!! session('image') !!}" style="margin:10px;"/> @endif
               <div class="alert alert-info">
                 We predict this is a <strong>{{ session('class') }}</strong>.
