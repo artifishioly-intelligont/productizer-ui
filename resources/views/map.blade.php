@@ -84,9 +84,9 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-        <h3>Processing (<span id="processing-percent">{{ $current / count($tiles) * 100 }}</span>%)...</h3>
+        <h3>Processing (<span id="processing-percent">{{ round($current / count($tiles) * 100) }}</span>%)...</h3>
           <div class="progress" style="margin-top:20px;">
-            <div class="progress-bar progress-bar-striped active" id="processing-progress" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="{{ count($tiles) }}" style="width: {{ $current / count($tiles) * 100 }}%;">
+            <div class="progress-bar progress-bar-striped active" id="processing-progress" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="{{ count($tiles) }}" style="width: {{ round($current / count($tiles) * 100) }}%;">
             </div>
           </div>
         </div>
@@ -129,7 +129,7 @@ $(function() {
             //$('#alerts').append('<div><img src="../' + json.image_url + '"/><span>' + json.classification + '</span></div>');
             //$('#tile' + json.id).html(json.classification);
             currentTiles++;
-            var percent = currentTiles / maxTiles * 100;
+            var percent = round(currentTiles / maxTiles * 100);
             $('#processing-progress').css('width', percent+'%').attr('aria-valuenow', percent); 
             $('#processing-percent').html(percent);   
             console.log(
