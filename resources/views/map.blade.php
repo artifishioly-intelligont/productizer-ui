@@ -81,6 +81,18 @@
 
 
         </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+        <h3>Processing (<span id="processing-percent">{{ $current / count($tiles) }}</span>%)...</h3>
+          <div class="progress" style="margin-top:20px;">
+            <div class="progress-bar progress-bar-striped active" id="processing-progress" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="{{ count($tiles) }}" style="width: {{ $current / count($tiles) }}%;">
+            </div>
+          </div>
+        </div>
+      </div>
+      {{--
+      <div class="row">
         <div class="col-xs-12" style="margin-top:20px;">
           <div class="row">
             @foreach($tiles as $tile)
@@ -96,6 +108,7 @@
           </div>
         </div>
     </div>
+        --}}
 </div>
 @endsection
 
@@ -103,6 +116,8 @@
 
 <script>
 $(function() {
+    var maxTiles = {{ count($tiles) }};
+    var currentTiles = {{ $current }};
     pubnub = PUBNUB({
         publish_key : '{!! env('PUBNUB_PUB') !!}',
         subscribe_key : '{!! env('PUBNUB_SUB') !!}'
@@ -112,7 +127,11 @@ $(function() {
         message : function (message, envelope, channelOrGroup, time, channel) {
             var json = JSON.parse(message);
             //$('#alerts').append('<div><img src="../' + json.image_url + '"/><span>' + json.classification + '</span></div>');
-            $('#tile' + json.id).html(json.classification);
+            //$('#tile' + json.id).html(json.classification);
+            currentTiles++;
+            var percent = currentTiles / maxTiles;
+            $('#processing-progress').css('width', percent+'%').attr('aria-valuenow', percent); 
+            $('#processing-percent').html(percent);   
             console.log(
                 "Message Received." + "\n" +
                 "Channel or Group : " + JSON.stringify(channelOrGroup) + "\n" +
