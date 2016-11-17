@@ -18,4 +18,9 @@ class Map extends Model
         return 'maps/'.$this->id.'/actual.jpg';
     }
 
+
+    public function tiles() {
+        return $this->hasMany('App\Tile');
+    }
+
 }

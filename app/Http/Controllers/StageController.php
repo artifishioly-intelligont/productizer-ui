@@ -14,8 +14,6 @@ use App\Jobs\MakeTiles;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 
-use Jeremytubbs\Deepzoom\DeepzoomFactory;
-
 class StageController extends Controller
 {
     use \Illuminate\Foundation\Bus\DispatchesJobs;
