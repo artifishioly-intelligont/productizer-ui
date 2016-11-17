@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Map;
 use App\Tile;
+use App\Job/ProcessTile;
 use \File;
 use \Image;
 use \Input;
