@@ -8,8 +8,7 @@ use App\Tile;
 use App\Jobs\ProcessTile;
 
 /**
- * Class Deepzoom
- * @package Jeremytubbs\Deepzoom
+ * Credit to Jeremy Tubbs for the class, adapted by Ed Crampin
  */
 class Deepzoom
 {

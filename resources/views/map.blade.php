@@ -343,8 +343,13 @@ $(function() {
                   tileCoordinateY + '.jpg';
             var tileimg = '{{ url('/') }}' + rawurl;
             var mode = learnMode ? "learn" : "guess";
-            $('#map-selected-' + mode).append('<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
-            $('#' + mode + '-files').val($('#' + mode + '-files').val() + tileimg + ";");
+            if(mode == "learn") {
+              $('#map-selected-' + mode).append('<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
+              $('#' + mode + '-files').val($('#' + mode + '-files').val() + tileimg + ";");
+            } else if (mode == "guess") {
+              $('#map-selected-' + mode).html('<div class="col-xs-8 col-xs-offset-2 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
+              $('#' + mode + '-files').val(tileimg + ";");
+            }
 
         });
     }
