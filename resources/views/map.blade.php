@@ -81,6 +81,11 @@
 
 
         </div>
+        <div class="col-xs-12">
+          <div id="#alerts">
+
+          </div>
+        </div>
     </div>
 </div>
 @endsection
@@ -89,17 +94,14 @@
 
 <script>
 $(function() {
-
- 
     pubnub = PUBNUB({
         publish_key : '{!! env('PUBNUB_PUB') !!}',
         subscribe_key : '{!! env('PUBNUB_SUB') !!}'
     })
-     
-    console.log("Subscribing..");
     pubnub.subscribe({                                     
         channel : "map{{ $map->id }}",
         message : function (message, envelope, channelOrGroup, time, channel) {
+            alert(message);
             console.log(
                 "Message Received." + "\n" +
                 "Channel or Group : " + JSON.stringify(channelOrGroup) + "\n" +
@@ -108,20 +110,8 @@ $(function() {
                 "Time : " + time + "\n" +
                 "Raw Envelope : " + JSON.stringify(envelope)
             )
-        },
-        connect : pub
+        }
     })
- 
-    function pub() {
-        console.log("Since we're publishing on subscribe connectEvent, we're sure we'll receive the following publish.");
-        pubnub.publish({
-            channel : "map{{ $map->id }}",
-            message : "Hello from PubNub Docs!",
-            callback : function(m){
-                console.log(m)
-            }
-        })
-    }
 });
 </script>
 <script>
