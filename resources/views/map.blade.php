@@ -43,7 +43,7 @@
                         <button class="btn btn-primary full-width" id="add-feature-submit">Add</button>
                       </div>
                 </div>
-            <p>Then select 5 or more features on the map to teach The Productizer the feature.</p>
+            <p>Then select 5 or more features on the map to teach The Productizer the feature. Click on an image below to remove it from selection.</p>
           </div>
           <div id="controls-guess" style="display:none;">
             <p>On the map to the left, select a tile, and we will predict it's theme!</p>
@@ -57,13 +57,13 @@
             {!! Form::open(['id' => 'btn-learn']) !!}
               <input type="hidden" name="mode" value="learn"/>
               <input type="hidden" name="selected-feature" class="selected-feature" value="{{ $features[0] }}"/>
-              <input type="hidden" id="learn-files" name="learn-files" value=""/>
+              <input type="hidden" id="learn-files" name="learn-files" value=";"/>
               <button type="submit" class="btn btn-primary full-width">Learn</button>
             {!! Form::close() !!}
             {!! Form::open(['id' => 'btn-guess', 'style' => 'display:none;']) !!}
               <input type="hidden" name="mode" value="guess"/>
               <input type="hidden" name="selected-feature" class="selected-feature" value="{{ $features[0] }}"/>
-              <input type="hidden" id="guess-files" name="guess-files" value=""/>
+              <input type="hidden" id="guess-files" name="guess-files" value=";"/>
               <button type="submit" class="btn btn-info full-width">Guess</button>
             {!! Form::close() !!}
             </div>
@@ -191,8 +191,21 @@ $(function() {
       }
     })
   });
+
+  $('body').on('click', '.tile-img', function() {
+    var tile = $(this).attr('src');
+    var index = learnSelected.indexOf(tile);
+    if (index >= 0) {
+      learnSelected.splice( index, 1 );
+    }
+    $('#learn-files').val(learnSelected.join(";") + ";");
+    $(this).closest('.tile-col').fadeOut(function() {
+      $(this).remove();
+    });
+  });
   var map;
   var markers = [];
+  var learnSelected = [];
   var lines = [];
   var currentTileX = 0;
   var currentTileY = 0;
@@ -331,7 +344,8 @@ $(function() {
             var mode = learnMode ? "learn" : "guess";
             if(mode == "learn") {
               $('#map-selected-' + mode).append('<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
-              $('#' + mode + '-files').val($('#' + mode + '-files').val() + tileimg + ";");
+              learnSelected.push(tileimg);
+              $('#' + mode + '-files').val(learnSelected.join(";") + ";");
             } else if (mode == "guess") {
               $('#map-selected-' + mode).html('<div class="col-xs-8 col-xs-offset-2 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
               $('#' + mode + '-files').val(tileimg + ";");
