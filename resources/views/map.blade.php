@@ -101,7 +101,8 @@ $(function() {
     pubnub.subscribe({                                     
         channel : "map{{ $map->id }}",
         message : function (message, envelope, channelOrGroup, time, channel) {
-            alert(message);
+            var json = JSON.parse(message);
+            alert(json.id);
             console.log(
                 "Message Received." + "\n" +
                 "Channel or Group : " + JSON.stringify(channelOrGroup) + "\n" +
