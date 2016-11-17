@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a5a8e40668bed18c7ad08d4af69265dd",
-    "content-hash": "b1707c8b353921d3e1bf8f23101d8eca",
+    "hash": "6f4f253461cf334ce99dfb93672cda01",
+    "content-hash": "4af911794dc593421d4fa0b56616746d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1476,6 +1476,54 @@
                 "shell"
             ],
             "time": "2016-03-09 05:03:14"
+        },
+        {
+            "name": "pubnub/pubnub",
+            "version": "3.8.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pubnub/php.git",
+                "reference": "42abab2557e1fe7cd39edc5d38af7fab817a2ff4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pubnub/php/zipball/42abab2557e1fe7cd39edc5d38af7fab817a2ff4",
+                "reference": "42abab2557e1fe7cd39edc5d38af7fab817a2ff4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Pubnub\\": "composer/lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PubNub",
+                    "email": "support@pubnub.com"
+                }
+            ],
+            "description": "The Only Global Network For Real-Time Data -- PubNub!",
+            "homepage": "http://www.pubnub.com/",
+            "keywords": [
+                "ajax",
+                "api",
+                "push",
+                "real time",
+                "real-time",
+                "realtime"
+            ],
+            "time": "2016-10-07 22:34:50"
         },
         {
             "name": "ramsey/uuid",
