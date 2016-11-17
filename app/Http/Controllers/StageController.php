@@ -91,7 +91,7 @@ class StageController extends Controller
         if($obj->success == true) {
             $features = $obj->features;
         }
-        return view('map')->withMap(Map::findOrFail($id))->withFeatures($features);
+        return view('map')->withMap(Map::findOrFail($id))->withFeatures($features)->withTiles(Tile::where('map_id', $id)->get());
     }
 
     public function requeue($id) {
