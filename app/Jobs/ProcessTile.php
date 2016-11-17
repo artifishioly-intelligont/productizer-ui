@@ -52,6 +52,6 @@ class ProcessTile implements ShouldQueue
         $pubnub = new Pubnub(env('PUBNUB_PUB'), env('PUBNUB_SUB'));
 
         // Send notification down channel that we have completed this tile
-        $publish_result = $pubnub->publish('map'.$this->tile->map_id ,"test");
+        $publish_result = $pubnub->publish('map'.$this->tile->map_id ,$this->tile->toJson());
     }
 }
