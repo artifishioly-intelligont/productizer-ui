@@ -92,6 +92,16 @@ class StageController extends Controller
         return view('map')->withMap(Map::findOrFail($id))->withFeatures($features);
     }
 
+    public function requeue($id) {
+        $tiles = Tile::where('map_id', $id)->get();
+        foreach ($tiles as $tile) {
+            $job = (new ProcessTile($tile))
+            ->onConnection('sqs');
+            dispatch($job);
+        }
+        return redirect()->route('stage1', $id);
+    }
+
     public function postStage2($id, Request $request) {
         if(!($request->has('mode') && ($request->has('learn-files') || $request->has('guess-files')))) {
             return redirect()->back();
