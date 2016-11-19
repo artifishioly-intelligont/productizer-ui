@@ -85,7 +85,8 @@
 
         </div>
       </div>
-      <div class="row">
+      @if(round($current / count($tiles) * 100) != 100)
+      <div class="row" id="processing-row">
         <div class="col-xs-12">
         <h3>Processing (<span id="processing-percent">{{ round($current / count($tiles) * 100) }}</span>%)...</h3>
           <div class="progress" style="margin-top:20px;">
@@ -94,11 +95,12 @@
           </div>
         </div>
       </div>
+      @endif
 </div>
 @endsection
 
 @section('scripts')
-
+@if(round($current / count($tiles) * 100) != 100)
 <script>
 $(function() {
     var maxTiles = {{ count($tiles) }};
@@ -113,12 +115,17 @@ $(function() {
             var json = JSON.parse(message);
             currentTiles++;
             var percent = Math.round(currentTiles / maxTiles * 100);
-            $('#processing-progress').css('width', percent+'%').attr('aria-valuenow', percent); 
-            $('#processing-percent').html(percent);
+            if(percent != 100) {
+              $('#processing-progress').css('width', percent+'%').attr('aria-valuenow', percent); 
+              $('#processing-percent').html(percent);
+            } else {
+              $('#processing-row').slideUp();
+            }
         }
     })
 });
 </script>
+@endif
 <script>
 
   var learnMode = true;
