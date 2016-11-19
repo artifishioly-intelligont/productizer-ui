@@ -5888,7 +5888,8 @@ p {
   margin-top: 15px;
   padding: 10px;
   background-color: #f5f5f5;
-  color: #B0B0B0; }
+  color: #B0B0B0;
+  min-height: 0px !important; }
   .footer div.copy {
     width: 100%;
     text-align: center; }

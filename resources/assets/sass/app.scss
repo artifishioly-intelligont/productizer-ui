@@ -149,6 +149,7 @@ p {
     padding: 10px;
     background-color: $light-grey;
     color:#B0B0B0;
+    min-height: 0px !important;
     div.copy {
         width:100%;
         text-align:center;
