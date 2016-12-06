@@ -150,8 +150,18 @@ $(function() {
 @endif
 <script>
 
+  var map;
   var learnMode = true;
-
+  var mapMarkers = [];
+  var activeMarkers = [];
+  @foreach($features as $feature)
+    mapMarkers["{{$feature}}"] = [];
+  @endforeach
+  @foreach($tiles as $tile)
+    @if($tile->classification != null)
+      mapMarkers["{{$tile->classification}}"].push([{{ $tile->x }}, {{ $tile->y }}]);
+    @endif
+  @endforeach
   $(function() {
 
     @if(session()->has('guess'))
@@ -170,12 +180,24 @@ $(function() {
 
 
     $('#discover-feature-btn').click(function() {
+
+      for (var i = 0; i < activeMarkers.length; i++) {
+        activeMarkers[i].setMap(null);
+      }
+      activeMarkers = [];
+
       var feature = $("#discover-feature").val();
 
-      @foreach($tiles as $tile)
-        dd($tile);
-      @endforeach
+      $.each(mapMarkers[feature], function(index, value) {
+        var centerLatLng = {lat: tile2lat(value[0] + 1 + 0.5, map.getZoom()), lng: tile2long(value[1] + 0.5, map.getZoom())};
 
+        var marker = new google.maps.Marker({
+          position: centerLatLng,
+          map: map,
+          title: 'Hello World!'
+        });
+        activeMarkers.push(marker);
+      });
     });
 
     $('#add-feature-submit').click(function() {
@@ -243,12 +265,19 @@ $(function() {
       $(this).remove();
     });
   });
-  var map;
   var markers = [];
   var learnSelected = [];
   var lines = [];
   var currentTileX = 0;
   var currentTileY = 0;
+
+  function tile2long(x,z) { return (x/Math.pow(2,z)*360-180); }
+
+  function tile2lat(y,z) {
+      var n=Math.PI-2*Math.PI*y/Math.pow(2,z);
+      return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))));
+  }
+
   function initMap() {
 
     var TILE_SIZE = 256;
@@ -317,19 +346,12 @@ $(function() {
                   Math.floor(pixelCoordinate.x / TILE_SIZE),
                   Math.floor(pixelCoordinate.y / TILE_SIZE));
 
-
-            function tile2long(x,z) { return (x/Math.pow(2,z)*360-180); }
-
-            function tile2lat(y,z) {
-                var n=Math.PI-2*Math.PI*y/Math.pow(2,z);
-                return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))));
+            for (var i = 0; i < markers.length; i++) {
+              markers[i].setMap(null);
             }
-              for (var i = 0; i < markers.length; i++) {
-                markers[i].setMap(null);
-              }
-              for (var i = 0; i < lines.length; i++) {
-                lines[i].setMap(null);
-              }
+            for (var i = 0; i < lines.length; i++) {
+              lines[i].setMap(null);
+            }
 
 
             markers = [];
@@ -365,7 +387,7 @@ $(function() {
               map: map,
               title: 'Hello World!'
             });*/
-            markers.push(marker);
+            //markers.push(marker);
 
             lines.push(line);
 
