@@ -13,7 +13,7 @@
           <hr>
           <div class="row">
             <div class="col-xs-8 col-xs-offset-2">
-              <input type="checkbox" @if(!session()->has('guess')) checked @endif data-toggle="toggle" data-on="Learn Mode" data-off="Guess Mode" data-onstyle="primary" data-offstyle="info" data-width="100%" id="learnMode">
+              <input type="checkbox" @if(!session()->has('guess')) checked @endif data-toggle="toggle" data-on="Learn Mode" data-off="Discover Mode" data-onstyle="primary" data-offstyle="info" data-width="100%" id="learnMode">
             </div>
           </div>
           <hr>
@@ -45,13 +45,33 @@
                 </div>
             <p>Then select 5 or more features on the map to teach The Productizer the feature. Click on an image below to remove it from selection.</p>
           </div>
+          {{--
           <div id="controls-guess" style="display:none;">
             <p>On the map to the left, select a tile, and we will predict it's theme!</p>
           </div>
           <hr>
           <div id="map-selected-learn"></div>
           <div id="map-selected-guess" style="display:none;"></div>
+          --}}
+          <div id="controls-guess" style="display:none;">
+              <div class="form-group">
+                  <label for="discover-feature">Select a feature to discover</label>
+                    <div class="full-width">
+                      <div style="width:68%;display:inline-block;">
+                        <select class="form-control" id="discover-feature" name="discover-feature">
+                          @foreach($features as $feature)
+                            <option>{{ $feature }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <div style="width:30%;display:inline-block;">
+                        <button class="btn btn-info full-width" id="discover-feature-btn">Discover</button>
+                      </div>
+                    </div>
+                </div>
 
+            <p>Select a feature and press discover, and all matching tiles will be highlighted on the map!</p>
+          </div>
           <div class="row">
             <div class="col-xs-8 col-xs-offset-2">
             {!! Form::open(['id' => 'btn-learn']) !!}
@@ -60,12 +80,14 @@
               <input type="hidden" id="learn-files" name="learn-files" value=";"/>
               <button type="submit" class="btn btn-primary full-width">Learn</button>
             {!! Form::close() !!}
+            {{--
             {!! Form::open(['id' => 'btn-guess', 'style' => 'display:none;']) !!}
               <input type="hidden" name="mode" value="guess"/>
               <input type="hidden" name="selected-feature" class="selected-feature" value="{{ $features[0] }}"/>
               <input type="hidden" id="guess-files" name="guess-files" value=";"/>
               <button type="submit" class="btn btn-info full-width">Guess</button>
             {!! Form::close() !!}
+            --}}
             </div>
           </div>
           @if(session()->has('class'))
@@ -146,6 +168,16 @@ $(function() {
       $('#add-feature').fadeToggle();
     });
 
+
+    $('#discover-feature-btn').click(function() {
+      var feature = $("#discover-feature").val();
+
+      @foreach($tiles as $tile)
+        dd($tile);
+      @endforeach
+
+    });
+
     $('#add-feature-submit').click(function() {
       var feature = $('#add-feature-input').val();
       var furl = '{{ env('SATURN_URL') }}features/' + feature;
@@ -181,6 +213,7 @@ $(function() {
         });
         $('#controls-guess').fadeOut(function() {
           $('#controls-learn').fadeIn();
+          $('#btn-learn').fadeIn();
         });
         $('#btn-guess').fadeOut(function() {
           $('#btn-learn').fadeIn();
@@ -291,14 +324,13 @@ $(function() {
                 var n=Math.PI-2*Math.PI*y/Math.pow(2,z);
                 return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))));
             }
+              for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+              }
+              for (var i = 0; i < lines.length; i++) {
+                lines[i].setMap(null);
+              }
 
-
-            for (var i = 0; i < markers.length; i++) {
-              markers[i].setMap(null);
-            }
-            for (var i = 0; i < lines.length; i++) {
-              lines[i].setMap(null);
-            }
 
             markers = [];
             lines = [];
@@ -310,6 +342,8 @@ $(function() {
             var myLatLng3 = {lat: tile2lat(tileCoordinate.y + 1, map.getZoom()),  lng: tile2long(tileCoordinate.x, map.getZoom())};
 
             var myLatLng4 = {lat: tile2lat(tileCoordinate.y, map.getZoom()),   lng: tile2long(tileCoordinate.x + 1, map.getZoom())};
+
+            var centerLatLng = {lat: tile2lat(tileCoordinate.y + 0.5, map.getZoom()), lng: tile2long(tileCoordinate.x + 0.5, map.getZoom())};
 
             var line = new google.maps.Polyline({
                 path: [
@@ -324,6 +358,14 @@ $(function() {
                 strokeWeight: 3,
                 map: map
             });
+
+
+            /*var marker = new google.maps.Marker({
+              position: centerLatLng,
+              map: map,
+              title: 'Hello World!'
+            });*/
+            markers.push(marker);
 
             lines.push(line);
 
