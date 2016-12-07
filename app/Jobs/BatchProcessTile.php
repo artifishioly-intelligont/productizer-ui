@@ -14,7 +14,7 @@ use Pubnub\Pubnub;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 
-class ProcessTile implements ShouldQueue
+class BatchProcessTile implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
