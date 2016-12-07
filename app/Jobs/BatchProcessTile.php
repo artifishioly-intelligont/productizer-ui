@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use \Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use App\Tile;
 use Log;
 use Pubnub\Pubnub;
