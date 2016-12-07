@@ -142,6 +142,26 @@
 
 
 
+  var updatemarkers = function() {
+    for (var i = 0; i < activeMarkers.length; i++) {
+      activeMarkers[i].setMap(null);
+    }
+    activeMarkers = [];
+
+    var feature = $("#discover-feature").val();
+
+    $.each(mapMarkers[feature], function(index, value) {
+      var centerLatLng = {lat: tile2lat(value[0] + 1 + 0.5, map.getZoom()), lng: tile2long(value[1] + 0.5, map.getZoom())};
+
+      var marker = new google.maps.Marker({
+        position: centerLatLng,
+        map: map,
+        title: 'Hello World!'
+      });
+      activeMarkers.push(marker);
+    });
+  }
+
 @if(round($current / count($tiles) * 100) != 100)
 $(function() {
     var maxTiles = {{ count($tiles) }};
@@ -188,26 +208,6 @@ $(function() {
     $('#add-feature-btn').click(function() {
       $('#add-feature').fadeToggle();
     });
-
-    var updatemarkers = function() {
-      for (var i = 0; i < activeMarkers.length; i++) {
-        activeMarkers[i].setMap(null);
-      }
-      activeMarkers = [];
-
-      var feature = $("#discover-feature").val();
-
-      $.each(mapMarkers[feature], function(index, value) {
-        var centerLatLng = {lat: tile2lat(value[0] + 1 + 0.5, map.getZoom()), lng: tile2long(value[1] + 0.5, map.getZoom())};
-
-        var marker = new google.maps.Marker({
-          position: centerLatLng,
-          map: map,
-          title: 'Hello World!'
-        });
-        activeMarkers.push(marker);
-      });
-    }
     $('#discover-feature-btn').click(updatemarkers);
 
     $('#add-feature-submit').click(function() {
