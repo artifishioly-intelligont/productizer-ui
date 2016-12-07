@@ -125,32 +125,6 @@
 @endsection
 
 @section('scripts')
-@if(round($current / count($tiles) * 100) != 100)
-<script>
-$(function() {
-    var maxTiles = {{ count($tiles) }};
-    var currentTiles = {{ $current }};
-    pubnub = PUBNUB({
-        publish_key : '{!! env('PUBNUB_PUB') !!}',
-        subscribe_key : '{!! env('PUBNUB_SUB') !!}'
-    })
-    pubnub.subscribe({                                     
-        channel : "map{{ $map->id }}",
-        message : function (message, envelope, channelOrGroup, time, channel) {
-            var json = JSON.parse(message);
-            currentTiles++;
-            var percent = Math.round(currentTiles / maxTiles * 100);
-            if(percent != 100) {
-              $('#processing-progress').css('width', percent+'%').attr('aria-valuenow', percent); 
-              $('#processing-percent').html(percent);
-            } else {
-              $('#processing-row').slideUp();
-            }
-        }
-    })
-});
-</script>
-@endif
 <script>
 
   var map;
@@ -165,6 +139,38 @@ $(function() {
       mapMarkers["{{$tile->classification}}"].push([{{ $tile->x }}, {{ $tile->y }}]);
     @endif
   @endforeach
+
+
+
+@if(round($current / count($tiles) * 100) != 100)
+$(function() {
+    var maxTiles = {{ count($tiles) }};
+    var currentTiles = {{ $current }};
+    pubnub = PUBNUB({
+        publish_key : '{!! env('PUBNUB_PUB') !!}',
+        subscribe_key : '{!! env('PUBNUB_SUB') !!}'
+    })
+    pubnub.subscribe({                                     
+        channel : "map{{ $map->id }}",
+        message : function (message, envelope, channelOrGroup, time, channel) {
+            var json = JSON.parse(message);
+            console.log(json);
+            currentTiles++;
+            var percent = Math.round(currentTiles / maxTiles * 100);
+            if(percent != 100) {
+              $('#processing-progress').css('width', percent+'%').attr('aria-valuenow', percent); 
+              $('#processing-percent').html(percent);
+            } else {
+              $('#processing-row').slideUp();
+            }
+        }
+    })
+});
+@endif
+
+
+
+
   $(function() {
 
     @if(session()->has('guess'))
