@@ -16,7 +16,7 @@ use GuzzleHttp\Client;
 
 class BatchProcessTile implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable, SerializesModels;
+    use InteractsWithQueue, Queueable;
 
     protected $tiles;
 
@@ -37,7 +37,6 @@ class BatchProcessTile implements ShouldQueue
      */
     public function handle()
     {
-        Log::info(printf($this->tiles));
         $urls = "";
         foreach($this->tiles as $tile) {
             $urls = $urls.(url('/').'/'.($tile->image_url).';');
@@ -59,7 +58,6 @@ class BatchProcessTile implements ShouldQueue
             $tile->save();
             $publish_result = $pubnub->publish('map'.$tile->map_id ,$tile->toJson());
         }
-        Log::info(var_dump($matching));
         //$this->tile->classification = $json_out->class;
         //$this->tile->save();
 
