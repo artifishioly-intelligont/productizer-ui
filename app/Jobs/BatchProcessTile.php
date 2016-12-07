@@ -39,7 +39,7 @@ class BatchProcessTile implements ShouldQueue
     {
         $urls = "";
         foreach ($this->tiles as $tile) {
-            $urls = $urls.url('/').'/'.$this->tile->image_url.';';
+            $urls = $urls.url('/').'/'.$tile->image_url.';';
         }
         $client = new Client(); //GuzzleHttp\Client
         $result = $client->post(env('SATURN_URL').'find', [
@@ -53,8 +53,8 @@ class BatchProcessTile implements ShouldQueue
 
         $pubnub = new Pubnub(env('PUBNUB_PUB'), env('PUBNUB_SUB'));
         foreach ($this->tiles as $tile) {
-            $urls = $urls.url('/').'/'.$this->tile->image_url.';';
-            $tile->classification = $matching[url('/').'/'.$this->tile->image_url];
+            $urls = $urls.url('/').'/'.$tile->image_url.';';
+            $tile->classification = $matching[url('/').'/'.$tile->image_url];
             $tile->save();
             $publish_result = $pubnub->publish('map'.$tile->map_id ,$tile->toJson());
         }
