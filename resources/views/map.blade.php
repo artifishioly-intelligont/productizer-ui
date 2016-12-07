@@ -330,7 +330,8 @@ $(function() {
           },
           tileSize: new google.maps.Size(TILE_SIZE, TILE_SIZE),
           maxZoom: 4,
-          minZoom: 0,
+          //minZoom: 0,
+          minZoom: 4,
           radius: 1,
           name: 'OS',
 
