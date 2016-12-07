@@ -37,13 +37,12 @@ class BatchProcessTile implements ShouldQueue
      */
     public function handle()
     {
-        Log::info(var_dump($this->tiles));
         $urls = "";
-        foreach ($this->tiles as $tile) {
+        foreach($this->tiles as $tile) {
             $urls = $urls.url('/').'/'.$tile->image_url.';';
         }
         $client = new Client(); //GuzzleHttp\Client
-        $result = $client->post(env('SATURN_URL').'find', [
+        $result = $client->post(env('SATURN_URL').'/find', [
             'form_params' => [
                 'urls' => $urls,
             ]
