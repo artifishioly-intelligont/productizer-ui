@@ -154,7 +154,8 @@ $(function() {
         channel : "map{{ $map->id }}",
         message : function (message, envelope, channelOrGroup, time, channel) {
             var json = JSON.parse(message);
-            console.log(json);
+            mapMarkers[json.classification].push([json.x, json.y]);
+            //console.log(json);
             currentTiles++;
             var percent = Math.round(currentTiles / maxTiles * 100);
             if(percent != 100) {
