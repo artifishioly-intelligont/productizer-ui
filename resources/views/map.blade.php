@@ -1,13 +1,26 @@
 @extends('layouts.master')
 
 @section('body')
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-8">
-            <h3>Map</h3>
-            <hr>
-            <div id="map"></div>
+<div class="container-fluid">
+  <div class="row">
+    <div id="map"></div>
+        @if(round($current / count($tiles) * 100) != 100)
+        <div class="col-xs-12">
+          <div class="row" id="processing-row">
+            <div class="col-xs-12">
+            <h3>Processing (<span id="processing-percent">{{ round($current / count($tiles) * 100) }}</span>%)...</h3>
+              <div class="progress" style="margin-top:20px;">
+                <div class="progress-bar progress-bar-striped active" id="processing-progress" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="{{ count($tiles) }}" style="width: {{ round($current / count($tiles) * 100) }}%;">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      @endif
+  </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-4">
           <h3>Controls</h3>
           <hr>
@@ -110,17 +123,6 @@
 
         </div>
       </div>
-      @if(round($current / count($tiles) * 100) != 100)
-      <div class="row" id="processing-row">
-        <div class="col-xs-12">
-        <h3>Processing (<span id="processing-percent">{{ round($current / count($tiles) * 100) }}</span>%)...</h3>
-          <div class="progress" style="margin-top:20px;">
-            <div class="progress-bar progress-bar-striped active" id="processing-progress" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="{{ count($tiles) }}" style="width: {{ round($current / count($tiles) * 100) }}%;">
-            </div>
-          </div>
-        </div>
-      </div>
-      @endif
 </div>
 @endsection
 
@@ -290,7 +292,7 @@ $(function() {
         map = new google.maps.Map(document.getElementById('map'), {
           //center: {lat:-89.6, lng: -0},
           //zoom: 0,
-          center: {lat:80.000, lng: -150},
+          center: {lat:78.800, lng: -115},
           zoom: 4,
 
           styles: [

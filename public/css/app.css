@@ -5895,7 +5895,8 @@ p {
     text-align: center; }
 
 #map {
+  margin-top: -15px;
   width: 100%;
-  height: 400px; }
+  height: 550px; }
 
 /*# sourceMappingURL=app.css.map */
