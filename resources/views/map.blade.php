@@ -405,12 +405,12 @@ $(function() {
             var rawurl = '/maps/{{ $map->id }}/actual/actual_files/' + ({{ $map->levels - 1}} - (4 - map.getZoom())) + '/' + tileCoordinate.x + '_' +
                   tileCoordinateY + '.jpg';
             var tileimg = '{{ url('/') }}' + rawurl;
-            var mode = learnMode ? "learn" : "discover";
+            var mode = learnMode ? "learn" : "guess";
             if(mode == "learn") {
               $('#map-selected-' + mode).append('<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
               learnSelected.push(tileimg);
               $('#' + mode + '-files').val(learnSelected.join(";") + ";");
-            } else if (mode == "guess") {
+            } else if (false && mode == "guess") {
               $('#map-selected-' + mode).html('<div class="col-xs-8 col-xs-offset-2 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
               $('#' + mode + '-files').val(tileimg + ";");
             }
