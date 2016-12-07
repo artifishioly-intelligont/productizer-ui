@@ -44,16 +44,18 @@
                       </div>
                 </div>
             <p>Then select 5 or more features on the map to teach The Productizer the feature. Click on an image below to remove it from selection.</p>
+
+            <hr>
           </div>
           {{--
           <div id="controls-guess" style="display:none;">
             <p>On the map to the left, select a tile, and we will predict it's theme!</p>
           </div>
           --}}
-          <hr>
           <div id="map-selected-learn"></div>
+          {{--
           <div id="map-selected-guess" style="display:none;"></div>
-          
+          --}}
           <div id="controls-guess" style="display:none;">
               <div class="form-group">
                   <label for="discover-feature">Select a feature to discover</label>
@@ -403,7 +405,7 @@ $(function() {
             var rawurl = '/maps/{{ $map->id }}/actual/actual_files/' + ({{ $map->levels - 1}} - (4 - map.getZoom())) + '/' + tileCoordinate.x + '_' +
                   tileCoordinateY + '.jpg';
             var tileimg = '{{ url('/') }}' + rawurl;
-            var mode = learnMode ? "learn" : "guess";
+            var mode = learnMode ? "learn" : "discover";
             if(mode == "learn") {
               $('#map-selected-' + mode).append('<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
               learnSelected.push(tileimg);
