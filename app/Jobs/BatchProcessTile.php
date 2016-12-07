@@ -16,7 +16,7 @@ use GuzzleHttp\Client;
 
 class BatchProcessTile implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue, Queueable, SerializesModels;
 
     protected $tiles;
 
@@ -39,6 +39,8 @@ class BatchProcessTile implements ShouldQueue
     {
         $urls = "";
         foreach($this->tiles as $tile) {
+            Log::info($tile->id);
+            
             $urls = $urls.(url('/').'/'.($tile->image_url).';');
         }
         $client = new Client(); //GuzzleHttp\Client
