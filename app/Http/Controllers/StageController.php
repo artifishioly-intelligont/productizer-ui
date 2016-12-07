@@ -120,7 +120,7 @@ class StageController extends Controller
                 //array_pop($files);
 
                 $client = new Client(); //GuzzleHttp\Client
-                $result = $client->post(env('SATURN_URL').'learn', [
+                $result = $client->post(env('SATURN_URL').'/learn', [
                     'form_params' => [
                         'theme' => $request->get('selected-feature'),
                         'urls' => $files,
@@ -137,7 +137,7 @@ class StageController extends Controller
                 //array_pop($files);
 
                 $client = new Client(); //GuzzleHttp\Client
-                $result = $client->post(env('SATURN_URL').'guess', [
+                $result = $client->post(env('SATURN_URL').'/guess', [
                     'form_params' => [
                         'urls' => $files,
                     ]

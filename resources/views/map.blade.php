@@ -49,10 +49,11 @@
           <div id="controls-guess" style="display:none;">
             <p>On the map to the left, select a tile, and we will predict it's theme!</p>
           </div>
+          --}}
           <hr>
           <div id="map-selected-learn"></div>
           <div id="map-selected-guess" style="display:none;"></div>
-          --}}
+          
           <div id="controls-guess" style="display:none;">
               <div class="form-group">
                   <label for="discover-feature">Select a feature to discover</label>
