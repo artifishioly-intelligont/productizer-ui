@@ -27,7 +27,7 @@ class BatchProcessTile implements ShouldQueue
      */
     public function __construct($t)
     {
-        $this->tiles = $t;
+        $this->tiles = collect($t);
     }
 
     /**
@@ -38,9 +38,7 @@ class BatchProcessTile implements ShouldQueue
     public function handle()
     {
         $urls = "";
-        Log::info($this->tiles);
         foreach($this->tiles as $tile) {
-
             $urls = $urls.(url('/').'/'.($tile->image_url).';');
         }
         $client = new Client(); //GuzzleHttp\Client
