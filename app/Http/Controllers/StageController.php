@@ -103,9 +103,6 @@ class StageController extends Controller
         foreach ($tiles as $tile) {
             $tile->classification = null;
             $tile->save();
-            $test = new BatchProcessTile([$tile]);
-            $test->handle();
-            return;
             $job = (new BatchProcessTile([$tile]))
             ->onConnection('sqs');
             dispatch($job);
