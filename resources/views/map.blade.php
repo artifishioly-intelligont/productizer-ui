@@ -302,6 +302,7 @@ $(function() {
             {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
           ],
           streetViewControl: false,
+          zoomControl: false,
           mapTypeControlOptions: {
             mapTypeIds: ['os']
           }
