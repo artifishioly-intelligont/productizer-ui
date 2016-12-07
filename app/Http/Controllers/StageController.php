@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Map;
 use App\Tile;
 use App\Jobs\ProcessTile;
+use App\Jobs\BatchProcessTile;
 use \File;
 use \Image;
 use \Input;
@@ -102,7 +103,7 @@ class StageController extends Controller
         foreach ($tiles as $tile) {
             $tile->classification = null;
             $tile->save();
-            $job = (new ProcessTile($tile))
+            $job = (new BatchProcessTile(collect($tile)))
             ->onConnection('sqs');
             dispatch($job);
         }
