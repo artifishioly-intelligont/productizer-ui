@@ -155,6 +155,7 @@ $(function() {
         message : function (message, envelope, channelOrGroup, time, channel) {
             var json = JSON.parse(message);
             mapMarkers[json.classification].push([json.x, json.y]);
+            updatemarkers();
             //console.log(json);
             currentTiles++;
             var percent = Math.round(currentTiles / maxTiles * 100);
@@ -188,9 +189,7 @@ $(function() {
       $('#add-feature').fadeToggle();
     });
 
-
-    $('#discover-feature-btn').click(function() {
-
+    var updatemarkers = function() {
       for (var i = 0; i < activeMarkers.length; i++) {
         activeMarkers[i].setMap(null);
       }
@@ -208,7 +207,8 @@ $(function() {
         });
         activeMarkers.push(marker);
       });
-    });
+    }
+    $('#discover-feature-btn').click(updatemarkers);
 
     $('#add-feature-submit').click(function() {
       var feature = $('#add-feature-input').val();
