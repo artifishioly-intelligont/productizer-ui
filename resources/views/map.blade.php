@@ -233,15 +233,10 @@ $(function() {
     $('#learnMode').change(function() {
       learnMode = !learnMode;
       if(learnMode) {
-        $('#map-selected-guess').fadeOut(function() {
-          $('#map-selected-learn').fadeIn();
-        });
         $('#controls-guess').fadeOut(function() {
           $('#controls-learn').fadeIn();
           $('#btn-learn').fadeIn();
-        });
-        $('#btn-guess').fadeOut(function() {
-          $('#btn-learn').fadeIn();
+          $('#map-selected-learn').fadeIn();
         });
       } else {
         $('#map-selected-learn').fadeOut(function() {
