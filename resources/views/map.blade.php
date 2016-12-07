@@ -358,39 +358,29 @@ $(function() {
             markers = [];
             lines = [];
 
-            var myLatLng = {lat: tile2lat(tileCoordinate.y, map.getZoom()), lng: tile2long(tileCoordinate.x, map.getZoom())};
+            if(learnMode) {
+              var myLatLng = {lat: tile2lat(tileCoordinate.y, map.getZoom()), lng: tile2long(tileCoordinate.x, map.getZoom())};
 
-            var myLatLng2 = {lat: tile2lat(tileCoordinate.y + 1, map.getZoom()), lng: tile2long(tileCoordinate.x + 1, map.getZoom())};
+              var myLatLng2 = {lat: tile2lat(tileCoordinate.y + 1, map.getZoom()), lng: tile2long(tileCoordinate.x + 1, map.getZoom())};
 
-            var myLatLng3 = {lat: tile2lat(tileCoordinate.y + 1, map.getZoom()),  lng: tile2long(tileCoordinate.x, map.getZoom())};
+              var myLatLng3 = {lat: tile2lat(tileCoordinate.y + 1, map.getZoom()),  lng: tile2long(tileCoordinate.x, map.getZoom())};
 
-            var myLatLng4 = {lat: tile2lat(tileCoordinate.y, map.getZoom()),   lng: tile2long(tileCoordinate.x + 1, map.getZoom())};
-
-            var centerLatLng = {lat: tile2lat(tileCoordinate.y + 0.5, map.getZoom()), lng: tile2long(tileCoordinate.x + 0.5, map.getZoom())};
-
-            var line = new google.maps.Polyline({
-                path: [
-                    myLatLng,
-                    myLatLng3,
-                    myLatLng2,
-                    myLatLng4,
-                    myLatLng,
-                ],
-                strokeColor: "#DD0000",
-                strokeOpacity: .8,
-                strokeWeight: 3,
-                map: map
-            });
-
-
-            /*var marker = new google.maps.Marker({
-              position: centerLatLng,
-              map: map,
-              title: 'Hello World!'
-            });*/
-            //markers.push(marker);
-
-            lines.push(line);
+              var myLatLng4 = {lat: tile2lat(tileCoordinate.y, map.getZoom()),   lng: tile2long(tileCoordinate.x + 1, map.getZoom())};
+              var line = new google.maps.Polyline({
+                  path: [
+                      myLatLng,
+                      myLatLng3,
+                      myLatLng2,
+                      myLatLng4,
+                      myLatLng,
+                  ],
+                  strokeColor: "#DD0000",
+                  strokeOpacity: .8,
+                  strokeWeight: 3,
+                  map: map
+              });
+              lines.push(line);
+            }
 
         });
 
