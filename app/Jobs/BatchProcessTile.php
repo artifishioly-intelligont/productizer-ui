@@ -25,7 +25,7 @@ class BatchProcessTile implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Collection $tiles)
+    public function __construct($tiles)
     {
         $this->tiles = $tiles;
     }

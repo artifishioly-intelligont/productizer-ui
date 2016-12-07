@@ -194,7 +194,7 @@ class Deepzoom
         $tiles = $this->getNumTiles($width, $height);
 
         foreach (range(0, $tiles['columns'] - 1) as $column) {
-            $rowtiles = collect([]);
+            $rowtiles = array();
             foreach (range(0, $tiles['rows'] - 1) as $row) {
                 $tileImg = clone $img;
                 $tile_file = $column.'_'.$row.'.'.$this->tileFormat;
@@ -211,7 +211,7 @@ class Deepzoom
                     'image_url' => 'maps/'.$map->id.'/'.$folder.'/'.$tile_file,
                     'classification' => null
                 ]);
-                $rowtiles = collect(array_merge([$tile], $rowtiles->toArray()));
+                array_push($rowtiles, $tile);
 
                 /*$job = (new ProcessTile($tile))
                 ->onConnection('sqs');
