@@ -149,19 +149,19 @@
       activeMarkers[i].setMap(null);
     }
     activeMarkers = [];
+    if(learnMode == false) {
+      var feature = $("#discover-feature").val();
+      $.each(mapMarkers[feature], function(index, value) {
+        var centerLatLng = {lat: tile2lat(value[0] + 1 + 0.5, map.getZoom()), lng: tile2long(value[1] + 0.5, map.getZoom())};
 
-    var feature = $("#discover-feature").val();
-
-    $.each(mapMarkers[feature], function(index, value) {
-      var centerLatLng = {lat: tile2lat(value[0] + 1 + 0.5, map.getZoom()), lng: tile2long(value[1] + 0.5, map.getZoom())};
-
-      var marker = new google.maps.Marker({
-        position: centerLatLng,
-        map: map,
-        title: 'Hello World!'
+        var marker = new google.maps.Marker({
+          position: centerLatLng,
+          map: map,
+          title: 'Hello World!'
+        });
+        activeMarkers.push(marker);
       });
-      activeMarkers.push(marker);
-    });
+    }
   }
 
 @if(round($current / count($tiles) * 100) != 100)
@@ -258,6 +258,7 @@ $(function() {
           $('#btn-guess').fadeIn();
         });
       }
+      updatemarkers();
     })
   });
 
