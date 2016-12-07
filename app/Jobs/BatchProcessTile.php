@@ -36,8 +36,7 @@ class BatchProcessTile implements ShouldQueue
      * @return void
      */
     public function handle()
-    {
-        $urls = "";
+    {$urls = "";
         foreach($this->tiles as $tile) {
             $urls = $urls.(url('/').'/'.($tile->image_url).';');
         }
