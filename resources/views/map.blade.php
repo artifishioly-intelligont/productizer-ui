@@ -6,17 +6,17 @@
     <div id="map"></div>
   </div>
 
-        @if(round($current / count($tiles) * 100) != 100 && false)
-          <div class="row" id="processing-row">
-            <div class="col-xs-12">
-            <h3>Processing (<span id="processing-percent">{{ round($current / count($tiles) * 100) }}</span>%)...</h3>
-              <div class="progress" style="margin-top:20px;">
-                <div class="progress-bar progress-bar-striped active" id="processing-progress" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="{{ count($tiles) }}" style="width: {{ round($current / count($tiles) * 100) }}%;">
-                </div>
-              </div>
-            </div>
+  @if(round($current / count($tiles) * 100) != 100 && false)
+    <div class="row" id="processing-row">
+      <div class="col-xs-12">
+      <h3>Processing (<span id="processing-percent">{{ round($current / count($tiles) * 100) }}</span>%)...</h3>
+        <div class="progress" style="margin-top:20px;">
+          <div class="progress-bar progress-bar-striped active" id="processing-progress" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="{{ count($tiles) }}" style="width: {{ round($current / count($tiles) * 100) }}%;">
           </div>
-      @endif
+        </div>
+      </div>
+    </div>
+@endif
 
 </div>
 <div class="container" style="margin-top:25px;">
