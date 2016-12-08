@@ -54,12 +54,10 @@ class BatchProcessTile implements ShouldQueue
         foreach ($this->tiles as $tile) {
             $midUrl = url('/').'/'.($tile->image_url)."#mid";
             if(array_key_exists($midUrl, $matching)) {
-                dd($midUrl.$matching[$midUrl]);
                 $tile->classification = $matching[$midUrl];
                 $tile->save();
                 $publish_result = $pubnub->publish('map'.($tile->map_id), $tile->toJson());
             } else {
-                dd("no");
                 $job = (new ProcessTile($tile))
                 ->onConnection('sqs');
                 dispatch($job);
