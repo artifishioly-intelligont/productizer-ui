@@ -49,7 +49,7 @@ class BatchProcessTile implements ShouldQueue
         ]);
 
         $json_out = json_decode($result->getBody());
-        $matching = $json_out->matching_urls;
+        $matching = json_decode(json_encode($json_out->matching_urls), true);
         $pubnub = new Pubnub(env('PUBNUB_PUB'), env('PUBNUB_SUB'));
         foreach ($this->tiles as $tile) {
             $midUrl = url('/').'/'.($tile->image_url)."#mid";
