@@ -128,6 +128,9 @@
   var learnMode = true;
   var mapMarkers = [];
   var activeMarkers = [];
+  @foreach($features as $feature)
+    mapMarkers["{{ $feature }}"] = [];
+  @endforeach
   @foreach($tiles as $tile)
     @if($tile->classification != null)
       if(!("{{ $tile->classification }}" in mapMarkers)) {
