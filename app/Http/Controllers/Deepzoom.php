@@ -209,6 +209,7 @@ class Deepzoom
                     'map_id' => $map->id,
                     'x' => $column,
                     'y' => $row,
+                    'level' => $level,
                     'image_url' => 'maps/'.$map->id.'/'.$folder.'/'.$tile_file,
                     'classification' => null
                 ]);

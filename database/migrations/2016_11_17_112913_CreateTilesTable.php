@@ -18,10 +18,10 @@ class CreateTilesTable extends Migration
             $table->integer('map_id')->unsigned();
             $table->integer('x');
             $table->integer('y');
+            $table->integer('level');
             $table->string('image_url', 256);
             $table->string('classification', 30)->nullable();
             $table->timestamps();
-
 
             $table->foreign('map_id')->references('id')->on('maps')->onDelete('cascade');
         });
