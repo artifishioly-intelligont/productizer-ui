@@ -92,15 +92,16 @@ class StageController extends Controller
         if($obj->success == true) {
             $features = $obj->features;
         }
-
+        $map = Map::findOrFail($id);
         return view('map')->withMap(Map::findOrFail($id))->withFeatures($features)
-        ->withTiles(Tile::where('map_id', $id)->get())
-        ->withCurrent(Tile::where('map_id', $id)->where('classification', '!=', null)->count());
+        ->withTiles(Tile::where('map_id', $id)->where('level', $map->levels - 1)->get())
+        ->withCurrent(Tile::where('map_id', $id)->where('level', $map->levels - 1)->where('classification', '!=', null)->count());
     }
 
     public function requeue($id) {
+        $map = Map::findOrFail($id);
         $batchsize = 14;
-        $tiles = Tile::where('map_id', $id)->get();
+        $tiles = Tile::where('map_id', $id)->where('level', $map->levels - 1)->get();
 
         for ($i=0; $i < $tiles->count(); $i+=$batchsize) { 
             $slice = $tiles->slice($i, $batchsize);
