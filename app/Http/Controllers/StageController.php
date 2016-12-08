@@ -94,8 +94,8 @@ class StageController extends Controller
         }
         $map = Map::findOrFail($id);
         return view('map')->withMap(Map::findOrFail($id))->withFeatures($features)
-        ->withTiles(Tile::where('map_id', $id)->where('level', $map->levels - 1)->get())
-        ->withCurrent(Tile::where('map_id', $id)->where('level', $map->levels - 1)->where('classification', '!=', null)->count());
+        ->withTiles(Tile::where('map_id', $id)->where('level', ($map->levels - 1))->get())
+        ->withCurrent(Tile::where('map_id', $id)->where('level', ($map->levels - 1))->where('classification', '!=', null)->count());
     }
 
     public function requeue($id) {
