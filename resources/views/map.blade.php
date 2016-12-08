@@ -93,6 +93,7 @@
               <input type="hidden" id="learn-files" name="learn-files" value=";"/>
               <button type="submit" class="btn btn-primary full-width">Learn</button>
             {!! Form::close() !!}
+            <a id="btn-reclassify" style="display:none;" class="btn btn-primary full-width" href="{{ url('/requeue').$map->id }}">Reclassify</a>
             {{--
             {!! Form::open(['id' => 'btn-guess', 'style' => 'display:none;']) !!}
               <input type="hidden" name="mode" value="guess"/>
@@ -197,7 +198,7 @@ $(function() {
 
     @if(session()->has('guess'))
       $('#btn-learn').hide();
-      $('#btn-guess').show();
+      $('#btn-reclassify').show();
       $('#controls-learn').hide();
       $('#controls-guess').show();
       $('#map-selected-learn').hide();
@@ -242,6 +243,7 @@ $(function() {
     $('#learnMode').change(function() {
       learnMode = !learnMode;
       if(learnMode) {
+        $('#btn-reclassify').fadeOut();
         $('#controls-guess').fadeOut(function() {
           $('#controls-learn').fadeIn();
           $('#btn-learn').fadeIn();
@@ -255,7 +257,7 @@ $(function() {
           $('#controls-guess').fadeIn();
         });
         $('#btn-learn').fadeOut(function() {
-          $('#btn-guess').fadeIn();
+          $('#btn-reclassify').fadeIn();
         });
       }
       updatemarkers();
