@@ -6,6 +6,7 @@ use Intervention\Image\ImageManager;
 use League\Flysystem\FilesystemInterface;
 use App\Tile;
 use App\Jobs\ProcessTile;
+use App\Jobs\BatchProcessTile;
 
 /**
  * Credit to Jeremy Tubbs for the class, adapted by Ed Crampin
