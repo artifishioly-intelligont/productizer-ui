@@ -226,6 +226,8 @@ $(function() {
               text : feature 
           })).val(feature);
 
+          $('.selected-feature').val(feature);
+
           $('#add-feature').fadeOut();
       } else {
         alert('You must enter an alphabetical feature.');

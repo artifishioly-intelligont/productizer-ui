@@ -5776,6 +5776,11 @@ h3 {
 p {
   color: #9da3a7; }
 
+#processing-row {
+  background-color: #eee;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd; }
+
 .header {
   min-height: 60px;
   background-color: #3498db;
