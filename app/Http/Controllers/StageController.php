@@ -109,6 +109,9 @@ class StageController extends Controller
                 $tile->classification = null;
                 $tile->save();
             }
+            $job = new BatchProcessTile($slice);
+            $job->handle();
+            dd();
             $job = (new BatchProcessTile($slice))
             ->onConnection('sqs');
             dispatch($job);
