@@ -44,7 +44,7 @@ class BatchProcessTile implements ShouldQueue
         $client = new Client(); //GuzzleHttp\Client
         $result = $client->post(env('SATURN_URL').'/find', [
             'form_params' => [
-                'urls' => "http://svm-ec6g13-gdp.ecs.soton.ac.uk/maps/9/actual/actual_files/12/13_6.jpg;http://svm-ec6g13-gdp.ecs.soton.ac.uk/maps/9/actual/actual_files/12/13_5.jpg;",
+                'urls' => $urls
             ]
         ]);
 
