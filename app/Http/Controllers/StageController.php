@@ -99,11 +99,17 @@ class StageController extends Controller
     }
 
     public function requeue($id) {
+        $batchsize = 10;
         $tiles = Tile::where('map_id', $id)->get();
-        foreach ($tiles as $tile) {
-            $tile->classification = null;
-            $tile->save();
-            $job = (new BatchProcessTile([$tile]))
+
+        for ($i=0; $i < $tiles->count(); $i+=$batchsize) { 
+            $slice = $tiles->slice($i, $batchsize);
+            foreach ($tiles as $tile) {
+                $tile->classification = null;
+                $tile->save();
+            }
+
+            $job = (new BatchProcessTile($slice->toArray()))
             ->onConnection('sqs');
             dispatch($job);
         }
