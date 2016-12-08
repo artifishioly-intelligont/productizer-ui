@@ -73,15 +73,12 @@
               <div class="form-group">
                   <label for="discover-feature">Select a feature to discover</label>
                     <div class="full-width">
-                      <div style="width:68%;display:inline-block;">
+                      <div style="width:100%;display:inline-block;">
                         <select class="form-control" id="discover-feature" name="discover-feature">
                           @foreach($features as $feature)
                             <option>{{ $feature }}</option>
                           @endforeach
                         </select>
-                      </div>
-                      <div style="width:30%;display:inline-block;">
-                        <button class="btn btn-info full-width" id="discover-feature-btn">Discover</button>
                       </div>
                     </div>
                 </div>
@@ -208,7 +205,7 @@ $(function() {
     $('#add-feature-btn').click(function() {
       $('#add-feature').fadeToggle();
     });
-    $('#discover-feature-btn').click(updatemarkers);
+    $('#discover-feature').change(updatemarkers);
 
     $('#add-feature-submit').click(function() {
       var feature = $('#add-feature-input').val();
