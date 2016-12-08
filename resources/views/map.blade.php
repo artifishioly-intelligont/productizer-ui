@@ -5,7 +5,7 @@
   <div class="row">
     <div id="map"></div>
   </div>
-
+  {{ dd($tiles) }}
   @if(round($current / count($tiles) * 100) != 100 && false)
     <div class="row" id="processing-row">
       <div class="col-xs-12">
