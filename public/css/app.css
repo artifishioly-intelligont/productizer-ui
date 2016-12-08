@@ -5777,9 +5777,9 @@ p {
   color: #9da3a7; }
 
 #processing-row {
-  background-color: #eee;
-  border-bottom: 1px solid #ddd;
-  border-top: 1px solid #ddd; }
+  background-color: #fcfcfc;
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee; }
 
 .header {
   min-height: 60px;

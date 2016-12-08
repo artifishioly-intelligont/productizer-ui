@@ -1,5 +1,5 @@
 <div class="header">
-    <div class="container">
+    <div class="@if(\Request::is('map/*')) container-fluid @else container @endif">
         <div class="navbar-header">
             <div class="logo">
                 <a href="{{ url('/') }}">TheProductizer</a>
