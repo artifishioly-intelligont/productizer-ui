@@ -99,7 +99,7 @@ class StageController extends Controller
     }
 
     public function requeue($id) {
-        $batchsize = 10;
+        $batchsize = 20;
         $tiles = Tile::where('map_id', $id)->get();
 
         for ($i=0; $i < $tiles->count(); $i+=$batchsize) { 
