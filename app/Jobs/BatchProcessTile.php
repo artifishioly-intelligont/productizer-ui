@@ -58,7 +58,7 @@ class BatchProcessTile implements ShouldQueue
         }
         $pubnub = new Pubnub(env('PUBNUB_PUB'), env('PUBNUB_SUB'));
         foreach ($this->tiles as $tile) {
-            $midUrl = url('/').'/'.($tile->image_url)."#mid";
+            $midUrl = url('/').'/'.($tile->image_url);
             if(array_key_exists($midUrl, $matching)) {
                 $tile->classification = $matching[$midUrl];
                 $tile->save();
