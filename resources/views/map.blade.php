@@ -4,8 +4,9 @@
 <div class="container-fluid">
   <div class="row">
     <div id="map"></div>
+  </div>
+
         @if(round($current / count($tiles) * 100) != 100)
-        <div class="col-xs-12">
           <div class="row" id="processing-row">
             <div class="col-xs-12">
             <h3>Processing (<span id="processing-percent">{{ round($current / count($tiles) * 100) }}</span>%)...</h3>
@@ -15,11 +16,10 @@
               </div>
             </div>
           </div>
-        </div>
       @endif
-  </div>
+
 </div>
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-4">
           <h3>Controls</h3>
@@ -120,6 +120,7 @@
           </div>
           @endif
       </div>
+    </div>
 </div>
 @endsection
 
