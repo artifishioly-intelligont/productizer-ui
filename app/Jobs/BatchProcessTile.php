@@ -58,6 +58,7 @@ class BatchProcessTile implements ShouldQueue
                 $tile->save();
                 $publish_result = $pubnub->publish('map'.($tile->map_id), $tile->toJson());
             } else {
+                dd("no");
                 $job = (new ProcessTile($tile))
                 ->onConnection('sqs');
                 dispatch($job);
