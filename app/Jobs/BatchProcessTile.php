@@ -39,6 +39,7 @@ class BatchProcessTile implements ShouldQueue
     {
         $urls = "";
         foreach($this->tiles as $tile) {
+            dd($tile);
             $urls = $urls.(url('/').'/'.($tile->image_url).';');
         }
         $client = new Client(); //GuzzleHttp\Client
