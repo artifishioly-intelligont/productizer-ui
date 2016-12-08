@@ -44,18 +44,23 @@ class BatchProcessTile implements ShouldQueue
         $client = new Client(); //GuzzleHttp\Client
         $result = $client->post(env('SATURN_URL').'/find', [
             'form_params' => [
-                'urls' => $urls,
+                'urls' => "http://svm-ec6g13-gdp.ecs.soton.ac.uk/maps/9/actual/actual_files/12/13_6.jpg;http://svm-ec6g13-gdp.ecs.soton.ac.uk/maps/9/actual/actual_files/12/13_5.jpg;",
             ]
         ]);
 
         $json_out = json_decode($result->getBody());
         $matching = $json_out->matching_urls;
-
         $pubnub = new Pubnub(env('PUBNUB_PUB'), env('PUBNUB_SUB'));
         foreach ($this->tiles as $tile) {
-            $tile->classification = $matching[(url('/').'/'.($tile->image_url))];
-            $tile->save();
-            $publish_result = $pubnub->publish('map'.($tile->map_id), $tile->toJson());
+            if(array_key_exists((url('/').'/'.($tile->image_url))."#mid", $matching)) {
+                $tile->classification = $matching[(url('/').'/'.($tile->image_url))."#mid"];
+                $tile->save();
+                $publish_result = $pubnub->publish('map'.($tile->map_id), $tile->toJson());
+            } else {
+                $job = (new ProcessTile($tile))
+                ->onConnection('sqs');
+                dispatch($job);
+            }
         }
     }
 }
