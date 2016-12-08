@@ -37,7 +37,7 @@ class BatchProcessTile implements ShouldQueue
      */
     public function handle()
     {
-        $retries = 5;
+        $retries = 100;
         $urls = "";
         foreach($this->tiles as $tile) {
             $urls = $urls.(url('/').'/'.($tile->image_url).';');
@@ -64,7 +64,7 @@ class BatchProcessTile implements ShouldQueue
                 $tile->save();
                 $publish_result = $pubnub->publish('map'.($tile->map_id), $tile->toJson());
             } else {
-                $job = (new ProcessTile($tile))
+                $job = (new BatchProcessTile([$tile]))
                 ->onConnection('sqs');
                 dispatch($job);
             }
