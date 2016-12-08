@@ -6,7 +6,7 @@
     <div id="map"></div>
   </div>
 
-        @if(round($current / count($tiles) * 100) != 100)
+        @if(round($current / count($tiles) * 100) != 100 && false)
           <div class="row" id="processing-row">
             <div class="col-xs-12">
             <h3>Processing (<span id="processing-percent">{{ round($current / count($tiles) * 100) }}</span>%)...</h3>
@@ -19,92 +19,93 @@
       @endif
 
 </div>
-<div class="container">
+<div class="container" style="margin-top:25px;">
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-4">
-          <h3>Controls</h3>
-          <hr>
-          <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
+          <div class="col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-3">
               <input type="checkbox" @if(!session()->has('guess')) checked @endif data-toggle="toggle" data-on="Learn Mode" data-off="Discover Mode" data-onstyle="primary" data-offstyle="info" data-width="100%" id="learnMode">
-            </div>
+            <hr class="hidden-md hidden-lg">
           </div>
-          <hr>
           <div id="controls-learn">
-              <div class="form-group">
-                  <label for="learn-feature">Select a feature to learn</label>
-                    <div class="full-width">
-                      <div style="width:68%;display:inline-block;">
-                        <select class="form-control" id="learn-feature" name="learn-feature">
-                          @foreach($features as $feature)
-                            <option>{{ $feature }}</option>
-                          @endforeach
-                        </select>
-                      </div>
-                      <div style="width:30%;display:inline-block;">
-                        <button class="btn btn-primary full-width" id="add-feature-btn">Add New</button>
-                      </div>
-                    </div>
-                </div>
-                <div class="well" id="add-feature" style="display:none;">
-                      <div class="pull-right" style="margin-top:-6px;margin-right:5px;"><button type="button" class="close" onclick="$('#add-feature').fadeOut();" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-                      <p>Add Feature</p>
-                      <div style="width:78%;display:inline-block;">
-                        <input type="text" class="form-control" id="add-feature-input">
-                      </div>
-                      <div style="width:20%;display:inline-block;">
-                        <button class="btn btn-primary full-width" id="add-feature-submit">Add</button>
-                      </div>
-                </div>
-            <p>Then select 5 or more features on the map to teach The Productizer the feature. Click on an image below to remove it from selection.</p>
-
-            <hr>
-          </div>
-          {{--
-          <div id="controls-guess" style="display:none;">
-            <p>On the map to the left, select a tile, and we will predict it's theme!</p>
-          </div>
-          --}}
-          <div id="map-selected-learn"></div>
-          {{--
-          <div id="map-selected-guess" style="display:none;"></div>
-          --}}
-          <div id="controls-guess" style="display:none;">
-              <div class="form-group">
-                  <label for="discover-feature">Select a feature to discover</label>
-                    <div class="full-width">
-                      <div style="width:100%;display:inline-block;">
-                        <select class="form-control" id="discover-feature" name="discover-feature">
-                          @foreach($features as $feature)
-                            <option>{{ $feature }}</option>
-                          @endforeach
-                        </select>
-                      </div>
-                    </div>
-                </div>
-
-            <p>Select a feature and press discover, and all matching tiles will be highlighted on the map!</p>
-          </div>
-          <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-            {!! Form::open(['id' => 'btn-learn']) !!}
-              <input type="hidden" name="mode" value="learn"/>
-              <input type="hidden" name="selected-feature" class="selected-feature" value="{{ $features[0] }}"/>
-              <input type="hidden" id="learn-files" name="learn-files" value=";"/>
-              <button type="submit" class="btn btn-primary full-width">Learn</button>
-            {!! Form::close() !!}
-            <a id="btn-reclassify" style="display:none;" class="btn btn-info full-width" href="{{ url('/requeue').'/'.$map->id }}">Reclassify</a>
-            {{--
-            {!! Form::open(['id' => 'btn-guess', 'style' => 'display:none;']) !!}
-              <input type="hidden" name="mode" value="guess"/>
-              <input type="hidden" name="selected-feature" class="selected-feature" value="{{ $features[0] }}"/>
-              <input type="hidden" id="guess-files" name="guess-files" value=";"/>
-              <button type="submit" class="btn btn-info full-width">Guess</button>
-            {!! Form::close() !!}
-            --}}
+            <div class="col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-4">
+                <p>Select tiles from the map above, then select a feature and hit learn to teach the classifier!</p>
+              <hr class="hidden-md hidden-lg">
             </div>
+            <div class="col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-3">
+                <div class="form-group">
+                      <div class="full-width">
+                        <div style="width:68%;display:inline-block;">
+                          <select class="form-control" id="learn-feature" name="learn-feature">
+                            @foreach($features as $feature)
+                              <option>{{ $feature }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <div style="width:30%;display:inline-block;">
+                          <button class="btn btn-primary full-width" id="add-feature-btn">Add</button>
+                        </div>
+                      </div>
+                  </div>
+                <hr class="hidden-md hidden-lg">
+              </div>
+              <div class="col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-2">
+                  {!! Form::open(['id' => 'btn-learn']) !!}
+                    <input type="hidden" name="mode" value="learn"/>
+                    <input type="hidden" name="selected-feature" class="selected-feature" value="{{ $features[0] }}"/>
+                    <input type="hidden" id="learn-files" name="learn-files" value=";"/>
+                    <button type="submit" class="btn btn-primary full-width" >Learn</button>
+                  {!! Form::close() !!}
+              </div>
+              <div class="row">
+                <div class="col-xs-4 col-xs-offset-4">
+                  <div class="well" id="add-feature" style="display:none;">
+                        <div class="pull-right" style="margin-top:-6px;margin-right:5px;"><button type="button" class="close" onclick="$('#add-feature').fadeOut();" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+                        <p>Add</p>
+                        <div style="width:78%;display:inline-block;">
+                          <input type="text" class="form-control" id="add-feature-input">
+                        </div>
+                        <div style="width:20%;display:inline-block;">
+                          <button class="btn btn-primary full-width" id="add-feature-submit">Add</button>
+                        </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <div id="map-selected-learn" style="margin-top:15px;"></div>
+                </div>
+              </div>
+
+            </div>
+
+
+          <div id="controls-guess" style="display:none;">
+            <div class="col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-4">
+                <p class="hidden-md hidden-lg" style="padding:19px 10px;">Select a feature to discover and it will be marked on the map above.</p>
+                <p class="hidden-xs hidden-sm">Select a feature to discover and it will be marked on the map above.</p>
+                <hr class="hidden-md hidden-lg">
+            </div>
+            <div class="col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-3">
+                <div class="form-group">
+                      <div class="full-width">
+                        <div style="width:100%;display:inline-block;">
+                          <select class="form-control" id="discover-feature" name="discover-feature">
+                            @foreach($features as $feature)
+                              <option>{{ $feature }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>
+                  </div>
+              <hr class="hidden-md hidden-lg">
+            </div>
+
+            <div class="col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-2">
+                <a id="btn-reclassify" style="display:none;" class="btn btn-info full-width" href="{{ url('/requeue').'/'.$map->id }}">Reclassify</a>
+              </div>
           </div>
-          @if(session()->has('class'))
+
+
+          {{--@if(session()->has('class'))
           <br />
           <div class="row">
             <div class="col-xs-8 col-xs-offset-2">
@@ -116,7 +117,9 @@
               </div>
             </div>
           </div>
-          @endif
+          @endif--}}
+
+
       </div>
     </div>
 </div>
@@ -416,7 +419,7 @@ $(function() {
             var tileimg = '{{ url('/') }}' + rawurl;
             var mode = learnMode ? "learn" : "guess";
             if(mode == "learn") {
-              $('#map-selected-' + mode).append('<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
+              $('#map-selected-' + mode).append('<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 tile-col"><img src="'+tileimg+'" class="tile-img"/></div>');
               learnSelected.push(tileimg);
               $('#' + mode + '-files').val(learnSelected.join(";") + ";");
             } else if (false && mode == "guess") {
