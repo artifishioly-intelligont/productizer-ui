@@ -93,7 +93,7 @@
               <input type="hidden" id="learn-files" name="learn-files" value=";"/>
               <button type="submit" class="btn btn-primary full-width">Learn</button>
             {!! Form::close() !!}
-            <a id="btn-reclassify" style="display:none;" class="btn btn-primary full-width" href="{{ url('/requeue').$map->id }}">Reclassify</a>
+            <a id="btn-reclassify" style="display:none;" class="btn btn-info full-width" href="{{ url('/requeue').'/'.$map->id }}">Reclassify</a>
             {{--
             {!! Form::open(['id' => 'btn-guess', 'style' => 'display:none;']) !!}
               <input type="hidden" name="mode" value="guess"/>
