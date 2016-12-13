@@ -158,14 +158,14 @@
         var marker = new google.maps.Marker({
           position: centerLatLng,
           map: map,
-          title: 'Hello World!'
+          title: feature,
         });
 
         var infowindow = new google.maps.InfoWindow({
           content: feature,
         });
 
-        marker.addListener('hover', function() {
+        marker.addListener('mouseover', function() {
           infowindow.open(map, marker);
         });
 
