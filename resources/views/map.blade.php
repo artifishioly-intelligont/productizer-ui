@@ -169,6 +169,10 @@
           infowindow.open(map, marker);
         });
 
+        marker.addListener('mouseout', function() {
+          infowindow.close();
+        });
+
         activeMarkers.push(marker);
       });
     }
