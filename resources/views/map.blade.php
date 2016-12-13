@@ -160,6 +160,15 @@
           map: map,
           title: 'Hello World!'
         });
+
+        var infowindow = new google.maps.InfoWindow({
+          content: feature,
+        });
+
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+        
         activeMarkers.push(marker);
       });
     }
