@@ -165,10 +165,10 @@
           content: feature,
         });
 
-        marker.addListener('click', function() {
+        marker.addListener('hover', function() {
           infowindow.open(map, marker);
         });
-        
+
         activeMarkers.push(marker);
       });
     }
