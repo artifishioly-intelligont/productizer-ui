@@ -153,7 +153,7 @@
     if(learnMode == false) {
       var feature = $("#discover-feature").val();
       $.each(mapMarkers[feature], function(index, value) {
-        var centerLatLng = {lat: tile2lat(value[0] + 1 + 0.5, map.getZoom()), lng: tile2long(value[1] + 0.5, map.getZoom())};
+        var centerLatLng = {lat: tile2lat(value[0] + 1 + 0.5, map.getZoom() + 1), lng: tile2long(value[1] + 0.5, map.getZoom() + 1)};
 
         var marker = new google.maps.Marker({
           position: centerLatLng,
