@@ -384,7 +384,7 @@ $(function() {
             markers = [];
             lines = [];
 
-            if(learnMode) {
+            if(learnMode || true) {
               var myLatLng = {lat: tile2lat(tileCoordinate.y, map.getZoom()), lng: tile2long(tileCoordinate.x, map.getZoom())};
 
               var myLatLng2 = {lat: tile2lat(tileCoordinate.y + 1, map.getZoom()), lng: tile2long(tileCoordinate.x + 1, map.getZoom())};
@@ -400,9 +400,9 @@ $(function() {
                       myLatLng4,
                       myLatLng,
                   ],
-                  strokeColor: "#DD0000",
-                  strokeOpacity: .8,
-                  strokeWeight: 3,
+                  strokeColor: (learnMode ? "#DD0000" : "#3AB0D3"),
+                  strokeOpacity: 1.0,
+                  strokeWeight: 4,
                   map: map
               });
               lines.push(line);
