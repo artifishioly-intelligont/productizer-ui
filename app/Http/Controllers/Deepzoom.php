@@ -231,9 +231,9 @@ class Deepzoom
                 dispatch($job);*/
             }
 
-            /*$job = (new BatchProcessTile($rowtiles))
+            $job = (new BatchProcessTile($rowtiles))
                 ->onConnection('sqs');
-                dispatch($job);*/
+                dispatch($job);
         }
     }
 
