@@ -39,10 +39,10 @@ class StageController extends Controller
         // minimise edge stretching (temp fix) by checking if more excess on height or width
         $image = Image::make($request->file('image')->getRealPath());
         $height = $image->height();
-        $heightAdded = $height + (256 - ($height % 256));
+        $heightAdded = $height + (128 - ($height % 128));
 
         $width = $image->width();
-        $widthAdded = $width + (256 - ($width % 256));
+        $widthAdded = $width + (128 - ($width % 128));
 
         if($heightAdded > $widthAdded) {
             $image->resize(null, $heightAdded, function ($constraint) {
@@ -113,7 +113,7 @@ class StageController extends Controller
             ->onConnection('sqs');
             dispatch($job);
         }
-        return redirect()->route('stage1', $id);
+        return redirect()->route('stage1', $id)->with('guess', true);
     }
 
     public function postStage2($id, Request $request) {
@@ -135,7 +135,7 @@ class StageController extends Controller
                 ]);
 
                 // TODO: make it go to guess mode with info
-                return redirect()->back()->with('guess', true);
+                return redirect()->back();
 
 
             } else if ($mode == 'guess') {

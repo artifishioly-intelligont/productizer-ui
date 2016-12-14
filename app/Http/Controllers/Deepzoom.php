@@ -30,10 +30,11 @@ class Deepzoom
     {
         $this->setImageManager($imageManager);
         $this->setPath($path);
-        $this->tileSize = 256;
+        $this->tileSize = 128;
         $this->tileOverlap = 0;
         $this->tileFormat = $tileFormat;
         $this->pathPrefix = $pathPrefix;
+        ini_set('max_execution_time', 0);
     }
 
     /**
@@ -205,6 +206,16 @@ class Deepzoom
                 $this->path->put("$folder/$tile_file", $tileImg);
                 unset($tileImg);
 
+
+
+                $tileImg = clone $img;
+                $tile_file = $column.'_'.$row.'sel.'.$this->tileFormat;
+                $bounds = $this->getTileBounds($level,$column,$row,$width,$height);
+                $tileImg->crop($bounds['width'] * 2,$bounds['height'] * 2,$bounds['x'],$bounds['y']);
+                $tileImg->encode($this->tileFormat);
+                $this->path->put("$folder/$tile_file", $tileImg);
+                unset($tileImg);
+
                 $tile = Tile::create([
                     'map_id' => $map->id,
                     'x' => $column,
@@ -220,9 +231,9 @@ class Deepzoom
                 dispatch($job);*/
             }
 
-            $job = (new BatchProcessTile($rowtiles))
+            /*$job = (new BatchProcessTile($rowtiles))
                 ->onConnection('sqs');
-                dispatch($job);
+                dispatch($job);*/
         }
     }
 

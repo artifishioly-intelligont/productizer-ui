@@ -210,7 +210,6 @@ $(function() {
 
 
   $(function() {
-
     @if(session()->has('guess'))
       $('#btn-learn').hide();
       $('#btn-reclassify').show();
@@ -305,7 +304,7 @@ $(function() {
 
   function initMap() {
 
-    var TILE_SIZE = 256;
+    var TILE_SIZE = 128;
     if(document.getElementById('map')) {
         map = new google.maps.Map(document.getElementById('map'), {
           //center: {lat:-89.6, lng: -0},
@@ -360,10 +359,10 @@ $(function() {
 
         // HOVER TILE WIP
         google.maps.event.addListener(map,'mousemove', function(mev){
-            var TILE_SIZE = 256;
             var proj = map.getProjection();
             var numTiles = 1 << map.getZoom();
             var worldCoordinate = proj.fromLatLngToPoint(mev.latLng);
+            var zoom = map.getZoom() + 1;
 
             var pixelCoordinate = new google.maps.Point(
                   worldCoordinate.x * numTiles,
@@ -373,6 +372,17 @@ $(function() {
                   Math.floor(pixelCoordinate.x / TILE_SIZE),
                   Math.floor(pixelCoordinate.y / TILE_SIZE));
 
+            if(tileCoordinate.x >= {{ $map->columns - 1 }}) {
+              tileCoordinate.x = {{ $map->columns - 2 }};
+            }
+            if(tileCoordinate.y >= {{ $map->rows - 1 }}) {
+              tileCoordinate.y = {{ $map->columns - 2 }};
+            }
+
+            if(tileCoordinate.y <= 0) {
+              tileCoordinate.y = 1;
+            }
+            console.log(tileCoordinate);
             for (var i = 0; i < markers.length; i++) {
               markers[i].setMap(null);
             }
@@ -385,13 +395,13 @@ $(function() {
             lines = [];
 
             if(learnMode || true) {
-              var myLatLng = {lat: tile2lat(tileCoordinate.y, map.getZoom()), lng: tile2long(tileCoordinate.x, map.getZoom())};
+              var myLatLng = {lat: tile2lat(tileCoordinate.y, zoom), lng: tile2long(tileCoordinate.x, zoom)};
 
-              var myLatLng2 = {lat: tile2lat(tileCoordinate.y + 1, map.getZoom()), lng: tile2long(tileCoordinate.x + 1, map.getZoom())};
+              var myLatLng2 = {lat: tile2lat(tileCoordinate.y + 2, zoom), lng: tile2long(tileCoordinate.x + 2, zoom)};
 
-              var myLatLng3 = {lat: tile2lat(tileCoordinate.y + 1, map.getZoom()),  lng: tile2long(tileCoordinate.x, map.getZoom())};
+              var myLatLng3 = {lat: tile2lat(tileCoordinate.y + 2, zoom),  lng: tile2long(tileCoordinate.x, zoom)};
 
-              var myLatLng4 = {lat: tile2lat(tileCoordinate.y, map.getZoom()),   lng: tile2long(tileCoordinate.x + 1, map.getZoom())};
+              var myLatLng4 = {lat: tile2lat(tileCoordinate.y, zoom),   lng: tile2long(tileCoordinate.x + 2, zoom)};
               var line = new google.maps.Polyline({
                   path: [
                       myLatLng,
@@ -411,7 +421,6 @@ $(function() {
         });
 
         google.maps.event.addListener(map,'click', function(mev){
-            var TILE_SIZE = 256;
             var proj = map.getProjection();
             var numTiles = 1 << map.getZoom();
             var worldCoordinate = proj.fromLatLngToPoint(mev.latLng);
@@ -423,11 +432,21 @@ $(function() {
                 Math.floor(pixelCoordinate.x / TILE_SIZE),
                 Math.floor(pixelCoordinate.y / TILE_SIZE));
 
+
+
             var tileCoordinateY = (tileCoordinate.y - 1) % {{ $map->rows }};
             tileCoordinateY = tileCoordinateY < 0 ? 0 : tileCoordinateY;
 
+
+            if(tileCoordinate.x >= {{ $map->columns - 1 }}) {
+              tileCoordinate.x = {{ $map->columns - 2 }};
+            }
+            if(tileCoordinateY >= {{ $map->rows - 2 }}) {
+              tileCoordinateY = {{ $map->columns - 3 }};
+            }
+
             var rawurl = '/maps/{{ $map->id }}/actual/actual_files/' + ({{ $map->levels - 1}} - (4 - map.getZoom())) + '/' + tileCoordinate.x + '_' +
-                  tileCoordinateY + '.jpg';
+                  tileCoordinateY + 'sel.jpg';
             var tileimg = '{{ url('/') }}' + rawurl;
             var mode = learnMode ? "learn" : "guess";
             if(mode == "learn") {
