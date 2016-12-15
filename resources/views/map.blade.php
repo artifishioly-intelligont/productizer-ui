@@ -128,6 +128,7 @@
 <script>
 
   var map;
+  var repeatX = true;
   var learnMode = true;
   var mapMarkers = [];
   var activeMarkers = [];
@@ -158,7 +159,6 @@
       var nLat = map.getBounds().getNorthEast().lat();
       var wLng = map.getBounds().getSouthWest().lng();
       var eLng = map.getBounds().getNorthEast().lng();
-
       if (sLat < tile2lat({{ $map->rows / 2 }}, zoom)) {
           map.setCenter(new google.maps.LatLng(lastGoodLat, map.getCenter().lng()));
       } else if(nLat > tile2lat(0.5, zoom)) {
@@ -500,7 +500,7 @@ $(function() {
     var cols = {{ $map->columns }};
     // DONT repeat across x-axis
     if (x < 0 || x >= cols) {//3 || x >= tileRange) {
-        return null;
+        if(!repeatX) return null;
         x = (x % cols + cols) % cols;
     }
 
