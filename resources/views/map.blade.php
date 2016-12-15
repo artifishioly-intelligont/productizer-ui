@@ -127,12 +127,12 @@
 @section('scripts')
 <script>
 
-  var map;
-  var repeatX = true;
-  var learnMode = true;
-  var mapMarkers = [];
-  var markerImages = [];
-  var activeMarkers = [];
+var map;
+var repeatX = true;
+var learnMode = true;
+var mapMarkers = [];
+var markerImages = [];
+var activeMarkers = [];
 
 // expects an object and returns a string
 function hslToRGB(hue, sat, lig) {
@@ -192,6 +192,7 @@ function normalize_rgb_value(color, m) {
 function rgbToHex(r, g, b) {
     return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
+$(function() {
 
   @foreach($features as $key => $feature)
     mapMarkers["{{ $feature }}"] = [];
@@ -209,6 +210,7 @@ function rgbToHex(r, g, b) {
     @endif
   @endforeach
 
+});
   function tile2long(x,z) { return (x/Math.pow(2,z)*360-180); }
 
   function tile2lat(y,z) {
