@@ -87,7 +87,7 @@
                 <div class="form-group">
                       <div class="full-width">
                         <div style="width:100%;display:inline-block;">
-                          <select multiple class="form-control" id="discover-feature" name="discover-feature">
+                          <select multiple class="form-control selectpicker" id="discover-feature" name="discover-feature">
                             @foreach($features as $feature)
                               <option>{{ $feature }}</option>
                             @endforeach
@@ -590,4 +590,5 @@ $(function() {
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUAtkOq17fvrO06CtpNZ8UjJFFWAsFhKY&callback=initMap&libraries=drawing">
 </script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
 @endsection

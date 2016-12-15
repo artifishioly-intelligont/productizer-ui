@@ -7,6 +7,9 @@
 
         <title>@yield('title', 'The Productizer')</title>
 
+        <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+        
         <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
     </head>
     <body>
