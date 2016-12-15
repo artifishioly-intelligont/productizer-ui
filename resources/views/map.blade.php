@@ -97,12 +97,28 @@
                   </div>
               <hr class="hidden-md hidden-lg">
             </div>
-
+  
             <div class="col-xs-10 col-xs-offset-1 col-md-offset-0 col-md-2">
-                <a id="btn-reclassify" style="display:none;" class="btn btn-info full-width" href="{{ url('/requeue').'/'.$map->id }}">Reclassify</a>
+                <a id="btn-reclassify" style="display:none;" class="btn btn-info full-width" data-toggle="modal" data-target="#confirm-reclassify">Reclassify</a>
               </div>
           </div>
 
+          <div id="confirm-reclassify" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Confirm Reclassification</h4>
+                </div>
+                <div class="modal-body">
+                  Are you sure you wish to reclassify all tiles? This can take a while.
+                </div>
+                <div class="modal-footer">
+                  <a data-dismiss="modal" class="btn btn-primary" id="confirm" href="{{ url('/requeue').'/'.$map->id }}">Confirm</a>
+                  <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {{--@if(session()->has('class'))
           <br />
