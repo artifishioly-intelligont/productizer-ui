@@ -126,7 +126,7 @@
 
 @section('scripts')
 <script>
-
+$(function() {
   var map;
   var repeatX = true;
   var learnMode = true;
@@ -273,6 +273,7 @@ function rgbToHex(r, g, b) {
       });
     }
   }
+});
 
 @if(round($current / count($tiles) * 100) != 100)
 $(function() {
