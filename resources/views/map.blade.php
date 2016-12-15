@@ -87,7 +87,7 @@
                 <div class="form-group">
                       <div class="full-width">
                         <div style="width:100%;display:inline-block;">
-                          <select class="form-control" id="discover-feature" name="discover-feature">
+                          <select multiple class="form-control" id="discover-feature" name="discover-feature">
                             @foreach($features as $feature)
                               <option>{{ $feature }}</option>
                             @endforeach
@@ -242,7 +242,9 @@ function rgbToHex(r, g, b) {
     }
     activeMarkers = [];
     if(learnMode == false) {
-      var feature = $("#discover-feature").val();
+      var features = $("#discover-feature").val();
+      $.each(features, function(ind, feature) {
+
       $.each(mapMarkers[feature], function(index, value) {
         var centerLatLng = {lat: tile2lat(value[0] + 2.0, map.getZoom() + 1), lng: tile2long(value[1] + 1.0, map.getZoom() + 1)};
 
@@ -267,6 +269,7 @@ function rgbToHex(r, g, b) {
         });
 
         activeMarkers.push(marker);
+      });
       });
     }
   }
