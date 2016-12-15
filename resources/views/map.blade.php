@@ -131,7 +131,7 @@
   var repeatX = true;
   var learnMode = true;
   var mapMarkers = [];
-  var mapColors = [];
+  var markerImages = [];
   var activeMarkers = [];
 
 // expects an object and returns a string
@@ -195,7 +195,10 @@ function rgbToHex(r, g, b) {
 
   @foreach($features as $key => $feature)
     mapMarkers["{{ $feature }}"] = [];
-    mapColors["{{ $feature }}"] = hslToRGB({{ 360 * ($key + 1) / count($features) }}, 1, 0.5);
+    markerImages["{{ $feature }}"] = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + hslToRGB({{ 360 * ($key + 1) / count($features) }}, 1, 0.5),
+            new google.maps.Size(21, 34),
+            new google.maps.Point(0,0),
+            new google.maps.Point(10, 34));
   @endforeach
   @foreach($tiles as $tile)
     @if($tile->classification != null)
@@ -243,16 +246,12 @@ function rgbToHex(r, g, b) {
       $.each(mapMarkers[feature], function(index, value) {
         var centerLatLng = {lat: tile2lat(value[0] + 2.0, map.getZoom() + 1), lng: tile2long(value[1] + 1.0, map.getZoom() + 1)};
 
-        var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + mapColors[feature],
-            new google.maps.Size(21, 34),
-            new google.maps.Point(0,0),
-            new google.maps.Point(10, 34));
 
         var marker = new google.maps.Marker({
           position: centerLatLng,
           map: map,
           title: feature,
-          icon: pinImage,
+          icon: markerImages[feature],
         });
 
         var infowindow = new google.maps.InfoWindow({
