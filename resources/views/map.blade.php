@@ -254,11 +254,13 @@ $(function() {
   }
 
 
-  var updatemarkers = function() {
-    for (var i = 0; i < activeMarkers.length; i++) {
-      activeMarkers[i].setMap(null);
+  var updatemarkers = function(refreshAll = true) {
+    if(refreshAll == true) {
+      for (var i = 0; i < activeMarkers.length; i++) {
+        activeMarkers[i].setMap(null);
+      }
+      activeMarkers = [];
     }
-    activeMarkers = [];
     if(learnMode == false) {
       var features = $("#discover-feature").val();
       $.each(features, function(ind, feature) {
@@ -305,7 +307,7 @@ $(function() {
         message : function (message, envelope, channelOrGroup, time, channel) {
             var json = JSON.parse(message);
             mapMarkers[json.classification].push([json.y, json.x]);
-            updatemarkers();
+            updatemarkers(false);
             //console.log(json);
             currentTiles++;
             var percent = Math.round(currentTiles / maxTiles * 100);
