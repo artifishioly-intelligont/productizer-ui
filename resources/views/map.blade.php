@@ -131,9 +131,71 @@
   var repeatX = true;
   var learnMode = true;
   var mapMarkers = [];
+  var mapColors = [];
   var activeMarkers = [];
-  @foreach($features as $feature)
+
+// expects an object and returns a string
+function hslToRGB(hue, sat, lig) {
+    var h = hue,
+        s = sat,
+        l = lig,
+        c = (1 - Math.abs(2*l - 1)) * s,
+        x = c * ( 1 - Math.abs((h / 60 ) % 2 - 1 )),
+        m = l - c/ 2,
+        r, g, b;
+
+    if (h < 60) {
+        r = c;
+        g = x;
+        b = 0;
+    }
+    else if (h < 120) {
+        r = x;
+        g = c;
+        b = 0;
+    }
+    else if (h < 180) {
+        r = 0;
+        g = c;
+        b = x;
+    }
+    else if (h < 240) {
+        r = 0;
+        g = x;
+        b = c;
+    }
+    else if (h < 300) {
+        r = x;
+        g = 0;
+        b = c;
+    }
+    else {
+        r = c;
+        g = 0;
+        b = x;
+    }
+
+    r = normalize_rgb_value(r, m);
+    g = normalize_rgb_value(g, m);
+    b = normalize_rgb_value(b, m);
+    return rgbToHex(r,g,b);
+}
+
+function normalize_rgb_value(color, m) {
+    color = Math.floor((color + m) * 255);
+    if (color < 0) {
+        color = 0;
+    }
+    return color;
+}
+
+function rgbToHex(r, g, b) {
+    return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+  @foreach($features as $key => $feature)
     mapMarkers["{{ $feature }}"] = [];
+    mapColors["{{ $feature }}"] = hslToRGB({{ 360 * ($key + 1) / count($features) }}, 1, 0.5);
   @endforeach
   @foreach($tiles as $tile)
     @if($tile->classification != null)
@@ -181,14 +243,20 @@
       $.each(mapMarkers[feature], function(index, value) {
         var centerLatLng = {lat: tile2lat(value[0] + 2.0, map.getZoom() + 1), lng: tile2long(value[1] + 1.0, map.getZoom() + 1)};
 
+        var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + mapColors[feature],
+            new google.maps.Size(21, 34),
+            new google.maps.Point(0,0),
+            new google.maps.Point(10, 34));
+
         var marker = new google.maps.Marker({
           position: centerLatLng,
           map: map,
           title: feature,
+          icon: pinImage,
         });
 
         var infowindow = new google.maps.InfoWindow({
-          content: feature + " X: " + value[1] + " Y: " + value[0],
+          content: feature,// + " X: " + value[1] + " Y: " + value[0],
         });
 
         marker.addListener('mouseover', function() {
