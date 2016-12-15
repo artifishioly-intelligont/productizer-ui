@@ -113,7 +113,7 @@
                   Are you sure you wish to reclassify all tiles? This can take a while.
                 </div>
                 <div class="modal-footer">
-                  <a data-dismiss="modal" class="btn btn-primary" id="confirm" href="{{ url('/requeue').'/'.$map->id }}">Confirm</a>
+                  <a class="btn btn-primary" id="confirm" href="{{ url('/requeue').'/'.$map->id }}">Confirm</a>
                   <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
                 </div>
               </div>
