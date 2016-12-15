@@ -372,7 +372,16 @@ $(function() {
           name: 'OS',
 
         });
-
+        var boundaryline = new google.maps.Polyline({
+            path: [
+                {lat: tile2lat(0, map.getZoom()),   lng: tile2long(0, map.getZoom())},
+                {lat: tile2lat({{ $map->columns }}, map.getZoom()),   lng: tile2long(0, map.getZoom())},
+            ],
+            strokeColor: '#ff0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 7,
+            map: map
+        });
         map.mapTypes.set('OS', osMapType);
         map.setMapTypeId('OS');
 
