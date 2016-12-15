@@ -188,7 +188,7 @@
         });
 
         var infowindow = new google.maps.InfoWindow({
-          content: feature,
+          content: feature + " X: " + value[1] + " Y: " + value[0],
         });
 
         marker.addListener('mouseover', function() {
