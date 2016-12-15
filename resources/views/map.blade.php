@@ -126,7 +126,7 @@
 
 @section('scripts')
 <script>
-$(function() {
+
   var map;
   var repeatX = true;
   var learnMode = true;
@@ -195,10 +195,10 @@ function rgbToHex(r, g, b) {
 
   @foreach($features as $key => $feature)
     mapMarkers["{{ $feature }}"] = [];
-    markerImages["{{ $feature }}"] = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + hslToRGB({{ 360 * ($key + 1) / count($features) }}, 1, 0.5),
+    /*markerImages["{{ $feature }}"] = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + hslToRGB({{ 360 * ($key + 1) / count($features) }}, 1, 0.5),
             new google.maps.Size(21, 34),
             new google.maps.Point(0,0),
-            new google.maps.Point(10, 34));
+            new google.maps.Point(10, 34));*/
   @endforeach
   @foreach($tiles as $tile)
     @if($tile->classification != null)
@@ -253,7 +253,7 @@ function rgbToHex(r, g, b) {
           position: centerLatLng,
           map: map,
           title: feature,
-          icon: markerImages[feature],
+          //icon: markerImages[feature],
         });
 
         var infowindow = new google.maps.InfoWindow({
@@ -273,7 +273,6 @@ function rgbToHex(r, g, b) {
       });
     }
   }
-});
 
 @if(round($current / count($tiles) * 100) != 100)
 $(function() {
