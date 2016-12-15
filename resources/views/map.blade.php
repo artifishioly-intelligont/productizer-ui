@@ -143,6 +143,32 @@
     @endif
   @endforeach
 
+  function tile2long(x,z) { return (x/Math.pow(2,z)*360-180); }
+
+  function tile2lat(y,z) {
+      var n=Math.PI-2*Math.PI*y/Math.pow(2,z);
+      return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))));
+  }
+  var lastGoodLat = null;
+  var checkLatitude = function() {
+      var proj = map.getProjection();
+      var bounds = map.getBounds();
+      var zoom = map.getZoom();
+      var sLat = map.getBounds().getSouthWest().lat();
+      var nLat = map.getBounds().getNorthEast().lat();
+      var wLng = map.getBounds().getSouthWest().lng();
+      var eLng = map.getBounds().getNorthEast().lng();
+
+      if (sLat < tile2lat({{ $map->rows / 2 }}, zoom)) {
+          map.setCenter(new google.maps.LatLng(lastGoodLat, map.getCenter().lng()));
+      } else if(nLat > tile2lat(0.5, zoom)) {
+          map.setCenter(new google.maps.LatLng(lastGoodLat, map.getCenter().lng()));
+      } else {
+        lastGoodLat = map.getCenter().lat();
+        lastGoodLng = map.getCenter().lng();
+      }
+
+  }
 
 
   var updatemarkers = function() {
@@ -295,13 +321,6 @@ $(function() {
   var currentTileX = 0;
   var currentTileY = 0;
 
-  function tile2long(x,z) { return (x/Math.pow(2,z)*360-180); }
-
-  function tile2lat(y,z) {
-      var n=Math.PI-2*Math.PI*y/Math.pow(2,z);
-      return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))));
-  }
-
   function initMap() {
 
     var TILE_SIZE = 128;
@@ -356,6 +375,8 @@ $(function() {
 
         map.mapTypes.set('OS', osMapType);
         map.setMapTypeId('OS');
+
+        google.maps.event.addListener(map, 'center_changed', checkLatitude);
 
         // HOVER TILE WIP
         google.maps.event.addListener(map,'mousemove', function(mev){
