@@ -140,7 +140,7 @@
       if(!("{{ $tile->classification }}" in mapMarkers)) {
         mapMarkers["{{ $tile->classification }}"] = [];
       }
-      mapMarkers["{{$tile->classification}}"].push([{{ $tile->x }}, {{ $tile->y }}]);
+      mapMarkers["{{$tile->classification}}"].push([{{ $tile->y }}, {{ $tile->x }}]);
     @endif
   @endforeach
 
@@ -216,7 +216,7 @@ $(function() {
         channel : "map{{ $map->id }}",
         message : function (message, envelope, channelOrGroup, time, channel) {
             var json = JSON.parse(message);
-            mapMarkers[json.classification].push([json.x, json.y]);
+            mapMarkers[json.classification].push([json.y, json.x]);
             updatemarkers();
             //console.log(json);
             currentTiles++;
