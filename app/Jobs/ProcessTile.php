@@ -36,16 +36,19 @@ class ProcessTile implements ShouldQueue
      */
     public function handle()
     {
+        $sucess = false;
+        $json_out;
+        while($success == false) {
+            $client = new Client(); //GuzzleHttp\Client
+            $result = $client->post(env('SATURN_URL').'guess', [
+                'form_params' => [
+                    'urls' => url('/').'/'.$this->tile->image_url.';',
+                ]
+            ]);
 
-        $client = new Client(); //GuzzleHttp\Client
-        $result = $client->post(env('SATURN_URL').'guess', [
-            'form_params' => [
-                'urls' => url('/').'/'.$this->tile->image_url.';',
-            ]
-        ]);
-
-        $json_out = json_decode($result->getBody());
-        dd($json_out);
+            $json_out = json_decode($result->getBody());
+            $success = $json_out->success;
+        }
         Log::info($json_out->class);
         $this->tile->classification = $json_out->class;
         $this->tile->save();
