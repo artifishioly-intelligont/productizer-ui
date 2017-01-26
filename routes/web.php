@@ -23,6 +23,7 @@ Route::get('/requeue/{id}', ['as' => 'requeue', 'uses' => 'StageController@reque
 
 Route::get('/test', function() {
 
-    new ProcessTile(Tile::findOrFail(3407))->handle();
+    $t = new ProcessTile(Tile::findOrFail(3407));
+    $t->handle();
 
 });
