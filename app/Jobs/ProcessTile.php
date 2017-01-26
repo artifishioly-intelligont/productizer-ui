@@ -38,7 +38,8 @@ class ProcessTile implements ShouldQueue
     {
         $success = false;
         $json_out;
-        while($success == false) {
+        $retries = 10;
+        while($success == false && $retries > 0) {
             $client = new Client(); //GuzzleHttp\Client
             $result = $client->post(env('SATURN_URL').'guess', [
                 'form_params' => [
@@ -48,7 +49,9 @@ class ProcessTile implements ShouldQueue
 
             $json_out = json_decode($result->getBody());
             $success = $json_out->success;
+            $retries--;
         }
+        dd($json_out);
         Log::info($json_out->class);
         $this->tile->classification = $json_out->class;
         $this->tile->save();
