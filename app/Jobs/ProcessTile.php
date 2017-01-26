@@ -36,7 +36,7 @@ class ProcessTile implements ShouldQueue
      */
     public function handle()
     {
-        $sucess = false;
+        $success = false;
         $json_out;
         while($success == false) {
             $client = new Client(); //GuzzleHttp\Client
