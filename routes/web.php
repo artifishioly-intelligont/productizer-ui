@@ -21,6 +21,6 @@ Route::post('/map/{id}', ['as' => 'stage2_post', 'uses' => 'StageController@post
 
 Route::get('/requeue/{id}', ['as' => 'requeue', 'uses' => 'StageController@requeue']);
 
-Route::get('test', function() {
+Route::get('/test', function() {
     (new ProcessTile(Tile::findOrFail(5429)))->handle();
 });

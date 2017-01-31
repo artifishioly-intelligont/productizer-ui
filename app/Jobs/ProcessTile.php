@@ -48,6 +48,7 @@ class ProcessTile implements ShouldQueue
             ]);
 
             $json_out = json_decode($result->getBody());
+            dd($json_out);
             $success = $json_out->success;
             $retries--;
         }
