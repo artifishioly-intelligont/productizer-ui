@@ -20,7 +20,3 @@ Route::get('/map/{id}', ['as' => 'stage1', 'uses' => 'StageController@showStage2
 Route::post('/map/{id}', ['as' => 'stage2_post', 'uses' => 'StageController@postStage2']);
 
 Route::get('/requeue/{id}', ['as' => 'requeue', 'uses' => 'StageController@requeue']);
-
-Route::get('/test', function() {
-    (new ProcessTile(Tile::findOrFail(5429)))->handle();
-});

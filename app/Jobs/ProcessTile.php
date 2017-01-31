@@ -52,7 +52,7 @@ class ProcessTile implements ShouldQueue
             $retries--;
         }
         if($success == false) {
-            throw new Exception;
+            throw new \Exception;
         }
         Log::info($json_out->class);
         $this->tile->classification = $json_out->class;
