@@ -135,7 +135,7 @@ class StageController extends Controller
                 ]);
 
                 $json_out = json_decode($result->getBody());
-
+                dd($json_out->failed_images);
                 $failed = count(json_decode(json_encode($json_out->failed_images), true)) > 0;
                 dd($failed);
                 // TODO: make it go to guess mode with info
