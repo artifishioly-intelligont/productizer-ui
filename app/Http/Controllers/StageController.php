@@ -135,9 +135,22 @@ class StageController extends Controller
                 ]);
 
                 $json_out = json_decode($result->getBody());
-                dd($json_out->failed_images);
+
                 $failed = count(json_decode(json_encode($json_out->failed_images), true)) > 0;
-                dd($failed);
+                $retries = 0;
+                while($failed && $retries < 3) {
+                    $result = $client->post(env('SATURN_URL').'/learn', [
+                        'form_params' => [
+                            'theme' => $request->get('selected-feature'),
+                            'urls' => $files,
+                        ]
+                    ]);
+
+                    $json_out = json_decode($result->getBody());
+                    $retries++;
+
+                    $failed = count(json_decode(json_encode($json_out->failed_images), true)) > 0;
+                }
                 // TODO: make it go to guess mode with info
                 return redirect()->back();
 
