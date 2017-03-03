@@ -208,25 +208,6 @@ function normalize_rgb_value(color, m) {
 function rgbToHex(r, g, b) {
     return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
-$(function() {
-
-  @foreach($features as $key => $feature)
-    mapMarkers["{{ $feature }}"] = [];
-    markerImages["{{ $feature }}"] = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + hslToRGB({{ 360 * ($key + 1) / count($features) }}, 1, 0.5),
-            new google.maps.Size(21, 34),
-            new google.maps.Point(0,0),
-            new google.maps.Point(10, 34));
-  @endforeach
-  @foreach($tiles as $tile)
-    @if($tile->classification != null)
-      if(!("{{ $tile->classification }}" in mapMarkers)) {
-        mapMarkers["{{ $tile->classification }}"] = [];
-      }
-      mapMarkers["{{$tile->classification}}"].push([{{ $tile->y }}, {{ $tile->x }}]);
-    @endif
-  @endforeach
-
-});
   function tile2long(x,z) { return (x/Math.pow(2,z)*360-180); }
 
   function tile2lat(y,z) {
@@ -412,6 +393,27 @@ $(function() {
   var currentTileY = 0;
 
   function initMap() {
+
+
+
+    @foreach($features as $key => $feature)
+      mapMarkers["{{ $feature }}"] = [];
+      markerImages["{{ $feature }}"] = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + hslToRGB({{ 360 * ($key + 1) / count($features) }}, 1, 0.5),
+              new google.maps.Size(21, 34),
+              new google.maps.Point(0,0),
+              new google.maps.Point(10, 34));
+    @endforeach
+    @foreach($tiles as $tile)
+      @if($tile->classification != null)
+        if(!("{{ $tile->classification }}" in mapMarkers)) {
+          mapMarkers["{{ $tile->classification }}"] = [];
+        }
+        mapMarkers["{{$tile->classification}}"].push([{{ $tile->y }}, {{ $tile->x }}]);
+      @endif
+    @endforeach
+
+
+    
 
     var TILE_SIZE = 128;
     if(document.getElementById('map')) {
