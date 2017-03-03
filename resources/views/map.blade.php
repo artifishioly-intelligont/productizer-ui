@@ -255,40 +255,42 @@ $(function() {
 
 
   var updatemarkers = function() {
-    for (var i = 0; i < activeMarkers.length; i++) {
-      activeMarkers[i].setMap(null);
-    }
-    activeMarkers = [];
-    if(learnMode == false) {
-      var features = $("#discover-feature").val();
-      $.each(features, function(ind, feature) {
+    if(google) {
+      for (var i = 0; i < activeMarkers.length; i++) {
+        activeMarkers[i].setMap(null);
+      }
+      activeMarkers = [];
+      if(learnMode == false) {
+        var features = $("#discover-feature").val();
+        $.each(features, function(ind, feature) {
 
-      $.each(mapMarkers[feature], function(index, value) {
-        var centerLatLng = {lat: tile2lat(value[0] + 2.0, map.getZoom() + 1), lng: tile2long(value[1] + 1.0, map.getZoom() + 1)};
+        $.each(mapMarkers[feature], function(index, value) {
+          var centerLatLng = {lat: tile2lat(value[0] + 2.0, map.getZoom() + 1), lng: tile2long(value[1] + 1.0, map.getZoom() + 1)};
 
 
-        var marker = new google.maps.Marker({
-          position: centerLatLng,
-          map: map,
-          title: feature,
-          icon: markerImages[feature],
+          var marker = new google.maps.Marker({
+            position: centerLatLng,
+            map: map,
+            title: feature,
+            icon: markerImages[feature],
+          });
+
+          var infowindow = new google.maps.InfoWindow({
+            content: feature,// + " X: " + value[1] + " Y: " + value[0],
+          });
+
+          marker.addListener('mouseover', function() {
+            infowindow.open(map, marker);
+          });
+
+          marker.addListener('mouseout', function() {
+            infowindow.close();
+          });
+
+          activeMarkers.push(marker);
         });
-
-        var infowindow = new google.maps.InfoWindow({
-          content: feature,// + " X: " + value[1] + " Y: " + value[0],
         });
-
-        marker.addListener('mouseover', function() {
-          infowindow.open(map, marker);
-        });
-
-        marker.addListener('mouseout', function() {
-          infowindow.close();
-        });
-
-        activeMarkers.push(marker);
-      });
-      });
+      }
     }
   }
 
