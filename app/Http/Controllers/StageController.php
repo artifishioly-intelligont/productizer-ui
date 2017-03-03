@@ -133,7 +133,9 @@ class StageController extends Controller
                         'urls' => $files,
                     ]
                 ]);
-                dd($result->getBody());
+
+                $json_out = json_decode($result->getBody());
+                dd($result);
                 // TODO: make it go to guess mode with info
                 return redirect()->back();
 
