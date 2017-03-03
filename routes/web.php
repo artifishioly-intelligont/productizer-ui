@@ -22,15 +22,6 @@ Route::get('/requeue/{id}', ['as' => 'requeue', 'uses' => 'StageController@reque
 
 Route::get('/clearsqs', function() {
 
-      /*  'sqs' => [
-            'driver' => 'sqs',
-            'key' => 'AKIAISLQWKGFVT6ADGIA',
-            'secret' => '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',
-            'prefix' => 'https://sqs.eu-west-1.amazonaws.com/243684770939',
-            'queue' => 'Productizer',
-            'region' => 'eu-west-1',
-        ],*/
-
     $client = Aws\Sqs\SqsClient::factory(array(
                     'credentials' => array(
                         'key'    => config('queue.connections.sqs.key'),
