@@ -50,8 +50,8 @@ return [
 
         'sqs' => [
             'driver' => 'sqs',
-            'key' => 'AKIAISLQWKGFVT6ADGIA',
-            'secret' => '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',
+            'key' => env('SQS_KEY'),
+            'secret' => env('SQS_SECRET'),
             'prefix' => 'https://sqs.eu-west-1.amazonaws.com/243684770939',
             'queue' => 'Productizer',
             'region' => 'eu-west-1',
