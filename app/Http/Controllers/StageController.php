@@ -135,7 +135,7 @@ class StageController extends Controller
                 ]);
 
                 $json_out = json_decode($result->getBody());
-                dd($result);
+                dd($json_out);
                 // TODO: make it go to guess mode with info
                 return redirect()->back();
 
