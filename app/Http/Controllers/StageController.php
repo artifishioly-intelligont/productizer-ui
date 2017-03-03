@@ -133,7 +133,7 @@ class StageController extends Controller
                         'urls' => $files,
                     ]
                 ]);
-                dd($result->body());
+                dd($result->getBody());
                 // TODO: make it go to guess mode with info
                 return redirect()->back();
 
